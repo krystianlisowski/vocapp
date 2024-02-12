@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "vocapp-55740": {
+      "hosting": {
+        "vocapp": [
+          "vocapp-55740"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "vocapp-55740"
+  }
+}
