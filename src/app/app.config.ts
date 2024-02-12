@@ -15,6 +15,7 @@ export const appConfig: ApplicationConfig = {
       provideFirebaseApp(() => initializeApp(firebaseConfig))
     ),
     importProvidersFrom(provideAuth(() => getAuth())),
-    importProvidersFrom(provideFirestore(() => getFirestore())), provideAnimationsAsync(),
+    importProvidersFrom(provideFirestore(() => getFirestore())),
+    provideAnimationsAsync(),
   ],
 };
