@@ -1,10 +1,18 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DatatableManager } from './datatable';
 import { DatatableFormatterPipe } from './datatable-formatter.pipe';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatListModule } from '@angular/material/list';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
+  MatTable,
+} from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -13,12 +21,18 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   imports: [
     CommonModule,
-    MatListModule,
-    MatDividerModule,
-    MatCardModule,
     DatatableFormatterPipe,
-    MatTableModule,
     TranslateModule,
+    MatTable,
+    MatHeaderRow,
+    MatRow,
+    MatHeaderCell,
+    MatHeaderCellDef,
+    MatCell,
+    MatCellDef,
+    MatColumnDef,
+    MatRowDef,
+    MatHeaderRowDef,
   ],
   template: `
     <table mat-table [dataSource]="datatable.rows()" class="mat-elevation-z8">

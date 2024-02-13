@@ -20,5 +20,26 @@
     "logout": "Log out",
     "en": "english",
     "pl": "polish"
+  },
+  "login": {
+    "heading": "Login Account",
+    "email": "Email",
+    "password": "Password",
+    "confirm": "Sign in",
+    "redirect": "Sign up"
+  },
+  "register": {
+    "heading": "Register Account",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "confirm": "Sign up",
+    "redirect": "Sign in"
+  },
+  "error": {
+    "email": "Please provide a valid email address.",
+    "password": "Please provide a valid password (at least 8 characters long).",
+    "login": "Could not log in with those credentials.",
+    "register": "Could not create account with those credentials."
   }
 }

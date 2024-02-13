@@ -1,36 +1,61 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatButton } from '@angular/material/button';
+import {
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogTitle,
+} from '@angular/material/dialog';
+import { MatInput } from '@angular/material/input';
+import {
+  MatFormField,
+  MatLabel,
+  MatSuffix,
+} from '@angular/material/form-field';
+import {
+  MatDatepicker,
+  MatDatepickerActions,
+  MatDatepickerContent,
+  MatDatepickerInput,
+  MatDatepickerToggle,
+  MatDatepickerToggleIcon,
+} from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatIcon } from '@angular/material/icon';
 @Component({
   selector: 'app-add-lesson-dialog',
   standalone: true,
   imports: [
-    MatDialogModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
     ReactiveFormsModule,
     TranslateModule,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogTitle,
+    MatDialogClose,
+    MatButton,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatDatepicker,
+    MatDatepickerToggle,
+    MatDatepickerInput,
+    MatSuffix,
   ],
   providers: [provideNativeDateAdapter()],
   template: `
     <h2 mat-dialog-title translate="addLessonDialog.heading"></h2>
-    <mat-dialog-content class="mat-typography">
+    <mat-dialog-content>
       <form [formGroup]="formGroup" class="add-lesson-form">
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label translate="lesson.title"></mat-label>
           <input formControlName="title" matInput />
         </mat-form-field>
-        <mat-form-field>
+
+        <mat-form-field appearance="outline">
           <mat-label translate="lesson.date"></mat-label>
           <input matInput [matDatepicker]="picker" formControlName="date" />
           <mat-datepicker-toggle
@@ -39,7 +64,8 @@ import { TranslateModule } from '@ngx-translate/core';
           ></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
-        <mat-form-field>
+
+        <mat-form-field appearance="outline">
           <mat-label translate="lesson.studentsCount"></mat-label>
           <input matInput type="number" formControlName="studentsCount" />
         </mat-form-field>
@@ -60,6 +86,9 @@ import { TranslateModule } from '@ngx-translate/core';
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      margin-top: 0.5rem;
+      width: 19rem;
+      max-width: 19rem;
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
