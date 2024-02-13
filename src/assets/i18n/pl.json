@@ -20,5 +20,26 @@
     "logout": "Wyloguj się",
     "en": "angielski",
     "pl": "polski"
+  },
+  "login": {
+    "heading": "Zaloguj się",
+    "email": "Email",
+    "password": "Hasło",
+    "confirm": "Zaloguj",
+    "redirect": "Uwtórz konto"
+  },
+  "register": {
+    "heading": "Utwórz konto",
+    "email": "Email",
+    "password": "Hasło",
+    "confirmPassword": "Potwierdź hasło",
+    "confirm": "Uwtórz konto",
+    "redirect": "Zaloguj się"
+  },
+  "error": {
+    "email": "Proszę podać poprawny adres email.",
+    "password": "Hasło musi zawierać minimum 8 znaków.",
+    "login": "Nie udało się zalogować.",
+    "register": "Nie udało się utworzyć konta."
   }
 }

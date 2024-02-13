@@ -12,13 +12,20 @@ import { DatatableComponent } from '../../../shared/ui/datatable/datatable.compo
 import { DatatableManager } from '../../../shared/ui/datatable/datatable';
 import dayjs from 'dayjs';
 import { RouterLink } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-lesson-list',
   standalone: true,
-  imports: [DatatableComponent, RouterLink, MatButtonModule, MatIconModule],
+  imports: [
+    DatatableComponent,
+    RouterLink,
+    MatIconButton,
+    MatIcon,
+    MatProgressSpinner,
+  ],
   template: `
     <app-datatable [datatable]="datatable"></app-datatable>
     <ng-template #linkCol let-item="item">
@@ -31,8 +38,9 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class LessonListComponent implements OnInit {
   @Input({ required: true }) lessons!: Signal<Lesson[]>;
-  datatable!: DatatableManager<Lesson>;
   @ViewChild('linkCol', { static: true }) linkCol!: TemplateRef<any>;
+
+  datatable!: DatatableManager<Lesson>;
 
   ngOnInit(): void {
     this.datatable = this.datatableManagerFactory();
