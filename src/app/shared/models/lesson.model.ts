@@ -1,7 +1,8 @@
+import { Timestamp } from '@angular/fire/firestore';
 export interface Lesson {
   id: string;
   title: string;
-  date: Date;
+  date: Timestamp;
   studentCount: number;
 }
 
