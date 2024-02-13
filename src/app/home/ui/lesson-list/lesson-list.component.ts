@@ -44,16 +44,20 @@ export class LessonListComponent implements OnInit {
       visibleCols: [
         {
           key: 'title',
+          header: 'lesson.title',
         },
         {
           key: 'date',
+          header: 'lesson.date',
           formatter: (item) => dayjs(item.date.toDate()).format('DD/MM/YYYY'),
         },
         {
-          key: 'studentCount',
+          key: 'studentsCount',
+          header: 'lesson.studentsCount',
         },
         {
           key: 'details',
+          header: 'lesson.details',
           template: this.linkCol,
         },
       ],

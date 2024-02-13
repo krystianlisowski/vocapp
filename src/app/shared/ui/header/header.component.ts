@@ -4,7 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
-
+import { LanguageSwitchComponent } from '../language-switch/language-switch.component';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -14,6 +15,8 @@ import { RouterLink } from '@angular/router';
     MatIconModule,
     MatMenuModule,
     RouterLink,
+    LanguageSwitchComponent,
+    TranslateModule,
   ],
   template: `
     <mat-toolbar color="primary">
@@ -33,9 +36,11 @@ import { RouterLink } from '@angular/router';
       <mat-menu #menu="matMenu">
         <button mat-menu-item>
           <mat-icon>logout</mat-icon>
-          <span>Logout</span>
+          <span translate="header.logout"></span>
         </button>
       </mat-menu>
+
+      <app-language-switch></app-language-switch>
     </mat-toolbar>
   `,
   styles: `

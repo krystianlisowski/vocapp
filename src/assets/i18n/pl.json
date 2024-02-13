@@ -1,0 +1,24 @@
+{
+  "commons": {
+    "cancel": "Anuluj",
+    "save": "Zapisz"
+  },
+  "home": {
+    "heading": "Lista lekcji",
+    "addLesson": "Dodaj lekcję"
+  },
+  "addLessonDialog": {
+    "heading": "Dodaj nową lekcję"
+  },
+  "lesson": {
+    "title": "Tytuł lekcji",
+    "date": "Data lekcji",
+    "studentsCount": "Ilość uczestników",
+    "details": "Szczegóły"
+  },
+  "header": {
+    "logout": "Wyloguj się",
+    "en": "angielski",
+    "pl": "polski"
+  }
+}

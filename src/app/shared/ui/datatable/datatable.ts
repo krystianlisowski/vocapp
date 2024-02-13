@@ -2,6 +2,7 @@ import { TemplateRef, Signal, signal } from '@angular/core';
 
 export interface DatatableCol<T> {
   key: string;
+  header: string;
   template?: TemplateRef<any>;
   formatter?: (item: T) => string;
 }
