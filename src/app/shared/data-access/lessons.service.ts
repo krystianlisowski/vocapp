@@ -9,6 +9,8 @@ import {
   addDoc,
   setDoc,
   deleteDoc,
+  DocumentReference,
+  DocumentData,
 } from '@angular/fire/firestore';
 import { FirebaseCollection } from '../enums/firebase-collection.enum';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -64,38 +66,21 @@ export class LessonsService {
         exhaustMap((payload) => this.addLesson(payload)),
         takeUntilDestroyed()
       )
-      .subscribe((lesson) =>
-        this.state.update((state) => ({
-          ...state,
-          lessons: [...state.lessons, lesson],
-        }))
-      );
+      .subscribe();
 
     this.edit$
       .pipe(
         exhaustMap((payload) => this.updateLesson(payload)),
         takeUntilDestroyed()
       )
-      .subscribe((lesson) =>
-        this.state.update((state) => ({
-          ...state,
-          lessons: state.lessons.map((l) =>
-            l.id === lesson.id ? { ...lesson } : l
-          ),
-        }))
-      );
+      .subscribe();
 
     this.remove$
       .pipe(
         exhaustMap((payload) => this.removeLesson(payload)),
         takeUntilDestroyed()
       )
-      .subscribe((lessonId) =>
-        this.state.update((state) => ({
-          ...state,
-          lessons: state.lessons.filter((lesson) => lesson.id !== lessonId),
-        }))
-      );
+      .subscribe();
   }
 
   readLessons(): Observable<Lesson[]> {
@@ -104,18 +89,20 @@ export class LessonsService {
     }) as Observable<Lesson[]>;
   }
 
-  addLesson(payload: LessonAddPayload): Observable<any> {
+  addLesson(
+    payload: LessonAddPayload
+  ): Observable<DocumentReference<DocumentData, DocumentData>> {
     const promise = addDoc(this.lessonsCollecion, payload);
     return from(promise);
   }
 
-  removeLesson(id: string): Observable<string> {
+  removeLesson(id: string): Observable<void> {
     const docRef = doc(this.lessonsCollecion, `${id}`);
     const promise = deleteDoc(docRef);
-    return from(id);
+    return from(promise);
   }
 
-  updateLesson(payload: Lesson): Observable<any> {
+  updateLesson(payload: Lesson): Observable<void> {
     const docRef = doc(this.lessonsCollecion, `${payload.id}`);
     const promise = setDoc(docRef, payload);
     return from(promise);

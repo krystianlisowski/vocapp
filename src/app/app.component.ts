@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/ui/header/header.component';
 @Component({
@@ -6,7 +6,10 @@ import { HeaderComponent } from './shared/ui/header/header.component';
   standalone: true,
   template: `
     <app-header></app-header>
-    <router-outlet></router-outlet>
+
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
   `,
   imports: [RouterOutlet, HeaderComponent],
 })

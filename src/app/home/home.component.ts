@@ -5,17 +5,25 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddLessonDialogComponent } from './ui/add-lesson-dialog/add-lesson-dialog.component';
 import { filter } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   template: `
-    <h1>Lessons</h1>
-    <button mat-button (click)="openDialog()">Open dialog</button>
-    <app-lesson-list [lessons]="lessonService.lessons()"></app-lesson-list>
+    <header class="d-flex justify-content-between my-4">
+      <h1>Lessons</h1>
+      <button mat-raised-button color="primary" (click)="openDialog()">
+        Add lesson
+      </button>
+    </header>
+
+    <body>
+      <app-lesson-list [lessons]="lessonService.lessons"></app-lesson-list>
+    </body>
   `,
   styles: ``,
-  imports: [LessonListComponent],
+  imports: [LessonListComponent, MatButtonModule],
 })
 export class HomeComponent {
   lessonService = inject(LessonsService);
