@@ -6,6 +6,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-datatable',
@@ -17,6 +18,7 @@ import { CommonModule } from '@angular/common';
     MatCardModule,
     DatatableFormatterPipe,
     MatTableModule,
+    TranslateModule,
   ],
   template: `
     <table mat-table [dataSource]="datatable.rows()" class="mat-elevation-z8">
@@ -27,7 +29,7 @@ import { CommonModule } from '@angular/common';
       = $last;) {
       <ng-container [matColumnDef]="datatable.visibleColsKeys[idx]">
         <th mat-header-cell *matHeaderCellDef [class.text-right]="last">
-          {{ col.key }}
+          {{ col.header | translate }}
         </th>
         <td mat-cell *matCellDef="let element" [class.text-right]="last">
           @if (col.template) {

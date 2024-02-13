@@ -8,7 +8,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-add-lesson-dialog',
   standalone: true,
@@ -19,18 +19,19 @@ import { MatDialogRef } from '@angular/material/dialog';
     MatInputModule,
     MatDatepickerModule,
     ReactiveFormsModule,
+    TranslateModule,
   ],
   providers: [provideNativeDateAdapter()],
   template: `
-    <h2 mat-dialog-title>Add new lesson</h2>
+    <h2 mat-dialog-title translate="addLessonDialog.heading"></h2>
     <mat-dialog-content class="mat-typography">
       <form [formGroup]="formGroup" class="add-lesson-form">
         <mat-form-field>
-          <mat-label>Title</mat-label>
+          <mat-label translate="lesson.title"></mat-label>
           <input formControlName="title" matInput />
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Date</mat-label>
+          <mat-label translate="lesson.date"></mat-label>
           <input matInput [matDatepicker]="picker" formControlName="date" />
           <mat-datepicker-toggle
             matIconSuffix
@@ -39,16 +40,19 @@ import { MatDialogRef } from '@angular/material/dialog';
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Students</mat-label>
-          <input matInput type="number" formControlName="studentCount" />
+          <mat-label translate="lesson.studentsCount"></mat-label>
+          <input matInput type="number" formControlName="studentsCount" />
         </mat-form-field>
       </form>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-button (click)="submit()" [disabled]="!formGroup.valid">
-        Save
-      </button>
+      <button mat-button mat-dialog-close translate="commons.cancel"></button>
+      <button
+        mat-button
+        (click)="submit()"
+        [disabled]="!formGroup.valid"
+        translate="commons.save"
+      ></button>
     </mat-dialog-actions>
   `,
   styles: `
@@ -66,7 +70,7 @@ export class AddLessonDialogComponent {
   formGroup = this.fb.nonNullable.group({
     title: this.fb.nonNullable.control('', [Validators.required]),
     date: this.fb.nonNullable.control('', [Validators.required]),
-    studentCount: this.fb.control<number | null>(null, [Validators.required]),
+    studentsCount: this.fb.control<number | null>(null, [Validators.required]),
   });
 
   submit() {

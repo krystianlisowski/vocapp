@@ -1,0 +1,24 @@
+{
+  "commons": {
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "home": {
+    "heading": "Lesson list",
+    "addLesson": "Add lesson"
+  },
+  "addLessonDialog": {
+    "heading": "Add new lesson"
+  },
+  "lesson": {
+    "title": "Lesson title",
+    "date": "Lesson date",
+    "studentsCount": "Students count",
+    "details": "Details"
+  },
+  "header": {
+    "logout": "Log out",
+    "en": "english",
+    "pl": "polish"
+  }
+}

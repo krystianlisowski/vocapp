@@ -6,15 +6,15 @@ import { AddLessonDialogComponent } from './ui/add-lesson-dialog/add-lesson-dial
 import { filter } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
-
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-home',
   standalone: true,
   template: `
     <header class="d-flex justify-content-between my-4">
-      <h1>Lessons</h1>
+      <h1 translate="home.heading"></h1>
       <button mat-raised-button color="primary" (click)="openDialog()">
-        Add lesson
+        {{ 'home.addLesson' | translate }}
       </button>
     </header>
 
@@ -23,7 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
     </body>
   `,
   styles: ``,
-  imports: [LessonListComponent, MatButtonModule],
+  imports: [LessonListComponent, MatButtonModule, TranslateModule],
 })
 export class HomeComponent {
   lessonService = inject(LessonsService);
