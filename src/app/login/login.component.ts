@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,9 +6,9 @@ import {
 } from '@angular/core';
 import { LoginService } from './data-access/login.service';
 import { AuthService } from '../shared/data-access/auth.service';
-import { Router } from '@angular/router';
 import { LoginFormComponent } from './ui/login-form/login-form.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { StoredUrlService } from '../shared/utils/stored-url.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -32,12 +31,12 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 export class LoginComponent {
   public loginService = inject(LoginService);
   public authService = inject(AuthService);
-  private router = inject(Router);
+  private urlStore = inject(StoredUrlService);
 
   constructor() {
     effect(() => {
       if (this.authService.user()) {
-        this.router.navigate(['']);
+        this.urlStore.navigateToStoredUrl();
       }
     });
   }

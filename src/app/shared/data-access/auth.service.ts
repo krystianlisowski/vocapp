@@ -29,11 +29,11 @@ export class AuthService {
     user: undefined,
   });
 
-  // Sources
-  private user$!: Observable<User | null>;
-
   // Selectors
   user = computed(() => this.state().user);
+
+  // Sources
+  private user$!: Observable<User | null>;
 
   constructor() {
     this.user$ = authState(this.auth);

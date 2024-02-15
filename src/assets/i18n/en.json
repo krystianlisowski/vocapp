@@ -41,5 +41,12 @@
     "password": "Please provide a valid password (at least 8 characters long).",
     "login": "Could not log in with those credentials.",
     "register": "Could not create account with those credentials."
+  },
+  "vocabulary": {
+    "addNew": "Add new vocabulary",
+    "translation": "Translation",
+    "definition": "Definition",
+    "examples": "Examples",
+    "links": "Links"
   }
 }
