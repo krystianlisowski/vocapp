@@ -10,6 +10,11 @@
   "addLessonDialog": {
     "heading": "Dodaj nową lekcję"
   },
+  "addVocabularyDialog": {
+    "heading": "Dodaj nowy zwrot",
+    "addExample": "Dodaj przykład",
+    "addLink": "Dodaj link"
+  },
   "lesson": {
     "title": "Tytuł lekcji",
     "date": "Data lekcji",
@@ -44,9 +49,16 @@
   },
   "vocabulary": {
     "addNew": "Dodaj nowy zwrot",
+    "title": "Zwrot",
     "translation": "Tłumaczenie",
     "definition": "Definicja",
     "examples": "Przykłady",
-    "links": "Przydatne linki"
+    "links": "Przydatne linki",
+    "link": "Link",
+    "example": "Przykład"
+  },
+  "formLabels": {
+    "title": "Nazwa",
+    "link": "Link"
   }
 }

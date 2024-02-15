@@ -1,7 +1,6 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import {
   signInWithEmailAndPassword,
-  getAuth,
   User,
   authState,
   signOut,

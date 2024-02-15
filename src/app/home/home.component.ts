@@ -1,6 +1,6 @@
 import { Component, DestroyRef, effect, inject } from '@angular/core';
 import { LessonListComponent } from './ui/lesson-list/lesson-list.component';
-import { LessonsService } from '../shared/data-access/lessons.service';
+import { LessonsService } from './data-acess/lessons.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddLessonDialogComponent } from './ui/add-lesson-dialog/add-lesson-dialog.component';
 import { filter } from 'rxjs';

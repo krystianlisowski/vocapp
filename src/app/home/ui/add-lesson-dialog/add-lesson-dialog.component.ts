@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import {
@@ -15,19 +14,14 @@ import {
 } from '@angular/material/form-field';
 import {
   MatDatepicker,
-  MatDatepickerActions,
-  MatDatepickerContent,
   MatDatepickerInput,
   MatDatepickerToggle,
-  MatDatepickerToggleIcon,
 } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatIcon } from '@angular/material/icon';
 @Component({
-  selector: 'app-add-lesson-dialog',
   standalone: true,
   imports: [
     ReactiveFormsModule,

@@ -1,5 +1,5 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { Lesson, LessonAddPayload } from '../models/lesson.model';
+import { Lesson, LessonAddPayload } from '../../shared/models/lesson.model';
 import { Observable, Subject, exhaustMap, from } from 'rxjs';
 import {
   Firestore,
@@ -12,7 +12,7 @@ import {
   DocumentReference,
   DocumentData,
 } from '@angular/fire/firestore';
-import { FirebaseCollection } from '../enums/firebase-collection.enum';
+import { FirebaseCollection } from '../../shared/enums/firebase-collection.enum';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export interface LessonsState {

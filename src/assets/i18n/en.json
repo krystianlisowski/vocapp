@@ -10,6 +10,11 @@
   "addLessonDialog": {
     "heading": "Add new lesson"
   },
+  "addVocabularyDialog": {
+    "heading": "Add new phrase",
+    "addExample": "Add example",
+    "addLink": "Add link"
+  },
   "lesson": {
     "title": "Lesson title",
     "date": "Lesson date",
@@ -44,9 +49,16 @@
   },
   "vocabulary": {
     "addNew": "Add new vocabulary",
+    "title": "Phrase",
     "translation": "Translation",
     "definition": "Definition",
     "examples": "Examples",
-    "links": "Links"
+    "links": "Links",
+    "link": "Link",
+    "example": "Example"
+  },
+  "formLabels": {
+    "title": "Title",
+    "link": "Link"
   }
 }
