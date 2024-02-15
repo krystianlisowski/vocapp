@@ -42,7 +42,7 @@ import { TranslateModule } from '@ngx-translate/core';
           <p>{{ item.definition }}</p>
         </div>
 
-        @if(item.examples?.length) {
+        @if(item.examples.length) {
         <div>
           <mat-card-subtitle
             translate="vocabulary.examples"
@@ -53,7 +53,7 @@ import { TranslateModule } from '@ngx-translate/core';
             }
           </ul>
         </div>
-        } @if(item.links?.length) {
+        } @if(item.links.length) {
         <div>
           <mat-card-subtitle translate="vocabulary.links"></mat-card-subtitle>
           <ul>
@@ -69,6 +69,11 @@ import { TranslateModule } from '@ngx-translate/core';
     </mat-card>
   `,
   styles: `
+    :host {
+      display: block;
+      padding: 0 1px;
+      width: 100%
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

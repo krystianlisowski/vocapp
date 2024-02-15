@@ -15,8 +15,12 @@ import {
   docData,
   DocumentReference,
   Query,
+  DocumentData,
+  addDoc,
+  deleteDoc,
+  setDoc,
 } from '@angular/fire/firestore';
-import { Observable, Subject, exhaustMap } from 'rxjs';
+import { Observable, Subject, exhaustMap, from } from 'rxjs';
 import { FirebaseCollection } from '../../shared/enums/firebase-collection.enum';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -41,7 +45,11 @@ export class LessonService {
   firestore = inject(Firestore);
   route = inject(ActivatedRoute);
   lessonRef!: DocumentReference;
-  vocabularyCollection!: Query;
+  vocabularyQuery!: Query;
+  vocabularyCollection = collection(
+    this.firestore,
+    FirebaseCollection.VOCABULARY
+  );
   destoyRef = inject(DestroyRef);
 
   // State
@@ -69,7 +77,7 @@ export class LessonService {
       collection(this.firestore, FirebaseCollection.LESSONS),
       lessonId
     );
-    this.vocabularyCollection = query(
+    this.vocabularyQuery = query(
       collection(this.firestore, FirebaseCollection.VOCABULARY),
       where('lesson', '==', this.lessonRef)
     );
@@ -97,6 +105,27 @@ export class LessonService {
         error: (err) =>
           this.state.update((state) => ({ ...state, error: err })),
       });
+
+    this.add$
+      .pipe(
+        exhaustMap((payload) => this.addVocabulary(payload)),
+        takeUntilDestroyed(this.destoyRef)
+      )
+      .subscribe();
+
+    this.edit$
+      .pipe(
+        exhaustMap((payload) => this.updateVocabulary(payload)),
+        takeUntilDestroyed(this.destoyRef)
+      )
+      .subscribe();
+
+    this.remove$
+      .pipe(
+        exhaustMap((payload) => this.removeVocabulary(payload)),
+        takeUntilDestroyed(this.destoyRef)
+      )
+      .subscribe();
   }
 
   readLesson() {
@@ -106,8 +135,29 @@ export class LessonService {
   }
 
   readVocabulary(): Observable<Vocabulary[]> {
-    return collectionData(this.vocabularyCollection, {
+    return collectionData(this.vocabularyQuery, {
       idField: 'id',
     }) as Observable<Vocabulary[]>;
+  }
+
+  addVocabulary(
+    payload: VocabularyAddPayload
+  ): Observable<DocumentReference<DocumentData, DocumentData>> {
+    const vocabulary = { ...payload, lesson: this.lessonRef };
+
+    const promise = addDoc(this.vocabularyCollection, vocabulary);
+    return from(promise);
+  }
+
+  removeVocabulary(id: string): Observable<void> {
+    const docRef = doc(this.vocabularyCollection, `${id}`);
+    const promise = deleteDoc(docRef);
+    return from(promise);
+  }
+
+  updateVocabulary(payload: Vocabulary): Observable<void> {
+    const docRef = doc(this.vocabularyCollection, `${payload.id}`);
+    const promise = setDoc(docRef, payload);
+    return from(promise);
   }
 }

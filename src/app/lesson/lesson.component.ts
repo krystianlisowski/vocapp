@@ -7,7 +7,7 @@ import {
   inject,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../shared/data-access/auth.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButton } from '@angular/material/button';
@@ -17,6 +17,7 @@ import { VocabularyItemComponent } from './ui/vocabulary-item/vocabulary-item.co
 import { filter } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AddVocabularyDialogComponent } from './ui/add-vocabulary-dialog/add-vocabulary-dialog.component';
+import { MatGridList, MatGridTile } from '@angular/material/grid-list';
 
 @Component({
   selector: 'app-lesson',
@@ -26,6 +27,8 @@ import { AddVocabularyDialogComponent } from './ui/add-vocabulary-dialog/add-voc
     MatButton,
     FirebaseToDatePipe,
     VocabularyItemComponent,
+    MatGridList,
+    MatGridTile,
   ],
   template: `
     <header class="d-flex justify-content-between my-4">
@@ -39,9 +42,14 @@ import { AddVocabularyDialogComponent } from './ui/add-vocabulary-dialog/add-voc
     </header>
 
     <main>
-      @for (item of lessonService.vocabulary(); track $index) {
-      <app-vocabulary-item [item]="item"></app-vocabulary-item>
-      }
+      <mat-grid-list cols="2" rowHeight="2:1" gutterSize="20">
+        @for (item of lessonService.vocabulary(); track $index) {
+        <mat-grid-tile>
+          <app-vocabulary-item [item]="item"></app-vocabulary-item>
+        </mat-grid-tile>
+
+        }
+      </mat-grid-list>
     </main>
   `,
   styles: ``,
@@ -51,7 +59,6 @@ export class LessonComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   private authService = inject(AuthService);
   private router = inject(Router);
-  route = inject(ActivatedRoute);
   lessonService = inject(LessonService);
   @Input() id!: string;
 
