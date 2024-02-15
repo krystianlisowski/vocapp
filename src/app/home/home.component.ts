@@ -20,9 +20,9 @@ import { AuthService } from '../shared/data-access/auth.service';
       </button>
     </header>
 
-    <body>
+    <main>
       <app-lesson-list [lessons]="lessonService.lessons"></app-lesson-list>
-    </body>
+    </main>
   `,
   imports: [LessonListComponent, MatButton, TranslateModule],
 })

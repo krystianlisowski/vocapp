@@ -41,5 +41,12 @@
     "password": "Hasło musi zawierać minimum 8 znaków.",
     "login": "Nie udało się zalogować.",
     "register": "Nie udało się utworzyć konta."
+  },
+  "vocabulary": {
+    "addNew": "Dodaj nowy zwrot",
+    "translation": "Tłumaczenie",
+    "definition": "Definicja",
+    "examples": "Przykłady",
+    "links": "Przydatne linki"
   }
 }

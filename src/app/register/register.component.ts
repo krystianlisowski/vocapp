@@ -6,8 +6,8 @@ import {
 } from '@angular/core';
 import { RegisterService } from './data-access/register.service';
 import { AuthService } from '../shared/data-access/auth.service';
-import { Router } from '@angular/router';
 import { RegisterFormComponent } from './ui/register-form/register-form.component';
+import { StoredUrlService } from '../shared/utils/stored-url.service';
 
 @Component({
   selector: 'app-register',
@@ -27,12 +27,12 @@ import { RegisterFormComponent } from './ui/register-form/register-form.componen
 export class RegisterComponent {
   registerService = inject(RegisterService);
   private authService = inject(AuthService);
-  private router = inject(Router);
+  private urlStore = inject(StoredUrlService);
 
   constructor() {
     effect(() => {
       if (this.authService.user()) {
-        this.router.navigate(['']);
+        this.urlStore.navigateToStoredUrl();
       }
     });
   }
