@@ -18,6 +18,10 @@ import { filter } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AddVocabularyDialogComponent } from './ui/add-vocabulary-dialog/add-vocabulary-dialog.component';
 import { MatGridList, MatGridTile } from '@angular/material/grid-list';
+import { DeleteConfirmDialogComponent } from '../shared/ui/delete-confirm-dialog/delete-confirm-dialog.component';
+import { Vocabulary } from '../shared/models/vocabulary.model';
+import { EditVocabularyDialogComponent } from './ui/edit-vocabulary-dialog/edit-vocabulary-dialog.component';
+import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component';
 
 @Component({
   selector: 'app-lesson',
@@ -29,6 +33,7 @@ import { MatGridList, MatGridTile } from '@angular/material/grid-list';
     VocabularyItemComponent,
     MatGridList,
     MatGridTile,
+    EmptyListComponent,
   ],
   template: `
     <header class="d-flex justify-content-between my-4">
@@ -44,14 +49,17 @@ import { MatGridList, MatGridTile } from '@angular/material/grid-list';
     </header>
 
     <main>
-      <mat-grid-list cols="2" rowHeight="2:1" gutterSize="20">
+      <div class="row">
         @for (item of lessonService.vocabulary(); track $index) {
-        <mat-grid-tile>
-          <app-vocabulary-item [item]="item"></app-vocabulary-item>
-        </mat-grid-tile>
-
+        <app-vocabulary-item
+          [item]="item"
+          (itemDeleted)="openDeleteDialog($event)"
+          (itemEdited)="openEditDialog($event)"
+        ></app-vocabulary-item>
+        } @empty {
+        <app-empty-list></app-empty-list>
         }
-      </mat-grid-list>
+      </div>
     </main>
   `,
   styles: ``,
@@ -85,5 +93,29 @@ export class LessonComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((result) => this.lessonService.add$.next(result));
+  }
+
+  openDeleteDialog(id: string) {
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent);
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter((res) => res),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(() => this.lessonService.remove$.next(id));
+  }
+
+  openEditDialog(phrase: Vocabulary) {
+    const dialogRef = this.dialog.open(EditVocabularyDialogComponent, {
+      data: { phrase },
+    });
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter((res) => res),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((res) => this.lessonService.edit$.next({ ...phrase, ...res }));
   }
 }

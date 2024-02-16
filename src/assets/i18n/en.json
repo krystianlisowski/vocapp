@@ -2,7 +2,12 @@
   "commons": {
     "cancel": "Cancel",
     "save": "Save",
-    "delete": "Delete"
+    "delete": "Delete",
+    "emptyList": "No records found"
+  },
+  "tooltip": {
+    "edit": "Edit action available only for author.",
+    "delete": "Delete action available only for author."
   },
   "home": {
     "heading": "Lesson list",
