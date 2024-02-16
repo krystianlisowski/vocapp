@@ -42,9 +42,11 @@ import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component
         <span> {{ lessonService.lesson()?.date | firebaseToDate }}</span>
       </div>
       <div>
+        @if(authService.user()?.emailVerified) {
         <button mat-raised-button color="primary" (click)="openAddDialog()">
           {{ 'vocabulary.addNew' | translate }}
         </button>
+        }
       </div>
     </header>
 
@@ -67,8 +69,8 @@ import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component
 export class LessonComponent implements OnInit {
   private dialog = inject(MatDialog);
   private destroyRef = inject(DestroyRef);
-  private authService = inject(AuthService);
   private router = inject(Router);
+  authService = inject(AuthService);
   lessonService = inject(LessonService);
   @Input() id!: string;
 

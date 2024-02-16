@@ -38,7 +38,10 @@
   "header": {
     "logout": "Log out",
     "en": "english",
-    "pl": "polish"
+    "pl": "polish",
+    "alert": "Your email address is not verified (create, edit and delete actions are not available) - click the link in your email box to confirm registration.",
+    "sendMeLink": "Send me an link",
+    "emailWasSent": "Email was sent."
   },
   "login": {
     "heading": "Login Account",

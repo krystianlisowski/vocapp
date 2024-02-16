@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
-import { MatIconButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -25,6 +25,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
     MatCard,
     MatCardContent,
     MatTooltip,
+    MatButton,
   ],
   template: `
     <mat-toolbar color="primary">
@@ -54,6 +55,34 @@ import { MatCard, MatCardContent } from '@angular/material/card';
 
       <app-language-switch></app-language-switch>
     </mat-toolbar>
+
+    @if (authService.user() && !authService.user()?.emailVerified) {
+    <div class="container">
+      <mat-card>
+        <mat-card-content>
+          <div class="d-flex align-items-center justify-content-between">
+            <span translate="header.alert"></span>
+
+            <div class="d-flex align-items-center">
+              @if(authService.verificationEmailSent()) {
+              <mat-icon
+                color="accent"
+                [matTooltip]="'header.emailWasSent' | translate"
+                >done</mat-icon
+              >
+              }
+              <button
+                mat-button
+                translate="header.sendMeLink"
+                [disabled]="authService.verificationEmailSent()"
+                (click)="authService.emailVerification$.next()"
+              ></button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    }
   `,
   styles: `
     .spacer {
@@ -65,10 +94,17 @@ import { MatCard, MatCardContent } from '@angular/material/card';
       align-items: center;
       text-decoration: none;
       color: #FFF;
+      font-size: 1rem;
     }
 
-    span {
-      font-size: 1rem;
+     mat-card {
+      mat-card-content {
+        padding: 0.25rem 1rem;
+      }
+      
+      span {
+        color:red;
+      }
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

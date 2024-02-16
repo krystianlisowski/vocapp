@@ -18,9 +18,11 @@ import { EditLessonDialogComponent } from './ui/edit-lesson-dialog/edit-lesson-d
   template: `
     <header class="d-flex justify-content-between my-4">
       <h1 translate="home.heading"></h1>
+      @if(authService.user()?.emailVerified) {
       <button mat-raised-button color="primary" (click)="openAddDialog()">
         {{ 'home.addLesson' | translate }}
       </button>
+      }
     </header>
 
     <main>
@@ -36,8 +38,8 @@ import { EditLessonDialogComponent } from './ui/edit-lesson-dialog/edit-lesson-d
 export class HomeComponent {
   private dialog = inject(MatDialog);
   private destroyRef = inject(DestroyRef);
-  private authService = inject(AuthService);
   private router = inject(Router);
+  authService = inject(AuthService);
   lessonService = inject(LessonsService);
 
   constructor() {
