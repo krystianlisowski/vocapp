@@ -26,8 +26,11 @@ export interface LessonsState {
 })
 export class LessonsService {
   // Dependencies
-  firestore = inject(Firestore);
-  lessonsCollecion = collection(this.firestore, FirebaseCollection.LESSONS);
+  private firestore = inject(Firestore);
+  private lessonsCollecion = collection(
+    this.firestore,
+    FirebaseCollection.LESSONS
+  );
 
   // State
   private state = signal<LessonsState>({
