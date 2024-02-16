@@ -38,7 +38,10 @@
   "header": {
     "logout": "Wyloguj się",
     "en": "angielski",
-    "pl": "polski"
+    "pl": "polski",
+    "alert": "Twój adres email nie został zweryfikowany (akcje tworzenia, edycji oraz usuwania zasobów nie będą dostępne) - kliknij w link otrzymany w mailu aby potwierdzić rejestrację.",
+    "sendMeLink": "Wyślij link ponownie",
+    "emailWasSent": "Wiadomość została wysłana"
   },
   "login": {
     "heading": "Zaloguj się",
