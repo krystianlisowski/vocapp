@@ -36,9 +36,11 @@ import { MatGridList, MatGridTile } from '@angular/material/grid-list';
         <h2>{{ lessonService.lesson()?.title }}</h2>
         <span> {{ lessonService.lesson()?.date | firebaseToDate }}</span>
       </div>
-      <button mat-raised-button color="primary" (click)="openDialog()">
-        {{ 'vocabulary.addNew' | translate }}
-      </button>
+      <div>
+        <button mat-raised-button color="primary" (click)="openAddDialog()">
+          {{ 'vocabulary.addNew' | translate }}
+        </button>
+      </div>
     </header>
 
     <main>
@@ -74,7 +76,7 @@ export class LessonComponent implements OnInit {
     this.lessonService.initializeState(this.id);
   }
 
-  openDialog() {
+  openAddDialog() {
     const dialogRef = this.dialog.open(AddVocabularyDialogComponent);
     dialogRef
       .afterClosed()

@@ -1,7 +1,8 @@
 {
   "commons": {
     "cancel": "Cancel",
-    "save": "Save"
+    "save": "Save",
+    "delete": "Delete"
   },
   "home": {
     "heading": "Lesson list",
@@ -10,16 +11,24 @@
   "addLessonDialog": {
     "heading": "Add new lesson"
   },
+  "editLessonDialog": {
+    "heading": "Edit lesson"
+  },
   "addVocabularyDialog": {
     "heading": "Add new phrase",
     "addExample": "Add example",
     "addLink": "Add link"
   },
+  "deleteConfirmDialog": {
+    "heading": "Confirm delete",
+    "description": "Are you sure?"
+  },
   "lesson": {
     "title": "Lesson title",
     "date": "Lesson date",
     "studentsCount": "Students count",
-    "details": "Details"
+    "details": "Details",
+    "delete": "Delete lesson"
   },
   "header": {
     "logout": "Log out",
