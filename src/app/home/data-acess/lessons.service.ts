@@ -1,6 +1,14 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Lesson, LessonAddPayload } from '../../shared/models/lesson.model';
-import { Observable, Subject, exhaustMap, from } from 'rxjs';
+import {
+  EMPTY,
+  Observable,
+  Subject,
+  catchError,
+  combineLatest,
+  exhaustMap,
+  from,
+} from 'rxjs';
 import {
   Firestore,
   collection,
@@ -14,6 +22,8 @@ import {
 } from '@angular/fire/firestore';
 import { FirebaseCollection } from '../../shared/enums/firebase-collection.enum';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AuthService } from '../../shared/data-access/auth.service';
+import { handleError } from '../../shared/utils/handle-error';
 
 export interface LessonsState {
   lessons: Lesson[];
@@ -27,6 +37,7 @@ export interface LessonsState {
 export class LessonsService {
   // Dependencies
   private firestore = inject(Firestore);
+  private authService = inject(AuthService);
   private lessonsCollecion = collection(
     this.firestore,
     FirebaseCollection.LESSONS
@@ -64,25 +75,24 @@ export class LessonsService {
           this.state.update((state) => ({ ...state, error: err })),
       });
 
-    this.add$
-      .pipe(
-        exhaustMap((payload) => this.addLesson(payload)),
-        takeUntilDestroyed()
-      )
-      .subscribe();
-
-    this.edit$
-      .pipe(
-        exhaustMap((payload) => this.updateLesson(payload)),
-        takeUntilDestroyed()
-      )
-      .subscribe();
-
-    this.remove$
-      .pipe(
-        exhaustMap((payload) => this.removeLesson(payload)),
-        takeUntilDestroyed()
-      )
+    combineLatest([
+      this.add$.pipe(
+        exhaustMap((payload) =>
+          this.addLesson(payload).pipe(catchError((err) => handleError(err)))
+        )
+      ),
+      this.edit$.pipe(
+        exhaustMap((payload) =>
+          this.updateLesson(payload).pipe(catchError((err) => handleError(err)))
+        )
+      ),
+      this.remove$.pipe(
+        exhaustMap((payload) =>
+          this.removeLesson(payload).pipe(catchError((err) => handleError(err)))
+        )
+      ),
+    ])
+      .pipe(takeUntilDestroyed())
       .subscribe();
   }
 
@@ -95,7 +105,10 @@ export class LessonsService {
   addLesson(
     payload: LessonAddPayload
   ): Observable<DocumentReference<DocumentData, DocumentData>> {
-    const promise = addDoc(this.lessonsCollecion, payload);
+    const promise = addDoc(this.lessonsCollecion, {
+      ...payload,
+      authorUid: this.authService.user().uid,
+    });
     return from(promise);
   }
 

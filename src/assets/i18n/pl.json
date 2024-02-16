@@ -2,7 +2,12 @@
   "commons": {
     "cancel": "Anuluj",
     "save": "Zapisz",
-    "delete": "Usuń"
+    "delete": "Usuń",
+    "emptyList": "Nie znaleziono rekordów"
+  },
+  "tooltip": {
+    "edit": "Akcja edycji dostępna tylko dla autora.",
+    "delete": "Akcja usuwania dostępna tylko dla autora."
   },
   "home": {
     "heading": "Lista lekcji",

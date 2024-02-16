@@ -4,6 +4,7 @@ export interface Lesson {
   title: string;
   date: Timestamp;
   studentCount: number;
+  authorUid: string;
 }
 
 export type LessonAddPayload = Pick<Lesson, 'title' | 'date' | 'studentCount'>;

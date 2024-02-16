@@ -20,7 +20,14 @@ import {
   deleteDoc,
   setDoc,
 } from '@angular/fire/firestore';
-import { Observable, Subject, exhaustMap, from } from 'rxjs';
+import {
+  Observable,
+  Subject,
+  catchError,
+  combineLatest,
+  exhaustMap,
+  from,
+} from 'rxjs';
 import { FirebaseCollection } from '../../shared/enums/firebase-collection.enum';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -29,6 +36,8 @@ import {
   VocabularyAddPayload,
 } from '../../shared/models/vocabulary.model';
 import { Lesson } from '../../shared/models/lesson.model';
+import { AuthService } from '../../shared/data-access/auth.service';
+import { handleError } from '../../shared/utils/handle-error';
 
 export interface LessonState {
   vocabulary: Vocabulary[];
@@ -42,15 +51,15 @@ export interface LessonState {
 })
 export class LessonService {
   // Dependencies
-  firestore = inject(Firestore);
-  route = inject(ActivatedRoute);
-  lessonRef!: DocumentReference;
-  vocabularyQuery!: Query;
-  vocabularyCollection = collection(
+  private firestore = inject(Firestore);
+  private lessonRef!: DocumentReference;
+  private vocabularyQuery!: Query;
+  private vocabularyCollection = collection(
     this.firestore,
     FirebaseCollection.VOCABULARY
   );
-  destoyRef = inject(DestroyRef);
+  private destoyRef = inject(DestroyRef);
+  private authService = inject(AuthService);
 
   // State
   private state = signal<LessonState>({
@@ -106,25 +115,30 @@ export class LessonService {
           this.state.update((state) => ({ ...state, error: err })),
       });
 
-    this.add$
-      .pipe(
-        exhaustMap((payload) => this.addVocabulary(payload)),
-        takeUntilDestroyed(this.destoyRef)
-      )
-      .subscribe();
-
-    this.edit$
-      .pipe(
-        exhaustMap((payload) => this.updateVocabulary(payload)),
-        takeUntilDestroyed(this.destoyRef)
-      )
-      .subscribe();
-
-    this.remove$
-      .pipe(
-        exhaustMap((payload) => this.removeVocabulary(payload)),
-        takeUntilDestroyed(this.destoyRef)
-      )
+    combineLatest([
+      this.add$.pipe(
+        exhaustMap((payload) =>
+          this.addVocabulary(payload).pipe(
+            catchError((err) => handleError(err))
+          )
+        )
+      ),
+      this.edit$.pipe(
+        exhaustMap((payload) =>
+          this.updateVocabulary(payload).pipe(
+            catchError((err) => handleError(err))
+          )
+        )
+      ),
+      this.remove$.pipe(
+        exhaustMap((payload) =>
+          this.removeVocabulary(payload).pipe(
+            catchError((err) => handleError(err))
+          )
+        )
+      ),
+    ])
+      .pipe(takeUntilDestroyed(this.destoyRef))
       .subscribe();
   }
 
@@ -143,7 +157,11 @@ export class LessonService {
   addVocabulary(
     payload: VocabularyAddPayload
   ): Observable<DocumentReference<DocumentData, DocumentData>> {
-    const vocabulary = { ...payload, lesson: this.lessonRef };
+    const vocabulary = {
+      ...payload,
+      lesson: this.lessonRef,
+      authorUid: this.authService.user().uid,
+    };
 
     const promise = addDoc(this.vocabularyCollection, vocabulary);
     return from(promise);

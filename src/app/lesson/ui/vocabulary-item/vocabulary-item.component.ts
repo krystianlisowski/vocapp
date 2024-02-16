@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import {
   MatCard,
   MatCardActions,
@@ -8,8 +14,11 @@ import {
   MatCardTitle,
 } from '@angular/material/card';
 import { Vocabulary } from '../../../shared/models/vocabulary.model';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatIcon } from '@angular/material/icon';
+import { CanWritePipe } from '../../../shared/pipes/can-write.pipe';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-vocabulary-item',
@@ -17,12 +26,16 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [
     TranslateModule,
     MatButton,
+    MatIconButton,
+    MatIcon,
     MatCard,
     MatCardHeader,
     MatCardSubtitle,
     MatCardTitle,
     MatCardContent,
     MatCardActions,
+    MatTooltip,
+    CanWritePipe,
   ],
   template: `
     <mat-card>
@@ -66,12 +79,31 @@ import { TranslateModule } from '@ngx-translate/core';
         </div>
         }
       </mat-card-content>
+      @if(item | canWrite) {
+      <mat-card-actions align="end">
+        <button
+          mat-icon-button
+          (click)="itemEdited.emit(item)"
+          [matTooltip]="'tooltip.edit' | translate"
+        >
+          <mat-icon>settings</mat-icon>
+        </button>
+
+        <button
+          [matTooltip]="'tooltip.edit' | translate"
+          mat-icon-button
+          color="warn"
+          (click)="itemDeleted.emit(item.id)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-actions>
+      }
     </mat-card>
   `,
   styles: `
     :host {
       display: block;
-      padding: 0 1px;
       width: 100%
     }
   `,
@@ -79,4 +111,6 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class VocabularyItemComponent {
   @Input({ required: true }) item!: Vocabulary;
+  @Output() itemDeleted = new EventEmitter<string>();
+  @Output() itemEdited = new EventEmitter<Vocabulary>();
 }
