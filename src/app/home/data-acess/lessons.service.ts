@@ -23,7 +23,7 @@ import {
 import { FirebaseCollection } from '../../shared/enums/firebase-collection.enum';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../shared/data-access/auth.service';
-import { handleError } from '../../shared/utils/handle-error';
+import { ErrorHandlerService } from '../../shared/utils/error-handler.service';
 
 export interface LessonsState {
   lessons: Lesson[];
@@ -38,6 +38,8 @@ export class LessonsService {
   // Dependencies
   private firestore = inject(Firestore);
   private authService = inject(AuthService);
+  private errorHandler = inject(ErrorHandlerService);
+
   private lessonsCollecion = collection(
     this.firestore,
     FirebaseCollection.LESSONS
@@ -78,17 +80,23 @@ export class LessonsService {
     combineLatest([
       this.add$.pipe(
         exhaustMap((payload) =>
-          this.addLesson(payload).pipe(catchError((err) => handleError(err)))
+          this.addLesson(payload).pipe(
+            catchError((err) => this.errorHandler.handleError(err))
+          )
         )
       ),
       this.edit$.pipe(
         exhaustMap((payload) =>
-          this.updateLesson(payload).pipe(catchError((err) => handleError(err)))
+          this.updateLesson(payload).pipe(
+            catchError((err) => this.errorHandler.handleError(err))
+          )
         )
       ),
       this.remove$.pipe(
         exhaustMap((payload) =>
-          this.removeLesson(payload).pipe(catchError((err) => handleError(err)))
+          this.removeLesson(payload).pipe(
+            catchError((err) => this.errorHandler.handleError(err))
+          )
         )
       ),
     ])

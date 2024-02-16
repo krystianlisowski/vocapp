@@ -29,7 +29,6 @@ import {
   from,
 } from 'rxjs';
 import { FirebaseCollection } from '../../shared/enums/firebase-collection.enum';
-import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   Vocabulary,
@@ -37,7 +36,7 @@ import {
 } from '../../shared/models/vocabulary.model';
 import { Lesson } from '../../shared/models/lesson.model';
 import { AuthService } from '../../shared/data-access/auth.service';
-import { handleError } from '../../shared/utils/handle-error';
+import { ErrorHandlerService } from '../../shared/utils/error-handler.service';
 
 export interface LessonState {
   vocabulary: Vocabulary[];
@@ -52,6 +51,8 @@ export interface LessonState {
 export class LessonService {
   // Dependencies
   private firestore = inject(Firestore);
+  private errorHandler = inject(ErrorHandlerService);
+
   private lessonRef!: DocumentReference;
   private vocabularyQuery!: Query;
   private vocabularyCollection = collection(
@@ -119,21 +120,21 @@ export class LessonService {
       this.add$.pipe(
         exhaustMap((payload) =>
           this.addVocabulary(payload).pipe(
-            catchError((err) => handleError(err))
+            catchError((err) => this.errorHandler.handleError(err))
           )
         )
       ),
       this.edit$.pipe(
         exhaustMap((payload) =>
           this.updateVocabulary(payload).pipe(
-            catchError((err) => handleError(err))
+            catchError((err) => this.errorHandler.handleError(err))
           )
         )
       ),
       this.remove$.pipe(
         exhaustMap((payload) =>
           this.removeVocabulary(payload).pipe(
-            catchError((err) => handleError(err))
+            catchError((err) => this.errorHandler.handleError(err))
           )
         )
       ),
