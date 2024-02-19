@@ -1,0 +1,47 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+     return request.auth != null;
+    }
+    
+    function isLessonValid() {
+  	  return request.resource.data.title != null && request.resource.data.title != '' && 
+      			 request.resource.data.date != null && request.resource.data.date != '' &&
+             request.resource.data.studentsCount != null &&
+             request.resource.data.authorUid != null;
+    }
+    
+   function isVocabularyValid() {
+  	  return request.resource.data.title != null && request.resource.data.title != '' && 
+      			 request.resource.data.translation != null && request.resource.data.translation != '' &&
+             request.resource.data.definition != null &&  request.resource.data.definition != ''  && 
+             request.resource.data.authorUid != null;
+    }
+    
+    function canDelete() {
+    	return isAuthenticated() && request.auth.uid == get(request.path).data.authorUid;
+    }
+    
+    function canUpdate() {
+    	return isAuthenticated() && request.auth.uid == request.resource.data.authorUid;
+    }
+    
+    match /{document=**} {
+      allow read: if isAuthenticated();
+    }
+    
+    match /lessons/{document=**} {
+      allow create: if isAuthenticated() && isLessonValid();
+      allow update: if canUpdate() && isLessonValid();
+      allow delete: if canDelete();
+    }
+    
+    match /vocabulary/{document=**} {
+      allow create: if isAuthenticated() && isVocabularyValid();
+      allow update: if canUpdate() && isVocabularyValid();
+      allow delete: if canDelete();
+    }
+  }
+}

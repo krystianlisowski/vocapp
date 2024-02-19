@@ -6,7 +6,6 @@ import {
   signal,
 } from '@angular/core';
 import {
-  Firestore,
   collection,
   where,
   query,
@@ -19,6 +18,7 @@ import {
   addDoc,
   deleteDoc,
   setDoc,
+  Firestore,
 } from '@angular/fire/firestore';
 import {
   Observable,
