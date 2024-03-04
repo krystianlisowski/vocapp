@@ -27,7 +27,7 @@ import { EditLessonDialogComponent } from './ui/edit-lesson-dialog/edit-lesson-d
 
     <main>
       <app-lesson-list
-        [lessons]="lessonService.lessons"
+        [lessons]="lessonService.lessons()"
         (lessonDeleted)="openDeleteDialog($event)"
         (lessonEdited)="openEditDialog($event)"
       ></app-lesson-list>

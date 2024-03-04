@@ -2,9 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
   Output,
   inject,
+  input,
 } from '@angular/core';
 import { RegisterStatus } from '../../data-access/register.service';
 import { Credentials } from '../../../shared/models/credentials.model';
@@ -83,9 +83,9 @@ import { TranslateModule } from '@ngx-translate/core';
             <mat-error translate="error.password"></mat-error>
           </mat-form-field>
 
-          @if (registerStatus === 'error') {
+          @if (registerStatus() === 'error') {
           <mat-error translate="error.register"></mat-error>
-          } @else if(registerStatus === 'creating'){
+          } @else if(registerStatus() === 'creating'){
           <div class="d-flex align-items-center justify-content-center">
             <mat-spinner diameter="50"></mat-spinner>
           </div>
@@ -104,7 +104,7 @@ import { TranslateModule } from '@ngx-translate/core';
               color="primary"
               type="submit"
               translate="register.confirm"
-              [disabled]="registerStatus === 'creating'"
+              [disabled]="registerStatus() === 'creating'"
             ></button>
           </div>
         </form>
@@ -114,7 +114,7 @@ import { TranslateModule } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterFormComponent {
-  @Input({ required: true }) registerStatus!: RegisterStatus;
+  registerStatus = input.required<RegisterStatus>();
   @Output() register = new EventEmitter<Credentials>();
 
   private fb = inject(FormBuilder);

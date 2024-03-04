@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  input,
+} from '@angular/core';
 import { DatatableManager } from './datatable';
 import { DatatableFormatterPipe } from './datatable-formatter.pipe';
 import {
@@ -35,13 +40,13 @@ import { TranslateModule } from '@ngx-translate/core';
     MatHeaderRowDef,
   ],
   template: `
-    <table mat-table [dataSource]="datatable.rows()" class="mat-elevation-z8">
+    <table mat-table [dataSource]="datatable().rows()" class="mat-elevation-z8">
       <!--- Note that these columns can be defined in any order.
       The actual rendered columns are set as a property on the row definition" -->
 
-      @for (col of datatable.visibleCols; let idx = $index; track idx; let last
-      = $last;) {
-      <ng-container [matColumnDef]="datatable.visibleColsKeys[idx]">
+      @for (col of datatable().visibleCols; let idx = $index; track idx; let
+      last = $last;) {
+      <ng-container [matColumnDef]="datatable().visibleColsKeys[idx]">
         <th mat-header-cell *matHeaderCellDef [class.text-right]="last">
           {{ col.header | translate }}
         </th>
@@ -57,8 +62,11 @@ import { TranslateModule } from '@ngx-translate/core';
       </ng-container>
       }
 
-      <tr mat-header-row *matHeaderRowDef="datatable.visibleColsKeys"></tr>
-      <tr mat-row *matRowDef="let row; columns: datatable.visibleColsKeys"></tr>
+      <tr mat-header-row *matHeaderRowDef="datatable().visibleColsKeys"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: datatable().visibleColsKeys"
+      ></tr>
     </table>
   `,
   styles: `
@@ -81,5 +89,5 @@ import { TranslateModule } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DatatableComponent<T extends { [key: string]: any }> {
-  @Input({ required: true }) datatable!: DatatableManager<T>;
+  datatable = input.required<DatatableManager<T>>();
 }

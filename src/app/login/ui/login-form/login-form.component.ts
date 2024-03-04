@@ -2,9 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
   Output,
   inject,
+  input,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton, MatAnchor } from '@angular/material/button';
@@ -69,9 +69,9 @@ import { TranslateModule } from '@ngx-translate/core';
             <mat-error translate="error.password"> </mat-error>
           </mat-form-field>
 
-          @if (loginStatus === 'error'){
+          @if (loginStatus() === 'error'){
           <mat-error translate="error.login"></mat-error>
-          } @else if(loginStatus === 'authenticating'){
+          } @else if(loginStatus() === 'authenticating'){
           <div class="d-flex align-items-center justify-content-center">
             <mat-spinner diameter="50"></mat-spinner>
           </div>
@@ -90,7 +90,7 @@ import { TranslateModule } from '@ngx-translate/core';
               color="primary"
               type="submit"
               translate="login.confirm"
-              [disabled]="loginStatus === 'authenticating'"
+              [disabled]="loginStatus() === 'authenticating'"
             ></button>
           </div>
         </form>
@@ -101,7 +101,7 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class LoginFormComponent {
   private readonly fb = inject(FormBuilder);
-  @Input({ required: true }) loginStatus!: LoginStatus;
+  loginStatus = input.required<LoginStatus>();
   @Output() login = new EventEmitter<Credentials>();
 
   formGroup = this.fb.nonNullable.group({
