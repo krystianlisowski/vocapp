@@ -21,6 +21,12 @@ export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
 
+export const FIREBASE_TEST_PROVIDERS = [
+  provideFirebaseApp(() => initializeApp(environment.firebase)),
+  provideAuth(() => getAuth()),
+  provideFirestore(() => getFirestore()),
+];
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withComponentInputBinding()),

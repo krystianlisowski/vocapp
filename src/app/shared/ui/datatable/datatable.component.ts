@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { DatatableManager } from './datatable';
 import { DatatableFormatterPipe } from './datatable-formatter.pipe';
 import {

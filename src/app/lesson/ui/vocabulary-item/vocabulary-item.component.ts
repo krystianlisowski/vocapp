@@ -80,19 +80,21 @@ import { MatTooltip } from '@angular/material/tooltip';
         }
       </mat-card-content>
       @if(item() | canWrite) {
-      <mat-card-actions align="end">
+      <mat-card-actions align="end" data-testid="vocabulary-item-actions">
         <button
           mat-icon-button
           (click)="itemEdited.emit(item())"
+          data-testid="edit-vocabulary-item-button"
           [matTooltip]="'tooltip.edit' | translate"
         >
           <mat-icon>settings</mat-icon>
         </button>
 
         <button
-          [matTooltip]="'tooltip.edit' | translate"
+          [matTooltip]="'tooltip.delete' | translate"
           mat-icon-button
           color="warn"
+          data-testid="delete-vocabulary-item-button"
           (click)="itemDeleted.emit(item().id)"
         >
           <mat-icon>delete</mat-icon>

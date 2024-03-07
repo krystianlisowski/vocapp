@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddLessonDialogComponent } from './ui/add-lesson-dialog/add-lesson-dialog.component';
 import { filter } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatButton, MatButtonModule } from '@angular/material/button';
+import { MatButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../shared/data-access/auth.service';

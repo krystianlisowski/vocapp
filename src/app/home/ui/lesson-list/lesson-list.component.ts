@@ -4,7 +4,6 @@ import {
   EventEmitter,
   OnInit,
   Output,
-  Signal,
   TemplateRef,
   ViewChild,
   input,
