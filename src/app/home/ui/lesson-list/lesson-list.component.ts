@@ -41,6 +41,7 @@ import { TranslateModule } from '@ngx-translate/core';
       <button
         mat-icon-button
         (click)="lessonEdited.emit(item)"
+        data-testid="edit-lesson-button"
         [matTooltip]="'tooltip.edit' | translate"
       >
         <mat-icon>settings</mat-icon>
@@ -50,6 +51,7 @@ import { TranslateModule } from '@ngx-translate/core';
         mat-icon-button
         color="warn"
         [matTooltip]="'tooltip.delete' | translate"
+        data-testid="delete-lesson-button"
         (click)="lessonDeleted.emit(item.id)"
       >
         <mat-icon>delete</mat-icon>
