@@ -12,7 +12,7 @@ import { Lesson } from '../../../shared/models/lesson.model';
 import { Timestamp } from '@angular/fire/firestore';
 import { RouterTestingModule } from '@angular/router/testing';
 
-describe('Vocabulary Item Component', () => {
+describe('Lesson list Component', () => {
   let component: LessonListComponent;
   let fixture: ComponentFixture<LessonListComponent>;
 

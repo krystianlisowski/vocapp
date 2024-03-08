@@ -22,13 +22,18 @@ import { TranslateModule } from '@ngx-translate/core';
     MatMenuItem,
     TranslateModule,
   ],
-  template: `<button mat-icon-button [matMenuTriggerFor]="menu">
+  template: `<button
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      data-testid="switch-button"
+    >
       <mat-icon>language</mat-icon>
     </button>
-    <mat-menu #menu="matMenu">
+    <mat-menu #menu="matMenu" data-testid="language-list">
       @for (item of languages(); track $index) {
       <button
         mat-menu-item
+        data-testid="language-option-button"
         (click)="translateService.use(item)"
         [disabled]="item === translateService.currentLang"
       >
