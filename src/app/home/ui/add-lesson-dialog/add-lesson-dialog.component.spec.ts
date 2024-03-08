@@ -7,7 +7,7 @@ import { AddLessonDialogComponent } from './add-lesson-dialog.component';
 import { MatDialogRef } from '@angular/material/dialog';
 import dayjs from 'dayjs';
 
-describe('Register form Component', () => {
+describe('Add lesson dialog Component', () => {
   let component: AddLessonDialogComponent;
   let fixture: ComponentFixture<AddLessonDialogComponent>;
   let dialogRef: MatDialogRef<AddLessonDialogComponent>;

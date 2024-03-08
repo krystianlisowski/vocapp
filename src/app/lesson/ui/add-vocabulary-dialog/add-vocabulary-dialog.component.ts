@@ -41,20 +41,28 @@ type LinkForm = { title: FormControl<string>; link: FormControl<string> };
     FormArrayGroupComponent,
   ],
   template: `
-    <h2 mat-dialog-title translate="addVocabularyDialog.heading"></h2>
+    <h2
+      mat-dialog-title
+      translate="addVocabularyDialog.heading"
+      data-testid="dialog-title"
+    ></h2>
     <mat-dialog-content>
-      <form [formGroup]="formGroup" class="add-phrase-form">
-        <mat-form-field appearance="outline">
+      <form
+        [formGroup]="formGroup"
+        class="add-phrase-form"
+        data-testid="form-group"
+      >
+        <mat-form-field appearance="outline" data-testid="title-control">
           <mat-label translate="vocabulary.title"></mat-label>
           <input formControlName="title" matInput />
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" data-testid="translation-control">
           <mat-label translate="vocabulary.translation"></mat-label>
           <input formControlName="translation" matInput />
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" data-testid="definition-control">
           <mat-label translate="vocabulary.definition"></mat-label>
           <textarea matInput formControlName="definition"></textarea>
         </mat-form-field>
@@ -80,17 +88,30 @@ type LinkForm = { title: FormControl<string>; link: FormControl<string> };
       </form>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close translate="commons.cancel"></button>
-      <button mat-button (click)="submit()" translate="commons.save"></button>
+      <button
+        mat-button
+        mat-dialog-close
+        translate="commons.cancel"
+        data-testid="close-button"
+      ></button>
+      <button
+        mat-button
+        (click)="submit()"
+        translate="commons.save"
+        [disabled]="!formGroup.valid"
+        data-testid="submit-button"
+      ></button>
     </mat-dialog-actions>
   `,
-  styles: `
-    .add-phrase-form {
-      display: block;
-      margin-top: 0.5rem;
-      max-width: 40rem;
-    }
-  `,
+  styles: [
+    `
+      .add-phrase-form {
+        display: block;
+        margin-top: 0.5rem;
+        max-width: 40rem;
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddVocabularyDialogComponent {

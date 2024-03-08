@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import { EditLessonDialogComponent } from './edit-lesson-dialog.component';
 import { Timestamp } from '@angular/fire/firestore';
 
-describe('Register form Component', () => {
+describe('Edit lesson Component', () => {
   let component: EditLessonDialogComponent;
   let fixture: ComponentFixture<EditLessonDialogComponent>;
   let dialogRef: MatDialogRef<EditLessonDialogComponent>;
