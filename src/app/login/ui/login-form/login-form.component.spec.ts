@@ -68,24 +68,24 @@ describe('Login form Component', () => {
     });
 
     it('should render email control', () => {
-      const formElement = fixture.debugElement.query(
+      const emailControl = fixture.debugElement.query(
         By.css('[data-testid="email-control"]')
       );
-      expect(formElement).toBeTruthy();
+      expect(emailControl).toBeTruthy();
     });
 
     it('should render password control', () => {
-      const formElement = fixture.debugElement.query(
+      const passwordControl = fixture.debugElement.query(
         By.css('[data-testid="password-control"]')
       );
-      expect(formElement).toBeTruthy();
+      expect(passwordControl).toBeTruthy();
     });
 
     it('should render submit button', () => {
-      const formElement = fixture.debugElement.query(
+      const submitButton = fixture.debugElement.query(
         By.css('[data-testid="submit-button"]')
       );
-      expect(formElement).toBeTruthy();
+      expect(submitButton).toBeTruthy();
     });
   });
 
