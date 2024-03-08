@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageSwitchComponent } from './language-switch.component';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 describe('Language Switch Component', () => {
   let component: LanguageSwitchComponent;
   let fixture: ComponentFixture<LanguageSwitchComponent>;
+  let translateService: TranslateService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -21,6 +22,7 @@ describe('Language Switch Component', () => {
 
     fixture = TestBed.createComponent(LanguageSwitchComponent);
     component = fixture.componentInstance;
+    translateService = TestBed.inject(TranslateService);
     fixture.detectChanges();
   });
 
@@ -29,7 +31,6 @@ describe('Language Switch Component', () => {
   });
 
   it('should render switch button', () => {
-    fixture.detectChanges();
     const buttonElement = fixture.debugElement.query(
       By.css('[data-testid="switch-button"]')
     );
@@ -37,7 +38,6 @@ describe('Language Switch Component', () => {
   });
 
   it('should render languages list aftrer click button', () => {
-    fixture.detectChanges();
     const buttonElement = fixture.debugElement.query(
       By.css('[data-testid="switch-button"]')
     );
@@ -50,8 +50,7 @@ describe('Language Switch Component', () => {
   });
 
   it('should emit change language aftrer click list element', () => {
-    jest.spyOn(component.translateService, 'use');
-    fixture.detectChanges();
+    jest.spyOn(translateService, 'use');
 
     const buttonElement = fixture.debugElement.query(
       By.css('[data-testid="switch-button"]')
@@ -64,6 +63,6 @@ describe('Language Switch Component', () => {
 
     optionElement.nativeElement.click();
 
-    expect(component.translateService.use).toHaveBeenCalled();
+    expect(translateService.use).toHaveBeenCalled();
   });
 });

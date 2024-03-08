@@ -28,7 +28,6 @@ describe('Empty list component', () => {
   });
 
   it('should render empty list element', () => {
-    fixture.detectChanges();
     const actionsElement = fixture.debugElement.query(
       By.css('[data-testid="empty-list-element"]')
     );

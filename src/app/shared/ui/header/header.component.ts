@@ -38,6 +38,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
 
       @if (authService.user()) {
       <button
+        data-testid="user-button"
         mat-icon-button
         [matMenuTriggerFor]="menu"
         [matTooltip]="authService.user()?.email"
@@ -45,8 +46,12 @@ import { MatCard, MatCardContent } from '@angular/material/card';
       >
         <mat-icon>person</mat-icon>
       </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="authService.logout()">
+      <mat-menu #menu="matMenu" data-testid="action-list">
+        <button
+          mat-menu-item
+          (click)="authService.logout()"
+          data-testid="action-button"
+        >
           <mat-icon>logout</mat-icon>
           <span translate="header.logout"></span>
         </button>
@@ -57,7 +62,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
     </mat-toolbar>
 
     @if (authService.user() && !authService.user()?.emailVerified) {
-    <div class="container">
+    <div class="container" data-testid="verification-banner">
       <mat-card>
         <mat-card-content>
           <div class="d-flex align-items-center justify-content-between">
@@ -66,6 +71,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
             <div class="d-flex align-items-center">
               @if(authService.verificationEmailSent()) {
               <mat-icon
+                data-testid="send-success-icon"
                 color="accent"
                 [matTooltip]="'header.emailWasSent' | translate"
                 >done</mat-icon
@@ -73,6 +79,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
               }
               <button
                 mat-button
+                data-testid="send-link-button"
                 translate="header.sendMeLink"
                 [disabled]="authService.verificationEmailSent()"
                 (click)="authService.emailVerification$.next()"
@@ -84,29 +91,31 @@ import { MatCard, MatCardContent } from '@angular/material/card';
     </div>
     }
   `,
-  styles: `
-    .spacer {
-      flex: 1 1 auto;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-      color: #FFF;
-      font-size: 1rem;
-    }
-
-     mat-card {
-      mat-card-content {
-        padding: 0.25rem 1rem;
+  styles: [
+    `
+      .spacer {
+        flex: 1 1 auto;
       }
-      
-      span {
-        color:red;
+
+      .logo {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #fff;
+        font-size: 1rem;
       }
-    }
-  `,
+
+      mat-card {
+        mat-card-content {
+          padding: 0.25rem 1rem;
+        }
+
+        span {
+          color: red;
+        }
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
