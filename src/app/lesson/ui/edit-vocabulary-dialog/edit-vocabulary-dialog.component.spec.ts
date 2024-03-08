@@ -3,18 +3,24 @@ import { TranslateModule } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
-import { AddVocabularyDialogComponent } from './add-vocabulary-dialog.component';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DebugElement } from '@angular/core';
+import { EditVocabularyDialogComponent } from './edit-vocabulary-dialog.component';
 
-describe('Add vocabulary item dialog Component', () => {
-  let component: AddVocabularyDialogComponent;
-  let fixture: ComponentFixture<AddVocabularyDialogComponent>;
-  let dialogRef: MatDialogRef<AddVocabularyDialogComponent>;
-
+describe('Edit vocabulary item dialog Component', () => {
+  let component: EditVocabularyDialogComponent;
+  let fixture: ComponentFixture<EditVocabularyDialogComponent>;
+  let dialogRef: MatDialogRef<EditVocabularyDialogComponent>;
+  const vocabularyItemMock = {
+    title: 'test',
+    definition: 'test',
+    translation: 'test',
+    examples: ['test'],
+    links: [{ title: 'test', link: 'test' }],
+  };
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [AddVocabularyDialogComponent, TranslateModule.forRoot()],
+      imports: [EditVocabularyDialogComponent, TranslateModule.forRoot()],
       providers: [
         provideNoopAnimations(),
         {
@@ -23,16 +29,20 @@ describe('Add vocabulary item dialog Component', () => {
             close: jest.fn(),
           },
         },
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: { phrase: vocabularyItemMock },
+        },
       ],
     })
-      .overrideComponent(AddVocabularyDialogComponent, {
+      .overrideComponent(EditVocabularyDialogComponent, {
         remove: { imports: [] },
         add: { imports: [] },
       })
       .compileComponents();
 
-    fixture = TestBed.createComponent(AddVocabularyDialogComponent);
-    dialogRef = TestBed.inject(MatDialogRef<AddVocabularyDialogComponent>);
+    fixture = TestBed.createComponent(EditVocabularyDialogComponent);
+    dialogRef = TestBed.inject(MatDialogRef<EditVocabularyDialogComponent>);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -75,9 +85,13 @@ describe('Add vocabulary item dialog Component', () => {
     });
 
     it('should disable submit button if form is not valid', () => {
+      component.formGroup.controls.title.setValue('');
+      fixture.detectChanges();
+
       const buttonElement = fixture.debugElement.query(
         By.css('[data-testid="submit-button"]')
       );
+
       expect(buttonElement.nativeElement.hasAttribute('disabled')).toBeTruthy();
     });
 
@@ -150,14 +164,7 @@ describe('Add vocabulary item dialog Component', () => {
     });
 
     it('should close modal with form data after save button click only if form is valid', () => {
-      const testData = {
-        title: 'test',
-        translation: 'test',
-        definition: 'test',
-        examples: [],
-        links: [],
-      };
-      component.formGroup.patchValue(testData);
+      component.formGroup.patchValue(vocabularyItemMock);
       fixture.detectChanges();
 
       jest.spyOn(dialogRef, 'close');
@@ -167,7 +174,7 @@ describe('Add vocabulary item dialog Component', () => {
       );
       submitButton.nativeElement.click();
 
-      expect(dialogRef.close).toHaveBeenCalledWith(testData);
+      expect(dialogRef.close).toHaveBeenCalledWith(vocabularyItemMock);
     });
   });
 
