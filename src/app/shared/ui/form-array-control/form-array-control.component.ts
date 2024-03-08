@@ -36,18 +36,26 @@ import { MatInput } from '@angular/material/input';
   ],
   template: `
     <div class="d-flex align-items-center justify-content-between mb-2">
-      <span>{{ arrayLabel() }}</span>
-      <button mat-icon-button aria-label="Add item" (click)="addItem.emit()">
+      <span data-testid="array-label">{{ arrayLabel() }}</span>
+      <button
+        data-testid="add-item-button"
+        mat-icon-button
+        aria-label="Add item"
+        (click)="addItem.emit()"
+      >
         <mat-icon>add</mat-icon>
       </button>
     </div>
     @for(control of formArray().controls; let idx = $index; track idx) {
-    <mat-form-field appearance="outline">
-      <mat-label>{{ controlLabel() + ' ' + (idx + 1) }}</mat-label>
+    <mat-form-field appearance="outline" data-testid="array-control">
+      <mat-label data-testid="control-label">{{
+        controlLabel() + ' ' + (idx + 1)
+      }}</mat-label>
       <input matInput [formControl]="control" />
       <button
         mat-icon-button
         matSuffix
+        data-testid="delete-item-button"
         (click)="deleteItem.emit(idx)"
         color="warn"
       >

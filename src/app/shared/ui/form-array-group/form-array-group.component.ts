@@ -36,20 +36,30 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
   template: `
     <div class="d-flex align-items-center justify-content-between mb-2">
-      <span>{{ arrayLabel() }}</span>
-      <button mat-icon-button aria-label="Add item" (click)="addItem.emit()">
+      <span data-testid="array-label">{{ arrayLabel() }}</span>
+      <button
+        data-testid="add-item-button"
+        mat-icon-button
+        aria-label="Add item"
+        (click)="addItem.emit()"
+      >
         <mat-icon>add</mat-icon>
       </button>
     </div>
     @for(group of formArray().controls; let idx = $index; track idx) {
-    <div class="d-flex" [formGroup]="group">
+    <div class="d-flex" [formGroup]="group" data-testid="form-group">
       @for(controlName of group | formGroupKeys; track $index) {
-      <mat-form-field appearance="outline" class="mr-1">
+      <mat-form-field
+        appearance="outline"
+        class="mr-1"
+        data-testid="form-group-control"
+      >
         <mat-label [translate]="'formLabels.' + controlName"></mat-label>
         <input matInput [formControlName]="controlName" />
       </mat-form-field>
       }
       <button
+        data-testid="delete-item-button"
         mat-icon-button
         (click)="deleteItem.emit(idx)"
         color="warn"
