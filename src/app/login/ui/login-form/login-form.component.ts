@@ -42,7 +42,11 @@ import { TranslateModule } from '@ngx-translate/core';
   template: `
     <mat-card class="form-window">
       <mat-card-content>
-        <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+        <form
+          [formGroup]="formGroup"
+          (ngSubmit)="onSubmit()"
+          data-testid="form-group"
+        >
           <h2 translate="login.heading"></h2>
 
           <mat-form-field appearance="outline" class="mb-2">
@@ -51,6 +55,7 @@ import { TranslateModule } from '@ngx-translate/core';
               [placeholder]="'login.email' | translate"
               formControlName="email"
               type="email"
+              data-testid="email-control"
               required
             />
             <mat-icon matPrefix>mail</mat-icon>
@@ -62,6 +67,7 @@ import { TranslateModule } from '@ngx-translate/core';
               matNativeControl
               type="password"
               formControlName="password"
+              data-testid="password-control"
               [placeholder]="'login.password' | translate"
               required
             />
@@ -70,9 +76,15 @@ import { TranslateModule } from '@ngx-translate/core';
           </mat-form-field>
 
           @if (loginStatus() === 'error'){
-          <mat-error translate="error.login"></mat-error>
+          <mat-error
+            data-testid="error-block"
+            translate="error.login"
+          ></mat-error>
           } @else if(loginStatus() === 'authenticating'){
-          <div class="d-flex align-items-center justify-content-center">
+          <div
+            class="d-flex align-items-center justify-content-center"
+            data-testid="pending-block"
+          >
             <mat-spinner diameter="50"></mat-spinner>
           </div>
           }
@@ -82,6 +94,7 @@ import { TranslateModule } from '@ngx-translate/core';
               mat-button
               color="primary"
               routerLink="/register"
+              data-testid="register-link"
               translate="login.redirect"
             ></a>
             <button
@@ -90,6 +103,7 @@ import { TranslateModule } from '@ngx-translate/core';
               color="primary"
               type="submit"
               translate="login.confirm"
+              data-testid="submit-button"
               [disabled]="loginStatus() === 'authenticating'"
             ></button>
           </div>
