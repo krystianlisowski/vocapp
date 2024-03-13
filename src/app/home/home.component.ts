@@ -1,4 +1,4 @@
-import { Component, DestroyRef, effect, inject } from '@angular/core';
+import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
 import { LessonListComponent } from './ui/lesson-list/lesson-list.component';
 import { LessonsService } from './data-acess/lessons.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -41,7 +41,7 @@ export class HomeComponent {
   private router = inject(Router);
   authService = inject(AuthService);
   lessonService = inject(LessonsService);
-
+  test = signal([]);
   constructor() {
     effect(() => {
       if (!this.authService.user()) {
