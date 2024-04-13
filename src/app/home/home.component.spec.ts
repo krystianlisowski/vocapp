@@ -14,6 +14,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { LessonsService } from './data-acess/lessons.service';
 import { DeleteConfirmDialogComponent } from '../shared/ui/delete-confirm-dialog/delete-confirm-dialog.component';
 import { EditLessonDialogComponent } from './ui/edit-lesson-dialog/edit-lesson-dialog.component';
+import { of } from 'rxjs';
 
 describe('Home Component', () => {
   let component: HomeComponent;
@@ -37,6 +38,15 @@ describe('Home Component', () => {
 
   const lessonServiceMock = {
     lessons: jest.fn().mockReturnValue(lessonsMock),
+    remove$: {
+      next: jest.fn(),
+    },
+    edit$: {
+      next: jest.fn(),
+    },
+    add$: {
+      next: jest.fn(),
+    },
   };
 
   beforeEach(() => {
@@ -81,9 +91,19 @@ describe('Home Component', () => {
   });
 
   describe('add lesson', () => {
+    const dialogRefMock = {
+      afterClosed: jest.fn(() =>
+        of({ title: 'test', date: new Timestamp(1, 1), studentsCount: 1 })
+      ),
+    } as any;
+
     // we want tests to be passed only if user is logged in
     beforeAll(() => {
       authServiceMock.user.mockReturnValue({ emailVerified: true });
+    });
+
+    beforeEach(() => {
+      jest.spyOn(dialog, 'open').mockReturnValue(dialogRefMock);
     });
 
     it('should render add lesson button', () => {
@@ -93,12 +113,15 @@ describe('Home Component', () => {
 
     it('should open add dialog after button clicked', () => {
       const buttonElement = fixture.debugElement.query(By.css('button'));
-      jest.spyOn(dialog, 'open');
-
       buttonElement.nativeElement.click();
       fixture.detectChanges();
 
       expect(dialog.open).toHaveBeenCalledWith(AddLessonDialogComponent);
+    });
+
+    it('it should call add method if dialog was closed with lesson object', () => {
+      expect(dialogRefMock.afterClosed).toHaveBeenCalled();
+      expect(lessonService.add$.next).toHaveBeenCalled();
     });
   });
 
@@ -120,8 +143,12 @@ describe('Home Component', () => {
     });
 
     describe('output: lessonDeleted', () => {
+      const dialogRefMock = {
+        afterClosed: jest.fn(() => of('true')),
+      } as any;
+
       beforeEach(() => {
-        jest.spyOn(dialog, 'open');
+        jest.spyOn(dialog, 'open').mockReturnValue(dialogRefMock);
         jest.spyOn(component, 'openDeleteDialog');
         lessonListComponent.triggerEventHandler('lessonDeleted', '0');
         fixture.detectChanges();
@@ -131,21 +158,35 @@ describe('Home Component', () => {
         expect(component.openDeleteDialog).toHaveBeenCalledWith('0');
         expect(dialog.open).toHaveBeenCalledWith(DeleteConfirmDialogComponent);
       });
+
+      it('it should call remove method if dialog was closed with truthy value', () => {
+        expect(dialogRefMock.afterClosed).toHaveBeenCalled();
+        expect(lessonService.remove$.next).toHaveBeenCalled();
+      });
     });
 
     describe('output: lessonEdited', () => {
+      const dialogRefMock = {
+        afterClosed: jest.fn(() => of(lessonsMock[0])),
+      } as any;
+
       beforeEach(() => {
-        jest.spyOn(dialog, 'open');
+        jest.spyOn(dialog, 'open').mockReturnValue(dialogRefMock);
         jest.spyOn(component, 'openEditDialog');
         lessonListComponent.triggerEventHandler('lessonEdited', lessonsMock[0]);
         fixture.detectChanges();
       });
 
-      it('should open delete confirm dialog', () => {
+      it('should open lesson edit dialog', () => {
         expect(component.openEditDialog).toHaveBeenCalledWith(lessonsMock[0]);
         expect(dialog.open).toHaveBeenCalledWith(EditLessonDialogComponent, {
           data: { lesson: lessonsMock[0] },
         });
+      });
+
+      it('it should call edit method if dialog was closed with lesson object', () => {
+        expect(dialogRefMock.afterClosed).toHaveBeenCalled();
+        expect(lessonService.edit$.next).toHaveBeenCalled();
       });
     });
   });

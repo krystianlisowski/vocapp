@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement, importProvidersFrom } from '@angular/core';
 import { FIREBASE_TEST_PROVIDERS } from '../app.config';
 import { AuthService } from '../shared/data-access/auth.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Timestamp } from '@angular/fire/firestore';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -15,6 +15,7 @@ import { Vocabulary } from '../shared/models/vocabulary.model';
 import { LessonService } from './data-acess/lesson.service';
 import { Lesson } from '../shared/models/lesson.model';
 import { EditVocabularyDialogComponent } from './ui/edit-vocabulary-dialog/edit-vocabulary-dialog.component';
+import { of } from 'rxjs';
 
 describe('Lesson Component', () => {
   let component: LessonComponent;
@@ -50,6 +51,15 @@ describe('Lesson Component', () => {
     vocabulary: jest.fn().mockReturnValue(vocabularyMock),
     lesson: jest.fn().mockReturnValue(lessonMock),
     initializeState: jest.fn(),
+    remove$: {
+      next: jest.fn(),
+    },
+    edit$: {
+      next: jest.fn(),
+    },
+    add$: {
+      next: jest.fn(),
+    },
   };
 
   beforeEach(() => {
@@ -106,9 +116,26 @@ describe('Lesson Component', () => {
   });
 
   describe('add vocabulary', () => {
+    const dialogRefMock = {
+      afterClosed: jest.fn(() =>
+        of({
+          title: 'string',
+          definition: 'string',
+          translation: 'string',
+          examples: [],
+          links: [],
+        })
+      ),
+    } as any;
+
     // we want tests to be passed only if user is logged in
     beforeAll(() => {
       authServiceMock.user.mockReturnValue({ emailVerified: true });
+    });
+
+    beforeEach(() => {
+      jest.spyOn(dialog, 'open').mockReturnValue(dialogRefMock);
+      jest.spyOn(component, 'openAddDialog');
     });
 
     it('should render add vocabulary button', () => {
@@ -126,6 +153,11 @@ describe('Lesson Component', () => {
 
       expect(component.openAddDialog).toHaveBeenCalled();
       expect(dialog.open).toHaveBeenCalledWith(AddVocabularyDialogComponent);
+    });
+
+    it('it should call add method if dialog was closed with lesson object', () => {
+      expect(dialogRefMock.afterClosed).toHaveBeenCalled();
+      expect(lessonService.add$.next).toHaveBeenCalled();
     });
   });
 
@@ -155,9 +187,14 @@ describe('Lesson Component', () => {
     });
 
     describe('output: itemDeleted', () => {
+      const dialogRefMock = {
+        afterClosed: jest.fn(() => of('true')),
+      } as any;
+
       beforeEach(() => {
-        jest.spyOn(dialog, 'open');
+        jest.spyOn(dialog, 'open').mockReturnValue(dialogRefMock);
         jest.spyOn(component, 'openDeleteDialog');
+        jest.spyOn(lessonService.remove$, 'next');
 
         vocabularyItemComponent.triggerEventHandler('itemDeleted', '0');
         fixture.detectChanges();
@@ -167,11 +204,20 @@ describe('Lesson Component', () => {
         expect(component.openDeleteDialog).toHaveBeenCalledWith('0');
         expect(dialog.open).toHaveBeenCalledWith(DeleteConfirmDialogComponent);
       });
+
+      it('it should call remove method if dialog was closed with truthy value', () => {
+        expect(dialogRefMock.afterClosed).toHaveBeenCalled();
+        expect(lessonService.remove$.next).toHaveBeenCalled();
+      });
     });
 
     describe('output: itemEdited', () => {
+      const dialogRefMock = {
+        afterClosed: jest.fn(() => of(vocabularyMock[0])),
+      } as any;
+
       beforeEach(() => {
-        jest.spyOn(dialog, 'open');
+        jest.spyOn(dialog, 'open').mockReturnValue(dialogRefMock);
         jest.spyOn(component, 'openEditDialog');
         vocabularyItemComponent.triggerEventHandler(
           'itemEdited',
@@ -190,6 +236,11 @@ describe('Lesson Component', () => {
             data: { phrase: vocabularyMock[0] },
           }
         );
+      });
+
+      it('it should call edit method if dialog was closed with truthy value', () => {
+        expect(dialogRefMock.afterClosed).toHaveBeenCalled();
+        expect(lessonService.edit$.next).toHaveBeenCalled();
       });
     });
   });

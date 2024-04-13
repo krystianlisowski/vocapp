@@ -41,7 +41,7 @@ export class HomeComponent {
   private router = inject(Router);
   authService = inject(AuthService);
   lessonService = inject(LessonsService);
-  test = signal([]);
+
   constructor() {
     effect(() => {
       if (!this.authService.user()) {
