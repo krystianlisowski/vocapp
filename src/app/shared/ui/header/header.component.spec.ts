@@ -58,12 +58,16 @@ describe('Header Component', () => {
 
   describe('app logo', () => {
     it('should render a logo', () => {
-      const logoElement = fixture.debugElement.query(By.css('.logo'));
+      const logoElement = fixture.debugElement.query(
+        By.css('[data-testid="logo"]')
+      );
       expect(logoElement).toBeTruthy();
     });
 
     it('should navigate after logo click', () => {
-      const logoElement = fixture.debugElement.query(By.css('.logo'));
+      const logoElement = fixture.debugElement.query(
+        By.css('[data-testid="logo"]')
+      );
       logoElement.nativeElement.click();
 
       expect(router.navigated).toEqual(true);

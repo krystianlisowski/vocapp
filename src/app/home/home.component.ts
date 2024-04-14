@@ -16,13 +16,24 @@ import { EditLessonDialogComponent } from './ui/edit-lesson-dialog/edit-lesson-d
   selector: 'app-home',
   standalone: true,
   template: `
-    <header class="d-flex justify-content-between my-4">
-      <h1 translate="home.heading"></h1>
-      @if(authService.user()?.emailVerified) {
-      <button mat-raised-button color="primary" (click)="openAddDialog()">
-        {{ 'home.addLesson' | translate }}
-      </button>
-      }
+    <header>
+      <div class="lg:flex lg:items-center lg:justify-between my-6">
+        <div class="min-w-0 flex-1">
+          <h1
+            translate="home.heading"
+            class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
+          ></h1>
+        </div>
+        @if(authService.user()?.emailVerified) {
+        <div class="mt-5 flex lg:ml-4 lg:mt-0">
+          <span class="block">
+            <button mat-raised-button color="primary" (click)="openAddDialog()">
+              {{ 'home.addLesson' | translate }}
+            </button>
+          </span>
+        </div>
+        }
+      </div>
     </header>
 
     <main>

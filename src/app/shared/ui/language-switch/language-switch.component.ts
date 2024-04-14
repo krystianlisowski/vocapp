@@ -27,7 +27,7 @@ import { TranslateModule } from '@ngx-translate/core';
       [matMenuTriggerFor]="menu"
       data-testid="switch-button"
     >
-      <mat-icon>language</mat-icon>
+      <mat-icon class="text-gray-200">language</mat-icon>
     </button>
     <mat-menu #menu="matMenu" data-testid="language-list">
       @for (item of languages(); track $index) {

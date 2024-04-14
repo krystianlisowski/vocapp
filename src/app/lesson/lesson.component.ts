@@ -31,23 +31,29 @@ import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component
     MatButton,
     FirebaseToDatePipe,
     VocabularyItemComponent,
-    MatGridList,
-    MatGridTile,
     EmptyListComponent,
   ],
   template: `
-    <header class="d-flex justify-content-between my-4">
-      <div>
-        <h2>{{ lessonService.lesson()?.title }}</h2>
-        <span data-testid="lesson-date">
-          {{ lessonService.lesson()?.date | firebaseToDate }}</span
-        >
-      </div>
-      <div>
+    <header>
+      <div class="lg:flex lg:items-center lg:justify-between my-5">
+        <div class="min-w-0 flex-1">
+          <h2
+            class="text-xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
+          >
+            {{ lessonService.lesson()?.title }}
+          </h2>
+          <span data-testid="lesson-date">
+            {{ lessonService.lesson()?.date | firebaseToDate }}</span
+          >
+        </div>
         @if(authService.user()?.emailVerified) {
-        <button mat-raised-button color="primary" (click)="openAddDialog()">
-          {{ 'vocabulary.addNew' | translate }}
-        </button>
+        <div class="mt-5 flex lg:ml-4 lg:mt-0">
+          <span class="block">
+            <button mat-raised-button color="primary" (click)="openAddDialog()">
+              {{ 'vocabulary.addNew' | translate }}
+            </button>
+          </span>
+        </div>
         }
       </div>
     </header>

@@ -35,7 +35,7 @@ import { TranslateModule } from '@ngx-translate/core';
     FormGroupKeysPipe,
   ],
   template: `
-    <div class="d-flex align-items-center justify-content-between mb-2">
+    <div class="flex items-center justify-between mb-2">
       <span data-testid="array-label">{{ arrayLabel() }}</span>
       <button
         data-testid="add-item-button"
@@ -47,11 +47,11 @@ import { TranslateModule } from '@ngx-translate/core';
       </button>
     </div>
     @for(group of formArray().controls; let idx = $index; track idx) {
-    <div class="d-flex" [formGroup]="group" data-testid="form-group">
+    <div class="flex" [formGroup]="group" data-testid="form-group">
       @for(controlName of group | formGroupKeys; track $index) {
       <mat-form-field
         appearance="outline"
-        class="mr-1"
+        class="mr-1 block w-full"
         data-testid="form-group-control"
       >
         <mat-label [translate]="'formLabels.' + controlName"></mat-label>

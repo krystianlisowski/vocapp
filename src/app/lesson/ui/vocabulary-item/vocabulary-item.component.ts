@@ -39,45 +39,102 @@ import { MatTooltip } from '@angular/material/tooltip';
   ],
   template: `
     <mat-card>
-      <mat-card-header>
-        <mat-card-title> {{ item().title }} </mat-card-title>
-      </mat-card-header>
       <mat-card-content class="mt-4">
         <div>
-          <mat-card-subtitle translate="vocabulary.translation">
-          </mat-card-subtitle>
-          <p>{{ item().translation }}</p>
-        </div>
-        <div>
-          <mat-card-subtitle
-            translate="vocabulary.definition"
-          ></mat-card-subtitle>
-          <p>{{ item().definition }}</p>
-        </div>
+          <div class="px-4 sm:px-0">
+            <h3 class="text-base font-semibold leading-7 text-gray-900">
+              {{ item().title }}
+            </h3>
+          </div>
+          <div class="mt-6 border-t border-gray-100">
+            <dl class="divide-y divide-gray-100">
+              <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt
+                  class="text-sm font-medium leading-6 text-gray-900"
+                  translate="vocabulary.translation"
+                ></dt>
+                <dd
+                  class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+                >
+                  {{ item().translation }}
+                </dd>
+              </div>
+              <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt
+                  class="text-sm font-medium leading-6 text-gray-900"
+                  translate="vocabulary.definition"
+                ></dt>
+                <dd
+                  class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+                >
+                  <p>{{ item().definition }}</p>
+                </dd>
+              </div>
+              @if(item().examples.length) {
+              <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt
+                  class="text-sm font-medium leading-6 text-gray-900"
+                  translate="vocabulary.examples"
+                ></dt>
+                <dd
+                  class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+                >
+                  <ul
+                    role="list"
+                    class="divide-y divide-gray-100 rounded-md border border-gray-200"
+                  >
+                    @for (example of item().examples; track $index){
 
-        @if(item().examples.length) {
-        <div>
-          <mat-card-subtitle
-            translate="vocabulary.examples"
-          ></mat-card-subtitle>
-          <ul>
-            @for (example of item().examples; track $index){
-            <li>{{ example }}</li>
-            }
-          </ul>
+                    <li
+                      class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6"
+                    >
+                      <div class="flex w-0 flex-1 items-center">
+                        <div class="ml-4 flex min-w-0 flex-1 gap-2">
+                          <span class="truncate font-medium">
+                            <li>{{ example }}</li>
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                    }
+                  </ul>
+                </dd>
+              </div>
+              } @if(item().links.length) {
+              <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt
+                  class="text-sm font-medium leading-6 text-gray-900"
+                  translate="vocabulary.links"
+                ></dt>
+                <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                  <ul
+                    role="list"
+                    class="divide-y divide-gray-100 rounded-md border border-gray-200"
+                  >
+                    @for (link of item().links; track $index){
+                    <li
+                      class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6"
+                    >
+                      <div class="flex w-0 flex-1 items-center">
+                        <div class="ml-4 flex min-w-0 flex-1 gap-2">
+                          <a
+                            [href]="link.link"
+                            target="_blank"
+                            class="font-medium text-indigo-700 hover:text-indigo-500"
+                          >
+                            {{ link.title }}</a
+                          >
+                        </div>
+                      </div>
+                    </li>
+                    }
+                  </ul>
+                </dd>
+              </div>
+              }
+            </dl>
+          </div>
         </div>
-        } @if(item().links.length) {
-        <div>
-          <mat-card-subtitle translate="vocabulary.links"></mat-card-subtitle>
-          <ul>
-            @for (link of item().links; track $index){
-            <li>
-              <a [href]="link.link" target="_blank"> {{ link.title }}</a>
-            </li>
-            }
-          </ul>
-        </div>
-        }
       </mat-card-content>
       @if(item() | canWrite) {
       <mat-card-actions align="end" data-testid="vocabulary-item-actions">

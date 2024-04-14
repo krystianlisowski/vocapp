@@ -49,7 +49,7 @@ import { TranslateModule } from '@ngx-translate/core';
     <mat-dialog-content>
       <form
         [formGroup]="formGroup"
-        class="add-lesson-form"
+        class="flex flex-col py-5"
         data-testid="form-group"
       >
         <mat-form-field appearance="outline" data-testid="title-control">
@@ -89,18 +89,6 @@ import { TranslateModule } from '@ngx-translate/core';
       ></button>
     </mat-dialog-actions>
   `,
-  styles: [
-    `
-      .add-lesson-form {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        margin-top: 0.5rem;
-        width: 19rem;
-        max-width: 19rem;
-      }
-    `,
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddLessonDialogComponent {

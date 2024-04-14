@@ -14,7 +14,7 @@ import { StoredUrlService } from '../shared/utils/stored-url.service';
   standalone: true,
   imports: [LoginFormComponent, MatProgressSpinner],
   template: `
-    <div class="d-flex justify-content-center align-items-center my-5">
+    <div class="flex justify-center items-center my-5">
       @if(authService.user() === null){
       <app-login-form
         [loginStatus]="loginService.status()"

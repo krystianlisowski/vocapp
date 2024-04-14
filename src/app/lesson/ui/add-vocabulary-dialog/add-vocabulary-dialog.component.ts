@@ -49,20 +49,32 @@ type LinkForm = { title: FormControl<string>; link: FormControl<string> };
     <mat-dialog-content>
       <form
         [formGroup]="formGroup"
-        class="add-phrase-form"
+        class="block min-w-52 py-5"
         data-testid="form-group"
       >
-        <mat-form-field appearance="outline" data-testid="title-control">
+        <mat-form-field
+          appearance="outline"
+          data-testid="title-control"
+          class="block w-full"
+        >
           <mat-label translate="vocabulary.title"></mat-label>
           <input formControlName="title" matInput />
         </mat-form-field>
 
-        <mat-form-field appearance="outline" data-testid="translation-control">
+        <mat-form-field
+          appearance="outline"
+          data-testid="translation-control"
+          class="block w-full"
+        >
           <mat-label translate="vocabulary.translation"></mat-label>
           <input formControlName="translation" matInput />
         </mat-form-field>
 
-        <mat-form-field appearance="outline" data-testid="definition-control">
+        <mat-form-field
+          appearance="outline"
+          data-testid="definition-control"
+          class="block w-full"
+        >
           <mat-label translate="vocabulary.definition"></mat-label>
           <textarea matInput formControlName="definition"></textarea>
         </mat-form-field>
@@ -103,15 +115,6 @@ type LinkForm = { title: FormControl<string>; link: FormControl<string> };
       ></button>
     </mat-dialog-actions>
   `,
-  styles: [
-    `
-      .add-phrase-form {
-        display: block;
-        margin-top: 0.5rem;
-        max-width: 40rem;
-      }
-    `,
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddVocabularyDialogComponent {

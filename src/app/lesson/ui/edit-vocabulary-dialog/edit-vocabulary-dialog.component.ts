@@ -57,18 +57,30 @@ import { FormArrayGroupComponent } from '../../../shared/ui/form-array-group/for
       data-testid="dialog-title"
     ></h2>
     <mat-dialog-content>
-      <form [formGroup]="formGroup" class="add-phrase-form">
-        <mat-form-field appearance="outline" data-testid="title-control">
+      <form [formGroup]="formGroup" class="block min-w-52 py-5">
+        <mat-form-field
+          appearance="outline"
+          data-testid="title-control"
+          class="block w-full"
+        >
           <mat-label translate="vocabulary.title"></mat-label>
           <input formControlName="title" matInput />
         </mat-form-field>
 
-        <mat-form-field appearance="outline" data-testid="translation-control">
+        <mat-form-field
+          appearance="outline"
+          data-testid="translation-control"
+          class="block w-full"
+        >
           <mat-label translate="vocabulary.translation"></mat-label>
           <input formControlName="translation" matInput />
         </mat-form-field>
 
-        <mat-form-field appearance="outline" data-testid="definition-control">
+        <mat-form-field
+          appearance="outline"
+          data-testid="definition-control"
+          class="block w-full"
+        >
           <mat-label translate="vocabulary.definition"></mat-label>
           <textarea matInput formControlName="definition"></textarea>
         </mat-form-field>
@@ -108,13 +120,6 @@ import { FormArrayGroupComponent } from '../../../shared/ui/form-array-group/for
         data-testid="submit-button"
       ></button>
     </mat-dialog-actions>
-  `,
-  styles: `
-    .add-phrase-form {
-      display: block;
-      margin-top: 0.5rem;
-      max-width: 40rem;
-    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

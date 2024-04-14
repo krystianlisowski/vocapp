@@ -22,100 +22,107 @@ import { MatCard, MatCardContent } from '@angular/material/card';
     MatMenuTrigger,
     MatMenuItem,
     MatMenu,
-    MatCard,
-    MatCardContent,
     MatTooltip,
     MatButton,
   ],
   template: `
-    <mat-toolbar color="primary">
-      <a routerLink="/" class="logo">
-        <mat-icon class="mr-2">menu_book</mat-icon>
-        <span>Vocapp</span>
-      </a>
-
-      <span class="spacer"></span>
-
-      @if (authService.user()) {
-      <button
-        data-testid="user-button"
-        mat-icon-button
-        [matMenuTriggerFor]="menu"
-        [matTooltip]="authService.user()?.email"
-        aria-label="Example icon-button with menu icon"
-      >
-        <mat-icon>person</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu" data-testid="action-list">
-        <button
-          mat-menu-item
-          (click)="authService.logout()"
-          data-testid="action-button"
-        >
-          <mat-icon>logout</mat-icon>
-          <span translate="header.logout"></span>
-        </button>
-      </mat-menu>
-      }
-
-      <app-language-switch></app-language-switch>
-    </mat-toolbar>
-
-    @if (authService.user() && !authService.user()?.emailVerified) {
-    <div class="container" data-testid="verification-banner">
-      <mat-card>
-        <mat-card-content>
-          <div class="d-flex align-items-center justify-content-between">
-            <span translate="header.alert"></span>
-
-            <div class="d-flex align-items-center">
-              @if(authService.verificationEmailSent()) {
-              <mat-icon
-                data-testid="send-success-icon"
-                color="accent"
-                [matTooltip]="'header.emailWasSent' | translate"
-                >done</mat-icon
+    <nav class="bg-gray-800">
+      <div class="container">
+        <div class="relative flex h-16 items-center justify-between">
+          <div
+            class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start"
+          >
+            <div class="flex flex-shrink-0 items-center">
+              <a
+                data-testid="logo"
+                routerLink="/"
+                class="flex items-center text-gray-200 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2"
               >
-              }
-              <button
-                mat-button
-                data-testid="send-link-button"
-                translate="header.sendMeLink"
-                [disabled]="authService.verificationEmailSent()"
-                (click)="authService.emailVerification$.next()"
-              ></button>
+                <mat-icon class="mr-2">menu_book</mat-icon>
+                <span>Vocapp</span>
+              </a>
             </div>
           </div>
-        </mat-card-content>
-      </mat-card>
+          <div
+            class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+          >
+            @if (authService.user()) {
+            <button
+              data-testid="user-button"
+              mat-icon-button
+              [matMenuTriggerFor]="menu"
+              [matTooltip]="authService.user()?.email"
+              aria-label="Example icon-button with menu icon"
+            >
+              <mat-icon class="text-gray-200">person</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" data-testid="action-list">
+              <button
+                mat-menu-item
+                (click)="authService.logout()"
+                data-testid="action-button"
+              >
+                <mat-icon>logout</mat-icon>
+                <span translate="header.logout"></span>
+              </button>
+            </mat-menu>
+            }
+
+            <app-language-switch></app-language-switch>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    @if (authService.user() && !authService.user()?.emailVerified) {
+
+    <div
+      data-testid="verification-banner"
+      class="relative isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1"
+    >
+      <div class="container">
+        <div
+          class="absolute left-[max(-7rem,calc(50%-52rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
+          aria-hidden="true"
+        >
+          <div
+            class="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
+            style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)"
+          ></div>
+        </div>
+        <div
+          class="absolute left-[max(45rem,calc(50%+8rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
+          aria-hidden="true"
+        >
+          <div
+            class="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
+            style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)"
+          ></div>
+        </div>
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <p class="text-sm leading-6 text-gray-900">
+            <span translate="header.alert"></span>
+          </p>
+          @if(authService.verificationEmailSent()) {
+          <mat-icon
+            data-testid="send-success-icon"
+            class="text-green-600"
+            [matTooltip]="'header.emailWasSent' | translate"
+            >done</mat-icon
+          >
+          }
+          <button
+            mat-button
+            data-testid="send-link-button"
+            translate="header.sendMeLink"
+            [disabled]="authService.verificationEmailSent()"
+            (click)="authService.emailVerification$.next()"
+          ></button>
+        </div>
+      </div>
     </div>
     }
   `,
-  styles: [
-    `
-      .spacer {
-        flex: 1 1 auto;
-      }
-
-      .logo {
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        color: #fff;
-        font-size: 1rem;
-      }
-
-      mat-card {
-        mat-card-content {
-          padding: 0.25rem 1rem;
-        }
-
-        span {
-          color: red;
-        }
-      }
-    `,
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {

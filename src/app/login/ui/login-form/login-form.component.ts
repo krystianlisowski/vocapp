@@ -28,28 +28,30 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     TranslateModule,
     RouterLink,
-    MatCard,
-    MatCardContent,
     MatError,
     MatFormField,
     MatInput,
     MatButton,
-    MatAnchor,
     MatProgressSpinner,
     MatIcon,
     MatPrefix,
   ],
   template: `
-    <mat-card class="form-window">
-      <mat-card-content>
+    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+      <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+        <h2
+          translate="login.heading"
+          class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
+        ></h2>
+      </div>
+
+      <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form
           [formGroup]="formGroup"
           (ngSubmit)="onSubmit()"
           data-testid="form-group"
         >
-          <h2 translate="login.heading"></h2>
-
-          <mat-form-field appearance="outline" class="mb-2">
+          <mat-form-field appearance="outline" class="mb-2 block w-full">
             <input
               matNativeControl
               [placeholder]="'login.email' | translate"
@@ -62,7 +64,7 @@ import { TranslateModule } from '@ngx-translate/core';
             <mat-error translate="error.email"> </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="mb-2">
+          <mat-form-field appearance="outline" class="mb-2 block w-full">
             <input
               matNativeControl
               type="password"
@@ -88,28 +90,28 @@ import { TranslateModule } from '@ngx-translate/core';
             <mat-spinner diameter="50"></mat-spinner>
           </div>
           }
-
-          <div class="text-right mt-4">
-            <a
-              mat-button
-              color="primary"
-              routerLink="/register"
-              data-testid="register-link"
-              translate="login.redirect"
-            ></a>
-            <button
-              mat-raised-button
-              class="ml-2"
-              color="primary"
-              type="submit"
-              translate="login.confirm"
-              data-testid="submit-button"
-              [disabled]="loginStatus() === 'authenticating'"
-            ></button>
-          </div>
+          <button
+            mat-raised-button
+            class="block w-full"
+            color="primary"
+            type="submit"
+            translate="login.confirm"
+            data-testid="submit-button"
+            [disabled]="loginStatus() === 'authenticating'"
+          ></button>
         </form>
-      </mat-card-content>
-    </mat-card>
+
+        <p class="mt-4 text-center text-sm text-gray-500">
+          <span translate="login.redirectQuestion"></span>
+          <a
+            translate="login.redirect"
+            data-testid="register-link"
+            routerLink="/register"
+            class="font-semibold leading-6 text-indigo-700 hover:text-indigo-500 ml-2"
+          ></a>
+        </p>
+      </div>
+    </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -35,7 +35,7 @@ import { MatInput } from '@angular/material/input';
     MatLabel,
   ],
   template: `
-    <div class="d-flex align-items-center justify-content-between mb-2">
+    <div class="flex items-center justify-between mb-2">
       <span data-testid="array-label">{{ arrayLabel() }}</span>
       <button
         data-testid="add-item-button"
@@ -47,7 +47,11 @@ import { MatInput } from '@angular/material/input';
       </button>
     </div>
     @for(control of formArray().controls; let idx = $index; track idx) {
-    <mat-form-field appearance="outline" data-testid="array-control">
+    <mat-form-field
+      appearance="outline"
+      data-testid="array-control"
+      class="block w-full"
+    >
       <mat-label data-testid="control-label">{{
         controlLabel() + ' ' + (idx + 1)
       }}</mat-label>
