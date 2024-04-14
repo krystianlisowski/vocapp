@@ -26,12 +26,20 @@ import {
 import { provideNativeDateAdapter } from '@angular/material/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
+import { Lesson } from '../../../shared/models/lesson.model';
+
+interface EditLessonForm {
+  title: FormControl<string>;
+  date: FormControl<Date>;
+  studentsCount: FormControl<number | null>;
+}
 @Component({
   standalone: true,
   imports: [
@@ -52,15 +60,23 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
   providers: [provideNativeDateAdapter()],
   template: `
-    <h2 mat-dialog-title translate="editLessonDialog.heading"></h2>
+    <h2
+      mat-dialog-title
+      translate="editLessonDialog.heading"
+      data-testid="dialog-title"
+    ></h2>
     <mat-dialog-content>
-      <form [formGroup]="formGroup" class="add-lesson-form">
-        <mat-form-field appearance="outline">
+      <form
+        [formGroup]="formGroup"
+        class="add-lesson-form"
+        data-testid="form-group"
+      >
+        <mat-form-field appearance="outline" data-testid="title-control">
           <mat-label translate="lesson.title"></mat-label>
           <input formControlName="title" matInput />
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" data-testid="date-control">
           <mat-label translate="lesson.date"></mat-label>
           <input matInput [matDatepicker]="picker" formControlName="date" />
           <mat-datepicker-toggle
@@ -70,32 +86,40 @@ import { TranslateModule } from '@ngx-translate/core';
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" data-testid="students-control">
           <mat-label translate="lesson.studentsCount"></mat-label>
           <input matInput type="number" formControlName="studentsCount" />
         </mat-form-field>
       </form>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close translate="commons.cancel"></button>
+      <button
+        mat-button
+        mat-dialog-close
+        translate="commons.cancel"
+        data-testid="close-button"
+      ></button>
       <button
         mat-button
         (click)="submit()"
+        data-testid="submit-button"
         [disabled]="!formGroup.valid"
         translate="commons.save"
       ></button>
     </mat-dialog-actions>
   `,
-  styles: `
-    .add-lesson-form {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      margin-top: 0.5rem;
-      width: 19rem;
-      max-width: 19rem;
-    }
-  `,
+  styles: [
+    `
+      .add-lesson-form {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 0.5rem;
+        width: 19rem;
+        max-width: 19rem;
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditLessonDialogComponent implements OnInit {
@@ -103,10 +127,10 @@ export class EditLessonDialogComponent implements OnInit {
   private readonly dialogRef = inject(MatDialogRef<EditLessonDialogComponent>);
   private data = inject(MAT_DIALOG_DATA);
 
-  formGroup!: FormGroup;
+  formGroup!: FormGroup<EditLessonForm>;
 
   ngOnInit(): void {
-    const { title, date, studentsCount } = this.data.lesson;
+    const { title, date, studentsCount } = this.data.lesson as Lesson;
 
     this.formGroup = this.fb.nonNullable.group({
       title: this.fb.nonNullable.control(title || '', [Validators.required]),

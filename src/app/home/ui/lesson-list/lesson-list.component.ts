@@ -1,14 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   EventEmitter,
-  Input,
   OnInit,
   Output,
-  Signal,
   TemplateRef,
   ViewChild,
+  input,
+  signal,
 } from '@angular/core';
 import { Lesson } from '../../../shared/models/lesson.model';
 import { DatatableComponent } from '../../../shared/ui/datatable/datatable.component';
@@ -36,12 +35,13 @@ import { TranslateModule } from '@ngx-translate/core';
     CanWritePipe,
   ],
   template: `
-    <app-datatable [datatable]="datatable"></app-datatable>
+    <app-datatable [datatable]="datatable()!"></app-datatable>
     <ng-template #linkCol let-item="item">
       @if(item | canWrite) {
       <button
         mat-icon-button
         (click)="lessonEdited.emit(item)"
+        data-testid="edit-lesson-button"
         [matTooltip]="'tooltip.edit' | translate"
       >
         <mat-icon>settings</mat-icon>
@@ -51,6 +51,7 @@ import { TranslateModule } from '@ngx-translate/core';
         mat-icon-button
         color="warn"
         [matTooltip]="'tooltip.delete' | translate"
+        data-testid="delete-lesson-button"
         (click)="lessonDeleted.emit(item.id)"
       >
         <mat-icon>delete</mat-icon>
@@ -65,15 +66,15 @@ import { TranslateModule } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LessonListComponent implements OnInit {
-  @Input({ required: true }) lessons!: Signal<Lesson[]>;
+  lessons = input.required<Lesson[]>();
   @ViewChild('linkCol', { static: true }) linkCol!: TemplateRef<any>;
   @Output() lessonDeleted = new EventEmitter<string>();
   @Output() lessonEdited = new EventEmitter<Lesson>();
 
-  datatable!: DatatableManager<Lesson>;
+  datatable = signal<DatatableManager<Lesson> | null>(null);
 
   ngOnInit(): void {
-    this.datatable = this.datatableManagerFactory();
+    this.datatable.set(this.datatableManagerFactory());
   }
 
   datatableManagerFactory(): DatatableManager<Lesson> {

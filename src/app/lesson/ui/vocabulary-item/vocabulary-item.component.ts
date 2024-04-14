@@ -2,8 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
   Output,
+  input,
 } from '@angular/core';
 import {
   MatCard,
@@ -40,37 +40,37 @@ import { MatTooltip } from '@angular/material/tooltip';
   template: `
     <mat-card>
       <mat-card-header>
-        <mat-card-title> {{ item.title }} </mat-card-title>
+        <mat-card-title> {{ item().title }} </mat-card-title>
       </mat-card-header>
       <mat-card-content class="mt-4">
         <div>
           <mat-card-subtitle translate="vocabulary.translation">
           </mat-card-subtitle>
-          <p>{{ item.translation }}</p>
+          <p>{{ item().translation }}</p>
         </div>
         <div>
           <mat-card-subtitle
             translate="vocabulary.definition"
           ></mat-card-subtitle>
-          <p>{{ item.definition }}</p>
+          <p>{{ item().definition }}</p>
         </div>
 
-        @if(item.examples.length) {
+        @if(item().examples.length) {
         <div>
           <mat-card-subtitle
             translate="vocabulary.examples"
           ></mat-card-subtitle>
           <ul>
-            @for (example of item.examples; track $index){
+            @for (example of item().examples; track $index){
             <li>{{ example }}</li>
             }
           </ul>
         </div>
-        } @if(item.links.length) {
+        } @if(item().links.length) {
         <div>
           <mat-card-subtitle translate="vocabulary.links"></mat-card-subtitle>
           <ul>
-            @for (link of item.links; track $index){
+            @for (link of item().links; track $index){
             <li>
               <a [href]="link.link" target="_blank"> {{ link.title }}</a>
             </li>
@@ -79,21 +79,23 @@ import { MatTooltip } from '@angular/material/tooltip';
         </div>
         }
       </mat-card-content>
-      @if(item | canWrite) {
-      <mat-card-actions align="end">
+      @if(item() | canWrite) {
+      <mat-card-actions align="end" data-testid="vocabulary-item-actions">
         <button
           mat-icon-button
-          (click)="itemEdited.emit(item)"
+          (click)="itemEdited.emit(item())"
+          data-testid="edit-vocabulary-item-button"
           [matTooltip]="'tooltip.edit' | translate"
         >
           <mat-icon>settings</mat-icon>
         </button>
 
         <button
-          [matTooltip]="'tooltip.edit' | translate"
+          [matTooltip]="'tooltip.delete' | translate"
           mat-icon-button
           color="warn"
-          (click)="itemDeleted.emit(item.id)"
+          data-testid="delete-vocabulary-item-button"
+          (click)="itemDeleted.emit(item().id)"
         >
           <mat-icon>delete</mat-icon>
         </button>
@@ -110,7 +112,7 @@ import { MatTooltip } from '@angular/material/tooltip';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VocabularyItemComponent {
-  @Input({ required: true }) item!: Vocabulary;
+  item = input.required<Vocabulary>();
   @Output() itemDeleted = new EventEmitter<string>();
   @Output() itemEdited = new EventEmitter<Vocabulary>();
 }

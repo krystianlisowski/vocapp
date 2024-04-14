@@ -24,8 +24,14 @@ import { TranslateModule } from '@ngx-translate/core';
       <span translate="deleteConfirmDialog.description"></span>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close translate="commons.cancel"></button>
       <button
+        data-testid="close-button"
+        mat-button
+        mat-dialog-close
+        translate="commons.cancel"
+      ></button>
+      <button
+        data-testid="submit-button"
         mat-button
         mat-dialog-close="true"
         color="warn"

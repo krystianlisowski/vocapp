@@ -1,7 +1,6 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Lesson, LessonAddPayload } from '../../shared/models/lesson.model';
 import {
-  EMPTY,
   Observable,
   Subject,
   catchError,
@@ -10,7 +9,6 @@ import {
   from,
 } from 'rxjs';
 import {
-  Firestore,
   collection,
   collectionData,
   doc,
@@ -19,6 +17,7 @@ import {
   deleteDoc,
   DocumentReference,
   DocumentData,
+  Firestore,
 } from '@angular/fire/firestore';
 import { FirebaseCollection } from '../../shared/enums/firebase-collection.enum';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';

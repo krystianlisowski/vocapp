@@ -2,8 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
   Output,
+  input,
 } from '@angular/core';
 import {
   AbstractControl,
@@ -17,7 +17,6 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { FormGroupKeysPipe } from '../../pipes/form-group-keys.pipe';
-import { UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -37,20 +36,30 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
   template: `
     <div class="d-flex align-items-center justify-content-between mb-2">
-      <span>{{ arrayLabel }}</span>
-      <button mat-icon-button aria-label="Add item" (click)="addItem.emit()">
+      <span data-testid="array-label">{{ arrayLabel() }}</span>
+      <button
+        data-testid="add-item-button"
+        mat-icon-button
+        aria-label="Add item"
+        (click)="addItem.emit()"
+      >
         <mat-icon>add</mat-icon>
       </button>
     </div>
-    @for(group of formArray.controls; let idx = $index; track idx) {
-    <div class="d-flex" [formGroup]="group">
+    @for(group of formArray().controls; let idx = $index; track idx) {
+    <div class="d-flex" [formGroup]="group" data-testid="form-group">
       @for(controlName of group | formGroupKeys; track $index) {
-      <mat-form-field appearance="outline" class="mr-1">
+      <mat-form-field
+        appearance="outline"
+        class="mr-1"
+        data-testid="form-group-control"
+      >
         <mat-label [translate]="'formLabels.' + controlName"></mat-label>
         <input matInput [formControlName]="controlName" />
       </mat-form-field>
       }
       <button
+        data-testid="delete-item-button"
         mat-icon-button
         (click)="deleteItem.emit(idx)"
         color="warn"
@@ -66,8 +75,8 @@ import { TranslateModule } from '@ngx-translate/core';
 export class FormArrayGroupComponent<
   T extends { [K in keyof T]: AbstractControl<any, any> }
 > {
-  @Input({ required: true }) arrayLabel!: string;
-  @Input({ required: true }) formArray!: FormArray<FormGroup<T>>;
+  arrayLabel = input.required<string>();
+  formArray = input.required<FormArray<FormGroup<T>>>();
 
   @Output() addItem = new EventEmitter();
   @Output() deleteItem = new EventEmitter<number>();

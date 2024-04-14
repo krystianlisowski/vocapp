@@ -1,11 +1,11 @@
-import { Component, DestroyRef, effect, inject } from '@angular/core';
+import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
 import { LessonListComponent } from './ui/lesson-list/lesson-list.component';
 import { LessonsService } from './data-acess/lessons.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddLessonDialogComponent } from './ui/add-lesson-dialog/add-lesson-dialog.component';
 import { filter } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatButton, MatButtonModule } from '@angular/material/button';
+import { MatButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../shared/data-access/auth.service';
@@ -27,7 +27,7 @@ import { EditLessonDialogComponent } from './ui/edit-lesson-dialog/edit-lesson-d
 
     <main>
       <app-lesson-list
-        [lessons]="lessonService.lessons"
+        [lessons]="lessonService.lessons()"
         (lessonDeleted)="openDeleteDialog($event)"
         (lessonEdited)="openEditDialog($event)"
       ></app-lesson-list>

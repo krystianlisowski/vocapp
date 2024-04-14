@@ -39,7 +39,9 @@ import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component
     <header class="d-flex justify-content-between my-4">
       <div>
         <h2>{{ lessonService.lesson()?.title }}</h2>
-        <span> {{ lessonService.lesson()?.date | firebaseToDate }}</span>
+        <span data-testid="lesson-date">
+          {{ lessonService.lesson()?.date | firebaseToDate }}</span
+        >
       </div>
       <div>
         @if(authService.user()?.emailVerified) {

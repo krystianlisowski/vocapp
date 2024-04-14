@@ -2,9 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
-  Input,
   Output,
   inject,
+  input,
 } from '@angular/core';
 import { RegisterStatus } from '../../data-access/register.service';
 import { Credentials } from '../../../shared/models/credentials.model';
@@ -44,10 +44,18 @@ import { TranslateModule } from '@ngx-translate/core';
   template: `
     <mat-card class="form-window">
       <mat-card-content>
-        <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+        <form
+          [formGroup]="formGroup"
+          (ngSubmit)="onSubmit()"
+          data-testid="form-group"
+        >
           <h2 translate="register.heading"></h2>
 
-          <mat-form-field appearance="outline" class="mb-2">
+          <mat-form-field
+            appearance="outline"
+            class="mb-2"
+            data-testid="email-control"
+          >
             <input
               matNativeControl
               [placeholder]="'register.email' | translate"
@@ -64,6 +72,7 @@ import { TranslateModule } from '@ngx-translate/core';
               matNativeControl
               type="password"
               formControlName="password"
+              data-testid="password-control"
               [placeholder]="'register.password' | translate"
               required
             />
@@ -76,6 +85,7 @@ import { TranslateModule } from '@ngx-translate/core';
               matNativeControl
               type="password"
               formControlName="confirmPassword"
+              data-testid="confirm-password-control"
               [placeholder]="'register.confirmPassword' | translate"
               required
             />
@@ -83,10 +93,16 @@ import { TranslateModule } from '@ngx-translate/core';
             <mat-error translate="error.password"></mat-error>
           </mat-form-field>
 
-          @if (registerStatus === 'error') {
-          <mat-error translate="error.register"></mat-error>
-          } @else if(registerStatus === 'creating'){
-          <div class="d-flex align-items-center justify-content-center">
+          @if (registerStatus() === 'error') {
+          <mat-error
+            translate="error.register"
+            data-testid="error-block"
+          ></mat-error>
+          } @else if(registerStatus() === 'creating'){
+          <div
+            class="d-flex align-items-center justify-content-center"
+            data-testid="pending-block"
+          >
             <mat-spinner diameter="50"></mat-spinner>
           </div>
           }
@@ -96,6 +112,7 @@ import { TranslateModule } from '@ngx-translate/core';
               mat-button
               color="primary"
               routerLink="/login"
+              data-testid="login-link"
               translate="register.redirect"
             ></a>
             <button
@@ -104,7 +121,8 @@ import { TranslateModule } from '@ngx-translate/core';
               color="primary"
               type="submit"
               translate="register.confirm"
-              [disabled]="registerStatus === 'creating'"
+              data-testid="submit-button"
+              [disabled]="registerStatus() === 'creating'"
             ></button>
           </div>
         </form>
@@ -114,7 +132,7 @@ import { TranslateModule } from '@ngx-translate/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterFormComponent {
-  @Input({ required: true }) registerStatus!: RegisterStatus;
+  registerStatus = input.required<RegisterStatus>();
   @Output() register = new EventEmitter<Credentials>();
 
   private fb = inject(FormBuilder);
