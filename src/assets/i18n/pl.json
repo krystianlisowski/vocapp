@@ -10,14 +10,8 @@
     "delete": "Akcja usuwania dostępna tylko dla autora."
   },
   "home": {
-    "heading": "Lista lekcji",
-    "addLesson": "Dodaj lekcję"
-  },
-  "addLessonDialog": {
-    "heading": "Dodaj nową lekcję"
-  },
-  "editLessonDialog": {
-    "heading": "Edytuj lekcję"
+    "heading": "Lista słów i zwrotów",
+    "addVocabulary": "Dodaj zwrot"
   },
   "addVocabularyDialog": {
     "heading": "Dodaj nowy zwrot",
@@ -27,13 +21,6 @@
   "deleteConfirmDialog": {
     "heading": "Potwierdź usunięcie",
     "description": "Jesteś pewny? Usunięcie jest akcją nieodwracalną."
-  },
-  "lesson": {
-    "title": "Tytuł lekcji",
-    "date": "Data lekcji",
-    "studentsCount": "Ilość uczestników",
-    "details": "Szczegóły",
-    "delete": "Usuń lekcję"
   },
   "header": {
     "logout": "Wyloguj się",
@@ -67,14 +54,25 @@
     "register": "Nie udało się utworzyć konta."
   },
   "vocabulary": {
-    "addNew": "Dodaj nowy zwrot",
+    "edit": "Edytuj",
+    "delete": "Usuń",
     "title": "Zwrot",
     "translation": "Tłumaczenie",
-    "definition": "Definicja",
+    "definitions": "Definicje",
+    "important": "Przydatne",
+    "typeOfSpeech": "Część mowy",
+    "lessonDate": "Data lekcji",
+    "details": "Szczegóły",
     "examples": "Przykłady",
     "links": "Przydatne linki",
     "link": "Link",
-    "example": "Przykład"
+    "example": "Przykład",
+    "type": {
+      "label": "Część mowy",
+      "verb": "Czasownik",
+      "noun": "Rzeczownik",
+      "adjective": "Przymiotnik"
+    }
   },
   "formLabels": {
     "title": "Nazwa",

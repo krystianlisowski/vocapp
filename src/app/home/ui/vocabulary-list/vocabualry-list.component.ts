@@ -9,7 +9,6 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { Lesson } from '../../../shared/models/lesson.model';
 import { DatatableComponent } from '../../../shared/ui/datatable/datatable.component';
 import { DatatableManager } from '../../../shared/ui/datatable/datatable';
 import dayjs from 'dayjs';
@@ -20,11 +19,14 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { CanWritePipe } from '../../../shared/pipes/can-write.pipe';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
+import { VocabularyListItem } from '../../../shared/models/vocabulary.model';
+import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-lesson-list',
+  selector: 'app-vocabulary-list',
   standalone: true,
   imports: [
+    NgClass,
     TranslateModule,
     DatatableComponent,
     RouterLink,
@@ -40,19 +42,10 @@ import { TranslateModule } from '@ngx-translate/core';
       @if(item | canWrite) {
       <button
         mat-icon-button
-        (click)="lessonEdited.emit(item)"
-        data-testid="edit-lesson-button"
-        [matTooltip]="'tooltip.edit' | translate"
-      >
-        <mat-icon>settings</mat-icon>
-      </button>
-
-      <button
-        mat-icon-button
         color="warn"
         [matTooltip]="'tooltip.delete' | translate"
-        data-testid="delete-lesson-button"
-        (click)="lessonDeleted.emit(item.id)"
+        data-testid="delete-vocabulary-button"
+        (click)="vocabularyDeleted.emit(item.id)"
       >
         <mat-icon>delete</mat-icon>
       </button>
@@ -62,41 +55,57 @@ import { TranslateModule } from '@ngx-translate/core';
         <mat-icon>arrow_forward_ios</mat-icon>
       </a>
     </ng-template>
+
+    <ng-template #phraseCol let-item="item">
+      <span [ngClass]="{ 'text-green-600 font-semibold': item.important }">
+        {{ item.title }}
+      </span>
+    </ng-template>
+
+    <ng-template #typeCol let-item="item">
+      <span>
+        {{ 'vocabulary.type.' + item.type | translate }}
+      </span>
+    </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LessonListComponent implements OnInit {
-  lessons = input.required<Lesson[]>();
+export class VocabularyListComponent implements OnInit {
+  vocabulary = input.required<VocabularyListItem[]>();
   @ViewChild('linkCol', { static: true }) linkCol!: TemplateRef<any>;
-  @Output() lessonDeleted = new EventEmitter<string>();
-  @Output() lessonEdited = new EventEmitter<Lesson>();
+  @ViewChild('phraseCol', { static: true }) nameCol!: TemplateRef<any>;
+  @ViewChild('typeCol', { static: true }) typeCol!: TemplateRef<any>;
+  @Output() vocabularyDeleted = new EventEmitter<string>();
 
-  datatable = signal<DatatableManager<Lesson> | null>(null);
+  datatable = signal<DatatableManager<VocabularyListItem> | null>(null);
 
   ngOnInit(): void {
     this.datatable.set(this.datatableManagerFactory());
   }
 
-  datatableManagerFactory(): DatatableManager<Lesson> {
+  datatableManagerFactory(): DatatableManager<VocabularyListItem> {
     return new DatatableManager({
-      rows: this.lessons,
+      rows: this.vocabulary,
       visibleCols: [
         {
           key: 'title',
-          header: 'lesson.title',
+          header: 'vocabulary.title',
+          template: this.nameCol,
         },
         {
-          key: 'date',
-          header: 'lesson.date',
-          formatter: (item) => dayjs(item.date.toDate()).format('DD/MM/YYYY'),
+          key: 'type',
+          header: 'vocabulary.typeOfSpeech',
+          template: this.typeCol,
         },
         {
-          key: 'studentsCount',
-          header: 'lesson.studentsCount',
+          key: 'lessonDate',
+          header: 'vocabulary.lessonDate',
+          formatter: (item) =>
+            dayjs(item.lessonDate.toDate()).format('DD/MM/YYYY'),
         },
         {
           key: 'details',
-          header: 'lesson.details',
+          header: 'vocabulary.details',
           template: this.linkCol,
         },
       ],

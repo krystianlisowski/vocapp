@@ -6,6 +6,9 @@ import { Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AddVocabularyDialogComponent } from './add-vocabulary-dialog.component';
 import { DebugElement } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
+import { VocabularyType } from '../../data-acess/dictionary.service';
+import dayjs from 'dayjs';
 
 describe('Add vocabulary item dialog Component', () => {
   let component: AddVocabularyDialogComponent;
@@ -17,6 +20,7 @@ describe('Add vocabulary item dialog Component', () => {
       imports: [AddVocabularyDialogComponent, TranslateModule.forRoot()],
       providers: [
         provideNoopAnimations(),
+        provideHttpClient(),
         {
           provide: MatDialogRef,
           useValue: {
@@ -51,26 +55,24 @@ describe('Add vocabulary item dialog Component', () => {
   });
 
   describe('form group', () => {
-    it('should have title, date and studentsCount control', () => {
+    it('should have proper controls', () => {
       const keys = Object.keys(component.formGroup.controls);
       expect(keys).toEqual([
         'title',
+        'type',
         'translation',
-        'definition',
+        'definitions',
+        'lessonDate',
+        'important',
         'examples',
         'links',
       ]);
     });
 
-    it('should controls have required validator', () => {
+    it('should controls have proper validators', () => {
       expect(
         component.formGroup.controls.title.hasValidator(Validators.required) &&
-          component.formGroup.controls.translation.hasValidator(
-            Validators.required
-          ) &&
-          component.formGroup.controls.definition.hasValidator(
-            Validators.required
-          )
+          component.formGroup.controls.type!.hasValidator(Validators.required)
       ).toBeTruthy();
     });
 
@@ -95,6 +97,20 @@ describe('Add vocabulary item dialog Component', () => {
       expect(titleControl).toBeTruthy();
     });
 
+    it('should render type control', () => {
+      const titleControl = fixture.debugElement.query(
+        By.css('[data-testid="type-control"]')
+      );
+      expect(titleControl).toBeTruthy();
+    });
+
+    it('should render important control', () => {
+      const importantControl = fixture.debugElement.query(
+        By.css('[data-testid="important-control"]')
+      );
+      expect(importantControl).toBeTruthy();
+    });
+
     it('should render translation control', () => {
       const translationControl = fixture.debugElement.query(
         By.css('[data-testid="translation-control"]')
@@ -102,11 +118,11 @@ describe('Add vocabulary item dialog Component', () => {
       expect(translationControl).toBeTruthy();
     });
 
-    it('should render definition control', () => {
-      const definitionControl = fixture.debugElement.query(
-        By.css('[data-testid="definition-control"]')
+    it('should render definitions array', () => {
+      const definitionsArray = fixture.debugElement.query(
+        By.css('[data-testid="definitions-array"]')
       );
-      expect(definitionControl).toBeTruthy();
+      expect(definitionsArray).toBeTruthy();
     });
 
     it('should render examples array', () => {
@@ -152,8 +168,11 @@ describe('Add vocabulary item dialog Component', () => {
     it('should close modal with form data after save button click only if form is valid', () => {
       const testData = {
         title: 'test',
+        type: 'verb' as VocabularyType,
         translation: 'test',
-        definition: 'test',
+        important: false,
+        lessonDate: dayjs().format(),
+        definitions: [],
         examples: [],
         links: [],
       };
@@ -176,7 +195,7 @@ describe('Add vocabulary item dialog Component', () => {
 
     beforeEach(() => {
       formArrayComponent = fixture.debugElement.query(
-        By.css('app-form-array-control')
+        By.css('[data-testid="examples-array"]')
       );
     });
 

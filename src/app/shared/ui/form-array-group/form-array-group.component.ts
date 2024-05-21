@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Output,
-  input,
-} from '@angular/core';
+import { Component, EventEmitter, Output, input } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -70,7 +64,6 @@ import { TranslateModule } from '@ngx-translate/core';
     </div>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormArrayGroupComponent<
   T extends { [K in keyof T]: AbstractControl<any, any> }

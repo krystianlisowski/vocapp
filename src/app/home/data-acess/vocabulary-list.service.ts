@@ -1,5 +1,4 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { Lesson, LessonAddPayload } from '../../shared/models/lesson.model';
 import {
   Observable,
   Subject,
@@ -23,9 +22,13 @@ import { FirebaseCollection } from '../../shared/enums/firebase-collection.enum'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../shared/data-access/auth.service';
 import { ErrorHandlerService } from '../../shared/utils/error-handler.service';
+import {
+  VocabularyAddPayload,
+  VocabularyListItem,
+} from '../../shared/models/vocabulary.model';
 
-export interface LessonsState {
-  lessons: Lesson[];
+export interface VocabularyListState {
+  vocabulary: VocabularyListItem[];
   loaded: boolean;
   error: string | null;
 }
@@ -33,43 +36,42 @@ export interface LessonsState {
 @Injectable({
   providedIn: 'root',
 })
-export class LessonsService {
+export class VocabularyListService {
   // Dependencies
   private firestore = inject(Firestore);
   private authService = inject(AuthService);
   private errorHandler = inject(ErrorHandlerService);
 
-  private lessonsCollecion = collection(
+  private vocabularyCollecion = collection(
     this.firestore,
-    FirebaseCollection.LESSONS
+    FirebaseCollection.VOCABULARY
   );
 
   // State
-  private state = signal<LessonsState>({
-    lessons: [],
+  private state = signal<VocabularyListState>({
+    vocabulary: [],
     loaded: false,
     error: null,
   });
 
   // Selectors
-  lessons = computed(() => this.state().lessons);
+  vocabulary = computed(() => this.state().vocabulary);
   loaded = computed(() => this.state().loaded);
   error = computed(() => this.state().error);
 
   // Sources
-  add$ = new Subject<LessonAddPayload>();
-  edit$ = new Subject<Lesson>();
+  add$ = new Subject<VocabularyAddPayload>();
   remove$ = new Subject<string>();
 
   constructor() {
     // Reducers
-    this.readLessons()
+    this.readVocabularyList()
       .pipe(takeUntilDestroyed())
       .subscribe({
-        next: (lessons) =>
+        next: (vocabulary) =>
           this.state.update((state) => ({
             ...state,
-            lessons,
+            vocabulary,
             loaded: true,
           })),
         error: (err) =>
@@ -79,21 +81,14 @@ export class LessonsService {
     combineLatest([
       this.add$.pipe(
         exhaustMap((payload) =>
-          this.addLesson(payload).pipe(
-            catchError((err) => this.errorHandler.handleError(err))
-          )
-        )
-      ),
-      this.edit$.pipe(
-        exhaustMap((payload) =>
-          this.updateLesson(payload).pipe(
+          this.addVocabulary(payload).pipe(
             catchError((err) => this.errorHandler.handleError(err))
           )
         )
       ),
       this.remove$.pipe(
         exhaustMap((payload) =>
-          this.removeLesson(payload).pipe(
+          this.removeVocabulary(payload).pipe(
             catchError((err) => this.errorHandler.handleError(err))
           )
         )
@@ -103,31 +98,25 @@ export class LessonsService {
       .subscribe();
   }
 
-  readLessons(): Observable<Lesson[]> {
-    return collectionData(this.lessonsCollecion, {
+  readVocabularyList(): Observable<VocabularyListItem[]> {
+    return collectionData(this.vocabularyCollecion, {
       idField: 'id',
-    }) as Observable<Lesson[]>;
+    }) as Observable<VocabularyListItem[]>;
   }
 
-  addLesson(
-    payload: LessonAddPayload
+  addVocabulary(
+    payload: VocabularyAddPayload
   ): Observable<DocumentReference<DocumentData, DocumentData>> {
-    const promise = addDoc(this.lessonsCollecion, {
+    const promise = addDoc(this.vocabularyCollecion, {
       ...payload,
       authorUid: this.authService.user().uid,
     });
     return from(promise);
   }
 
-  removeLesson(id: string): Observable<void> {
-    const docRef = doc(this.lessonsCollecion, `${id}`);
+  removeVocabulary(id: string): Observable<void> {
+    const docRef = doc(this.vocabularyCollecion, `${id}`);
     const promise = deleteDoc(docRef);
-    return from(promise);
-  }
-
-  updateLesson(payload: Lesson): Observable<void> {
-    const docRef = doc(this.lessonsCollecion, `${payload.id}`);
-    const promise = setDoc(docRef, payload);
     return from(promise);
   }
 }

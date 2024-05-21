@@ -20,7 +20,6 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import { AddLessonDialogComponent } from '../../../home/ui/add-lesson-dialog/add-lesson-dialog.component';
 import { MatButton } from '@angular/material/button';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -33,6 +32,13 @@ import {
 } from '../../../shared/models/vocabulary.model';
 import { FormArrayControlComponent } from '../../../shared/ui/form-array-control/form-array-control.component';
 import { FormArrayGroupComponent } from '../../../shared/ui/form-array-group/form-array-group.component';
+import { MatCheckbox } from '@angular/material/checkbox';
+import {
+  MatDatepicker,
+  MatDatepickerToggle,
+  MatDatepickerInput,
+} from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   standalone: true,
@@ -49,6 +55,10 @@ import { FormArrayGroupComponent } from '../../../shared/ui/form-array-group/for
     MatInput,
     FormArrayControlComponent,
     FormArrayGroupComponent,
+    MatDatepicker,
+    MatDatepickerToggle,
+    MatDatepickerInput,
+    MatCheckbox,
   ],
   template: `
     <h2
@@ -57,7 +67,7 @@ import { FormArrayGroupComponent } from '../../../shared/ui/form-array-group/for
       data-testid="dialog-title"
     ></h2>
     <mat-dialog-content>
-      <form [formGroup]="formGroup" class="block min-w-52 py-5">
+      <form [formGroup]="formGroup" class="py-5" data-testid="form-group">
         <mat-form-field
           appearance="outline"
           data-testid="title-control"
@@ -67,26 +77,70 @@ import { FormArrayGroupComponent } from '../../../shared/ui/form-array-group/for
           <input formControlName="title" matInput />
         </mat-form-field>
 
-        <mat-form-field
-          appearance="outline"
-          data-testid="translation-control"
-          class="block w-full"
-        >
-          <mat-label translate="vocabulary.translation"></mat-label>
-          <input formControlName="translation" matInput />
-        </mat-form-field>
+        <div class="grid grid-cols-2 gap-2">
+          <mat-form-field
+            appearance="outline"
+            data-testid="type-control"
+            class="block w-full"
+          >
+            <mat-label translate="vocabulary.type.label"></mat-label>
+            <select matNativeControl formControlName="type">
+              <option value="noun" translate="vocabulary.type.noun"></option>
+              <option value="verb" translate="vocabulary.type.verb"></option>
+              <option
+                value="adjective"
+                translate="vocabulary.type.adjective"
+              ></option>
+            </select>
+          </mat-form-field>
 
-        <mat-form-field
-          appearance="outline"
-          data-testid="definition-control"
-          class="block w-full"
-        >
-          <mat-label translate="vocabulary.definition"></mat-label>
-          <textarea matInput formControlName="definition"></textarea>
-        </mat-form-field>
+          <mat-form-field
+            appearance="outline"
+            data-testid="translation-control"
+            class="block w-full"
+          >
+            <mat-label translate="vocabulary.translation"></mat-label>
+            <input formControlName="translation" matInput />
+          </mat-form-field>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <mat-form-field appearance="outline" data-testid="date-control">
+            <mat-label translate="vocabulary.lessonDate"></mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              formControlName="lessonDate"
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-checkbox
+            [formControl]="formGroup.controls.important"
+            data-testid="important-control"
+          >
+            {{ 'vocabulary.important' | translate }}
+          </mat-checkbox>
+        </div>
+
+        <ng-container formArrayName="definitions">
+          <app-form-array-control
+            data-testid="definitions-array"
+            [formArray]="formGroup.controls.definitions"
+            [arrayLabel]="'vocabulary.definitions' | translate"
+            [controlLabel]="'vocabulary.definition' | translate"
+            (addItem)="addDefinition()"
+            (deleteItem)="deleteItem('definitions', $event)"
+          ></app-form-array-control>
+        </ng-container>
 
         <ng-container formArrayName="examples">
           <app-form-array-control
+            data-testid="examples-array"
             [formArray]="formGroup.controls.examples"
             [arrayLabel]="'vocabulary.examples' | translate"
             [controlLabel]="'vocabulary.example' | translate"
@@ -121,27 +175,42 @@ import { FormArrayGroupComponent } from '../../../shared/ui/form-array-group/for
       ></button>
     </mat-dialog-actions>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [provideNativeDateAdapter()],
 })
 export class EditVocabularyDialogComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
-  private readonly dialogRef = inject(MatDialogRef<AddLessonDialogComponent>);
+  private readonly dialogRef = inject(
+    MatDialogRef<EditVocabularyDialogComponent>
+  );
   private data = inject(MAT_DIALOG_DATA);
 
   formGroup!: FormGroup<VocabularyForm>;
 
   ngOnInit(): void {
-    const { title, translation, definition, examples, links } =
-      this.data.phrase;
+    const {
+      title,
+      translation,
+      definitions,
+      examples,
+      links,
+      type,
+      important,
+      lessonDate,
+    } = this.data.phrase;
 
     this.formGroup = this.fb.nonNullable.group({
       title: this.fb.nonNullable.control(title || '', [Validators.required]),
+      type: this.fb.nonNullable.control(type, [Validators.required]),
       translation: this.fb.nonNullable.control(translation || '', [
         Validators.required,
       ]),
-      definition: this.fb.nonNullable.control(definition || '', [
+      definitions: this.fb.nonNullable.array<FormControl>(definitions || [], [
+        Validators.minLength(1),
+      ]),
+      lessonDate: this.fb.nonNullable.control(lessonDate.toDate(), [
         Validators.required,
       ]),
+      important: this.fb.nonNullable.control(important || false),
       examples: this.fb.nonNullable.array<FormControl>(examples || []),
       links: this.fb.nonNullable.array<FormGroup<LinkForm>>([]),
     });
@@ -157,6 +226,11 @@ export class EditVocabularyDialogComponent implements OnInit {
     }
 
     this.dialogRef.close(this.formGroup.value);
+  }
+
+  addDefinition() {
+    const control = this.fb.nonNullable.control('', [Validators.required]);
+    this.formGroup.controls.definitions.push(control);
   }
 
   addExample() {

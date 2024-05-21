@@ -10,14 +10,8 @@
     "delete": "Delete action available only for author."
   },
   "home": {
-    "heading": "Lesson list",
-    "addLesson": "Add lesson"
-  },
-  "addLessonDialog": {
-    "heading": "Add new lesson"
-  },
-  "editLessonDialog": {
-    "heading": "Edit lesson"
+    "heading": "Vocabulary list",
+    "addVocabulary": "Add vocabulary"
   },
   "addVocabularyDialog": {
     "heading": "Add new phrase",
@@ -27,13 +21,6 @@
   "deleteConfirmDialog": {
     "heading": "Confirm delete",
     "description": "Are you sure?"
-  },
-  "lesson": {
-    "title": "Lesson title",
-    "date": "Lesson date",
-    "studentsCount": "Students count",
-    "details": "Details",
-    "delete": "Delete lesson"
   },
   "header": {
     "logout": "Log out",
@@ -67,14 +54,25 @@
     "register": "Could not create account with those credentials."
   },
   "vocabulary": {
-    "addNew": "Add new vocabulary",
+    "edit": "Edit",
+    "delete": "Delete",
     "title": "Phrase",
     "translation": "Translation",
-    "definition": "Definition",
+    "definitions": "Definitions",
     "examples": "Examples",
+    "important": "Important",
+    "typeOfSpeech": "Type of speech",
+    "lessonDate": "Lesson date",
+    "details": "Details",
     "links": "Links",
     "link": "Link",
-    "example": "Example"
+    "example": "Example",
+    "type": {
+      "label": "Part of speech",
+      "verb": "Verb",
+      "noun": "Noun",
+      "adjective": "Adjective"
+    }
   },
   "formLabels": {
     "title": "Title",

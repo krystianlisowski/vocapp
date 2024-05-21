@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Output,
-  input,
-} from '@angular/core';
+import { Component, EventEmitter, Output, input } from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -68,7 +62,6 @@ import { MatInput } from '@angular/material/input';
     </mat-form-field>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormArrayControlComponent {
   arrayLabel = input.required<string>();

@@ -16,6 +16,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -62,5 +63,6 @@ export const appConfig: ApplicationConfig = {
         defaultLanguage: 'en',
       })
     ),
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { width: '1024px' } },
   ],
 };

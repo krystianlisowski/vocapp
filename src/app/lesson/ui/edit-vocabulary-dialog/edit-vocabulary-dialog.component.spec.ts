@@ -6,6 +6,9 @@ import { Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DebugElement } from '@angular/core';
 import { EditVocabularyDialogComponent } from './edit-vocabulary-dialog.component';
+import { Timestamp } from '@angular/fire/firestore';
+import dayjs from 'dayjs';
+import { VocabularyType } from '../../data-acess/dictionary.service';
 
 describe('Edit vocabulary item dialog Component', () => {
   let component: EditVocabularyDialogComponent;
@@ -13,8 +16,11 @@ describe('Edit vocabulary item dialog Component', () => {
   let dialogRef: MatDialogRef<EditVocabularyDialogComponent>;
   const vocabularyItemMock = {
     title: 'test',
-    definition: 'test',
+    type: 'verb' as VocabularyType,
+    definitions: ['test'],
     translation: 'test',
+    lessonDate: new Timestamp(1, 1),
+    important: false,
     examples: ['test'],
     links: [{ title: 'test', link: 'test' }],
   };
@@ -61,24 +67,24 @@ describe('Edit vocabulary item dialog Component', () => {
   });
 
   describe('form group', () => {
-    it('should have title, date and studentsCount control', () => {
+    it('should have proper controls', () => {
       const keys = Object.keys(component.formGroup.controls);
       expect(keys).toEqual([
         'title',
+        'type',
         'translation',
-        'definition',
+        'definitions',
+        'lessonDate',
+        'important',
         'examples',
         'links',
       ]);
     });
 
-    it('should controls have required validator', () => {
+    it('should controls have proper validators', () => {
       expect(
         component.formGroup.controls.title.hasValidator(Validators.required) &&
           component.formGroup.controls.translation.hasValidator(
-            Validators.required
-          ) &&
-          component.formGroup.controls.definition.hasValidator(
             Validators.required
           )
       ).toBeTruthy();
@@ -116,16 +122,16 @@ describe('Edit vocabulary item dialog Component', () => {
       expect(translationControl).toBeTruthy();
     });
 
-    it('should render definition control', () => {
-      const definitionControl = fixture.debugElement.query(
-        By.css('[data-testid="definition-control"]')
+    it('should render definitions array', () => {
+      const definitionsArray = fixture.debugElement.query(
+        By.css('[data-testid="definitions-array"]')
       );
-      expect(definitionControl).toBeTruthy();
+      expect(definitionsArray).toBeTruthy();
     });
 
     it('should render examples array', () => {
       const examplesArray = fixture.debugElement.query(
-        By.css('app-form-array-control')
+        By.css('[data-testid="examples-array"]')
       );
       expect(examplesArray).toBeTruthy();
     });
@@ -164,7 +170,12 @@ describe('Edit vocabulary item dialog Component', () => {
     });
 
     it('should close modal with form data after save button click only if form is valid', () => {
-      component.formGroup.patchValue(vocabularyItemMock);
+      const mock = {
+        ...vocabularyItemMock,
+        lessonDate: dayjs().format(),
+      };
+
+      component.formGroup.patchValue(mock);
       fixture.detectChanges();
 
       jest.spyOn(dialogRef, 'close');
@@ -174,7 +185,7 @@ describe('Edit vocabulary item dialog Component', () => {
       );
       submitButton.nativeElement.click();
 
-      expect(dialogRef.close).toHaveBeenCalledWith(vocabularyItemMock);
+      expect(dialogRef.close).toHaveBeenCalledWith(mock);
     });
   });
 
@@ -183,7 +194,7 @@ describe('Edit vocabulary item dialog Component', () => {
 
     beforeEach(() => {
       formArrayComponent = fixture.debugElement.query(
-        By.css('app-form-array-control')
+        By.css('[data-testid="examples-array"]')
       );
     });
 

@@ -6,28 +6,30 @@ import { HomeComponent } from './home.component';
 import { FIREBASE_TEST_PROVIDERS } from '../app.config';
 import { AuthService } from '../shared/data-access/auth.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AddLessonDialogComponent } from './ui/add-lesson-dialog/add-lesson-dialog.component';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { Lesson } from '../shared/models/lesson.model';
 import { Timestamp } from '@angular/fire/firestore';
 import { RouterTestingModule } from '@angular/router/testing';
-import { LessonsService } from './data-acess/lessons.service';
 import { DeleteConfirmDialogComponent } from '../shared/ui/delete-confirm-dialog/delete-confirm-dialog.component';
-import { EditLessonDialogComponent } from './ui/edit-lesson-dialog/edit-lesson-dialog.component';
 import { of } from 'rxjs';
+import { VocabularyListService } from './data-acess/vocabulary-list.service';
+import { VocabularyListItem } from '../shared/models/vocabulary.model';
+import { AddVocabularyDialogComponent } from '../lesson/ui/add-vocabulary-dialog/add-vocabulary-dialog.component';
 
 describe('Home Component', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
   let authService: AuthService;
-  let lessonService: LessonsService;
+
+  let vocabularyService: VocabularyListService;
   let dialog: MatDialog;
-  const lessonsMock: Lesson[] = [
+
+  const listMock: VocabularyListItem[] = [
     {
       id: 'test',
       title: 'test',
-      date: new Timestamp(1, 1),
-      studentsCount: 1,
+      lessonDate: new Timestamp(1, 1),
+      type: 'verb',
+      important: false,
       authorUid: 'test',
     },
   ];
@@ -36,12 +38,9 @@ describe('Home Component', () => {
     user: jest.fn(),
   };
 
-  const lessonServiceMock = {
-    lessons: jest.fn().mockReturnValue(lessonsMock),
+  const vocabularyServiceMock = {
+    vocabulary: jest.fn().mockReturnValue(listMock),
     remove$: {
-      next: jest.fn(),
-    },
-    edit$: {
       next: jest.fn(),
     },
     add$: {
@@ -59,8 +58,8 @@ describe('Home Component', () => {
           useValue: authServiceMock,
         },
         {
-          provide: LessonsService,
-          useValue: lessonServiceMock,
+          provide: VocabularyListService,
+          useValue: vocabularyServiceMock,
         },
         provideNoopAnimations(),
       ],
@@ -74,7 +73,7 @@ describe('Home Component', () => {
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     authService = TestBed.inject(AuthService);
-    lessonService = TestBed.inject(LessonsService);
+    vocabularyService = TestBed.inject(VocabularyListService);
     dialog = TestBed.inject(MatDialog);
     fixture.detectChanges();
   });
@@ -90,10 +89,19 @@ describe('Home Component', () => {
     });
   });
 
-  describe('add lesson', () => {
+  describe('add vocabulary', () => {
     const dialogRefMock = {
       afterClosed: jest.fn(() =>
-        of({ title: 'test', date: new Timestamp(1, 1), studentsCount: 1 })
+        of({
+          title: 'string',
+          definitions: ['string'],
+          translation: 'string',
+          type: 'verb',
+          lessonDate: new Timestamp(1, 1),
+          important: false,
+          examples: [],
+          links: [],
+        })
       ),
     } as any;
 
@@ -104,45 +112,50 @@ describe('Home Component', () => {
 
     beforeEach(() => {
       jest.spyOn(dialog, 'open').mockReturnValue(dialogRefMock);
+      jest.spyOn(component, 'openAddDialog');
     });
 
-    it('should render add lesson button', () => {
+    it('should render add vocabulary button', () => {
       const buttonElement = fixture.debugElement.query(By.css('button'));
       expect(buttonElement).toBeTruthy();
     });
 
     it('should open add dialog after button clicked', () => {
       const buttonElement = fixture.debugElement.query(By.css('button'));
+      // jest.spyOn(dialog, 'open');
+      // jest.spyOn(component, 'openAddDialog');
+
       buttonElement.nativeElement.click();
       fixture.detectChanges();
 
-      expect(dialog.open).toHaveBeenCalledWith(AddLessonDialogComponent);
+      expect(component.openAddDialog).toHaveBeenCalled();
+      expect(dialog.open).toHaveBeenCalledWith(AddVocabularyDialogComponent);
     });
 
     it('it should call add method if dialog was closed with lesson object', () => {
       expect(dialogRefMock.afterClosed).toHaveBeenCalled();
-      expect(lessonService.add$.next).toHaveBeenCalled();
+      expect(vocabularyService.add$.next).toHaveBeenCalled();
     });
   });
 
-  describe('app-lesson-list', () => {
-    let lessonListComponent: DebugElement;
+  describe('app-vocabulary-list', () => {
+    let vocabularyListComponent: DebugElement;
 
     beforeEach(() => {
-      lessonListComponent = fixture.debugElement.query(
-        By.css('app-lesson-list')
+      vocabularyListComponent = fixture.debugElement.query(
+        By.css('app-vocabulary-list')
       );
     });
 
-    describe('input: lessons', () => {
-      it('should use lessons array as an input', () => {
-        expect(lessonListComponent.componentInstance.lessons()).toEqual(
-          lessonsMock
+    describe('input: vocabulary', () => {
+      it('should use vocabulary array as an input', () => {
+        expect(vocabularyListComponent.componentInstance.vocabulary()).toEqual(
+          listMock
         );
       });
     });
 
-    describe('output: lessonDeleted', () => {
+    describe('output: vocabularyDeleted', () => {
       const dialogRefMock = {
         afterClosed: jest.fn(() => of('true')),
       } as any;
@@ -150,7 +163,7 @@ describe('Home Component', () => {
       beforeEach(() => {
         jest.spyOn(dialog, 'open').mockReturnValue(dialogRefMock);
         jest.spyOn(component, 'openDeleteDialog');
-        lessonListComponent.triggerEventHandler('lessonDeleted', '0');
+        vocabularyListComponent.triggerEventHandler('vocabularyDeleted', '0');
         fixture.detectChanges();
       });
 
@@ -161,32 +174,7 @@ describe('Home Component', () => {
 
       it('it should call remove method if dialog was closed with truthy value', () => {
         expect(dialogRefMock.afterClosed).toHaveBeenCalled();
-        expect(lessonService.remove$.next).toHaveBeenCalled();
-      });
-    });
-
-    describe('output: lessonEdited', () => {
-      const dialogRefMock = {
-        afterClosed: jest.fn(() => of(lessonsMock[0])),
-      } as any;
-
-      beforeEach(() => {
-        jest.spyOn(dialog, 'open').mockReturnValue(dialogRefMock);
-        jest.spyOn(component, 'openEditDialog');
-        lessonListComponent.triggerEventHandler('lessonEdited', lessonsMock[0]);
-        fixture.detectChanges();
-      });
-
-      it('should open lesson edit dialog', () => {
-        expect(component.openEditDialog).toHaveBeenCalledWith(lessonsMock[0]);
-        expect(dialog.open).toHaveBeenCalledWith(EditLessonDialogComponent, {
-          data: { lesson: lessonsMock[0] },
-        });
-      });
-
-      it('it should call edit method if dialog was closed with lesson object', () => {
-        expect(dialogRefMock.afterClosed).toHaveBeenCalled();
-        expect(lessonService.edit$.next).toHaveBeenCalled();
+        expect(vocabularyService.remove$.next).toHaveBeenCalled();
       });
     });
   });

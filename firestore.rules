@@ -6,17 +6,9 @@ service cloud.firestore {
      return request.auth != null;
     }
     
-    function isLessonValid() {
-  	  return request.resource.data.title != null && request.resource.data.title != '' && 
-      			 request.resource.data.date != null && request.resource.data.date != '' &&
-             request.resource.data.studentsCount != null &&
-             request.resource.data.authorUid != null;
-    }
-    
    function isVocabularyValid() {
   	  return request.resource.data.title != null && request.resource.data.title != '' && 
-      			 request.resource.data.translation != null && request.resource.data.translation != '' &&
-             request.resource.data.definition != null &&  request.resource.data.definition != ''  && 
+             request.resource.data.definitions != null &&  request.resource.data.definitions != ''  && 
              request.resource.data.authorUid != null;
     }
     
@@ -30,12 +22,6 @@ service cloud.firestore {
     
     match /{document=**} {
       allow read: if isAuthenticated();
-    }
-    
-    match /lessons/{document=**} {
-      allow create: if isAuthenticated() && isLessonValid();
-      allow update: if canUpdate() && isLessonValid();
-      allow delete: if canDelete();
     }
     
     match /vocabulary/{document=**} {

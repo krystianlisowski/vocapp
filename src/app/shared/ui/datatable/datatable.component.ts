@@ -38,7 +38,6 @@ import { TranslateModule } from '@ngx-translate/core';
     <table
       mat-table
       [dataSource]="datatable().rows()"
-      class="mat-elevation-z8"
       data-testid="table-element"
     >
       <!--- Note that these columns can be defined in any order.
@@ -50,7 +49,8 @@ import { TranslateModule } from '@ngx-translate/core';
         <th
           mat-header-cell
           *matHeaderCellDef
-          [class.text-right]="last"
+          [class.!text-end]="last"
+          class="border border-slate-300 !bg-slate-50"
           data-testid="table-header-col"
         >
           {{ col.header | translate }}
@@ -58,7 +58,8 @@ import { TranslateModule } from '@ngx-translate/core';
         <td
           mat-cell
           *matCellDef="let element"
-          [class.text-right]="last"
+          [class.!text-end]="last"
+          class="border border-slate-300"
           data-testid="table-col"
         >
           @if (col.template) {
@@ -81,26 +82,10 @@ import { TranslateModule } from '@ngx-translate/core';
       <tr
         data-testid="table-row"
         mat-row
+        class="border border-slate-300"
         *matRowDef="let row; columns: datatable().visibleColsKeys"
       ></tr>
     </table>
-  `,
-  styles: `
-    .table-col {
-      display: flex;
-      align-items: center;
-      flex: 1;
-      flex-basis: 120px;
-    }
-
-    .table-row {
-      display: flex;
-      align-items: center;
-    }
-
-    .text-right {
-      text-align: end;
-    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
