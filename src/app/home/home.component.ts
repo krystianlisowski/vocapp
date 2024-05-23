@@ -20,7 +20,7 @@ import { VocabularyListFiltersComponent } from './ui/vocabulary-list-filters/voc
         <div class="min-w-0 flex-1">
           <h1
             translate="home.heading"
-            class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
+            class="text-2xl font-bold leading-7 text-zinc-900 sm:truncate sm:text-3xl sm:tracking-tight"
           ></h1>
         </div>
         @if(authService.user()?.emailVerified) {

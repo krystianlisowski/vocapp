@@ -26,7 +26,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
     MatButton,
   ],
   template: `
-    <nav class="bg-gray-800">
+    <nav class="bg-zinc-900">
       <div class="container">
         <div class="relative flex h-16 items-center justify-between">
           <div
@@ -36,10 +36,10 @@ import { MatCard, MatCardContent } from '@angular/material/card';
               <a
                 data-testid="logo"
                 routerLink="/"
-                class="flex items-center text-gray-200 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2"
+                class="flex items-center text-zinc-100 "
               >
                 <mat-icon class="mr-2">menu_book</mat-icon>
-                <span>Vocapp</span>
+                <span class="text-xl">Vocapp</span>
               </a>
             </div>
           </div>
@@ -54,7 +54,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
               [matTooltip]="authService.user()?.email"
               aria-label="Example icon-button with menu icon"
             >
-              <mat-icon class="text-gray-200">person</mat-icon>
+              <mat-icon class="text-zinc-100">person</mat-icon>
             </button>
             <mat-menu #menu="matMenu" data-testid="action-list">
               <button
@@ -78,7 +78,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
 
     <div
       data-testid="verification-banner"
-      class="relative isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1"
+      class="relative isolate flex items-center gap-x-6 overflow-hidden bg-zinc-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1"
     >
       <div class="container">
         <div
@@ -100,7 +100,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
           ></div>
         </div>
         <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
-          <p class="text-sm leading-6 text-gray-900">
+          <p class="text-sm leading-6 text-zinc-900">
             <span translate="header.alert"></span>
           </p>
           @if(authService.verificationEmailSent()) {

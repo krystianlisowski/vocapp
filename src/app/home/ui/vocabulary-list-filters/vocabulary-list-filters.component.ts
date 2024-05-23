@@ -48,7 +48,9 @@ import { MatButton } from '@angular/material/button';
     MatButton,
   ],
   template: `
-    <div class="border border-slate-300  pb-3 pt-8 px-8  mb-10 relative">
+    <div
+      class="border border-zinc-200 bg-white  pb-3 pt-8 px-8  mb-10 relative rounded-xl"
+    >
       <form [formGroup]="formGroup" data-testid="form-group">
         <div class="grid grid-cols-4 gap-4">
           <mat-form-field

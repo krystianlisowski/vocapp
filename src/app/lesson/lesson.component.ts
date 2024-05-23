@@ -29,17 +29,17 @@ import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component
       <div class="lg:flex lg:justify-between">
         <div class="min-w-0 flex-1">
           <h2
-            class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
+            class="text-2xl font-bold leading-7 text-zinc-900 sm:truncate sm:text-3xl sm:tracking-tight"
           >
             {{ detailsService.vocabulary()?.title }}
           </h2>
           <div class="mt-1 flex sm:mt-0 sm:flex-row sm:flex-wrap space-x-6">
             <div
-              class="mt-2 flex items-center text-sm text-gray-500"
+              class="mt-2 flex items-center text-base text-zinc-500"
               data-testid="lesson-date"
             >
               <svg
-                class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                class="mr-1.5 h-5 w-5 flex-shrink-0 text-zinc-400"
                 viewBox="0 0 20 20"
                 fill="currentColor"
                 aria-hidden="true"
@@ -55,7 +55,7 @@ import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component
 
             @if (detailsService.vocabulary()?.important) {
             <div
-              class="mt-2 flex items-center text-sm text-gray-500"
+              class="mt-2 flex items-center text-sm text-zinc-500"
               data-testid="important-badge"
             >
               <span
@@ -64,20 +64,6 @@ import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component
               >
             </div>
             }
-
-            <div
-              class="mt-2 flex items-center text-sm text-gray-500"
-              data-testid="type-badge"
-            >
-              <span
-                class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
-              >
-                {{
-                  'vocabulary.type.' + detailsService.vocabulary()?.type
-                    | translate
-                }}</span
-              >
-            </div>
           </div>
         </div>
 
@@ -110,19 +96,38 @@ import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component
     </header>
 
     <main>
-      <div class="mt-10 border-t border-gray-100">
-        <dl class="divide-y divide-gray-100">
+      <div
+        class="mt-10 p-4 sm:p-8 relative h-full w-full rounded-xl bg-white border-zinc-200 border forced-colors:outline"
+      >
+        <dl class="divide-y divide-zinc-100">
+          <div
+            class="px-4 pb-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+            data-testid="type"
+          >
+            <dt
+              class="text-base font-medium leading-6 text-zinc-900"
+              translate="vocabulary.type.label"
+            ></dt>
+            <dd
+              class="mt-1 text-base leading-6 text-zinc-700 sm:col-span-2 sm:mt-0"
+            >
+              {{
+                'vocabulary.type.' + detailsService.vocabulary()?.type
+                  | translate
+              }}
+            </dd>
+          </div>
           @if (detailsService.vocabulary()?.translation) {
           <div
             class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
             data-testid="translation"
           >
             <dt
-              class="text-base font-medium leading-6 text-gray-900"
+              class="text-base font-medium leading-6 text-zinc-900"
               translate="vocabulary.translation"
             ></dt>
             <dd
-              class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+              class="mt-1 text-base leading-6 text-zinc-700 sm:col-span-2 sm:mt-0"
             >
               {{ detailsService.vocabulary()?.translation }}
             </dd>
@@ -133,17 +138,17 @@ import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component
             data-testid="definitions"
           >
             <dt
-              class="text-base font-medium leading-6 text-gray-900"
+              class="text-base font-medium leading-6 text-zinc-900"
               translate="vocabulary.definitions"
             ></dt>
             <dd
-              class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+              class="mt-1 text-base leading-6 text-zinc-700 sm:col-span-2 sm:mt-0"
             >
               <ul role="list" class="list-disc space-y-2 pl-4 mt-1">
                 @for (item of detailsService.vocabulary()?.definitions; track
                 $index) {
-                <li class="text-gray-400 text-base">
-                  <span class="text-gray-600"> {{ item }} </span>
+                <li class="text-zinc-400 text-base">
+                  <span class="text-zinc-600"> {{ item }} </span>
                 </li>
                 }
               </ul>
@@ -155,17 +160,17 @@ import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component
             data-testid="examples"
           >
             <dt
-              class="text-base font-medium leading-6 text-gray-900"
+              class="text-base font-medium leading-6 text-zinc-900"
               translate="vocabulary.examples"
             ></dt>
             <dd
-              class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+              class="mt-1 text-base leading-6 text-zinc-700 sm:col-span-2 sm:mt-0"
             >
               <ul role="list" class="list-disc space-y-2 pl-4 mt-1">
                 @for (item of detailsService.vocabulary()?.examples; track
                 $index) {
-                <li class="text-gray-400 text-base">
-                  <span class="text-gray-600"> {{ item }} </span>
+                <li class="text-zinc-400 text-base">
+                  <span class="text-zinc-600"> {{ item }} </span>
                 </li>
                 }
               </ul>
@@ -177,16 +182,16 @@ import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component
             data-testid="links"
           >
             <dt
-              class="text-base font-medium leading-6 text-gray-900"
+              class="text-base font-medium leading-6 text-zinc-900"
               translate="vocabulary.links"
             ></dt>
             <dd
-              class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+              class="mt-1 text-base leading-6 text-zinc-700 sm:col-span-2 sm:mt-0"
             >
               <ul role="list" class="list-disc space-y-2 pl-4 mt-1">
                 @for (item of detailsService.vocabulary()?.links; track $index)
                 {
-                <li class="text-gray-400 text-base">
+                <li class="text-zinc-400 text-base">
                   <a
                     [href]="item.link"
                     target="_blank"

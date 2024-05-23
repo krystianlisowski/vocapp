@@ -41,7 +41,7 @@ import { TranslateModule } from '@ngx-translate/core';
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2
           translate="login.heading"
-          class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
+          class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-zinc-900"
         ></h2>
       </div>
 
@@ -101,7 +101,7 @@ import { TranslateModule } from '@ngx-translate/core';
           ></button>
         </form>
 
-        <p class="mt-4 text-center text-sm text-gray-500">
+        <p class="mt-4 text-center text-sm text-zinc-500">
           <span translate="login.redirectQuestion"></span>
           <a
             translate="login.redirect"

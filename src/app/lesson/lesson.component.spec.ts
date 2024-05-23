@@ -105,9 +105,9 @@ describe('Lesson Component', () => {
       expect(dateElement).toBeTruthy();
     });
 
-    it('should render a type of speech badge', () => {
+    it('should render a type of speech info', () => {
       const typeElement = fixture.debugElement.query(
-        By.css('[data-testid="type-badge"]')
+        By.css('[data-testid="type"]')
       );
       expect(typeElement).toBeTruthy();
     });
