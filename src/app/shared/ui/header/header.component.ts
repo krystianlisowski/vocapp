@@ -8,7 +8,6 @@ import { RouterLink } from '@angular/router';
 import { LanguageSwitchComponent } from '../language-switch/language-switch.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../data-access/auth.service';
-import { MatCard, MatCardContent } from '@angular/material/card';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -67,7 +66,6 @@ import { MatCard, MatCardContent } from '@angular/material/card';
               </button>
             </mat-menu>
             }
-
             <app-language-switch></app-language-switch>
           </div>
         </div>
@@ -86,7 +84,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
           aria-hidden="true"
         >
           <div
-            class="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
+            class="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#059669] to-[#fdba74] opacity-30"
             style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)"
           ></div>
         </div>
@@ -95,7 +93,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
           aria-hidden="true"
         >
           <div
-            class="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
+            class="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-[#059669] to-[#fdba74] opacity-30"
             style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)"
           ></div>
         </div>
@@ -106,7 +104,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
           @if(authService.verificationEmailSent()) {
           <mat-icon
             data-testid="send-success-icon"
-            class="text-green-600"
+            class="text-emerald-600"
             [matTooltip]="'header.emailWasSent' | translate"
             >done</mat-icon
           >

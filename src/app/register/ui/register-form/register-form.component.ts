@@ -113,7 +113,7 @@ import { TranslateModule } from '@ngx-translate/core';
           }
           <button
             mat-raised-button
-            class="d-block w-full"
+            class="d-block w-full mt-4"
             color="primary"
             type="submit"
             translate="register.confirm"
@@ -122,13 +122,13 @@ import { TranslateModule } from '@ngx-translate/core';
           ></button>
         </form>
 
-        <p class="mt-4 text-center text-sm text-zinc-500">
+        <p class="!mt-4 text-center text-sm text-zinc-500">
           <span translate="register.redirectQuestion"></span>
           <a
             translate="register.redirect"
             data-testid="login-link"
             routerLink="/login"
-            class="font-semibold leading-6 text-indigo-700 hover:text-indigo-500 ml-2"
+            class="font-semibold leading-6 text-emerald-700 hover:text-emerald-500 ml-2"
           ></a>
         </p>
       </div>

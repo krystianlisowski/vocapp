@@ -9,15 +9,15 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Timestamp } from '@angular/fire/firestore';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DeleteConfirmDialogComponent } from '../shared/ui/delete-confirm-dialog/delete-confirm-dialog.component';
-import { LessonComponent } from './lesson.component';
+import { VocabularyDetailsComponent } from './vocabulary-details.component';
 import { Vocabulary } from '../shared/models/vocabulary.model';
 import { EditVocabularyDialogComponent } from './ui/edit-vocabulary-dialog/edit-vocabulary-dialog.component';
 import { of } from 'rxjs';
 import { VocabularyDetailsService } from './data-acess/vocabulary-details.service';
 
-describe('Lesson Component', () => {
-  let component: LessonComponent;
-  let fixture: ComponentFixture<LessonComponent>;
+describe('Vocabulary Details Component', () => {
+  let component: VocabularyDetailsComponent;
+  let fixture: ComponentFixture<VocabularyDetailsComponent>;
   let authService: AuthService;
   let detailsService: VocabularyDetailsService;
   let dialog: MatDialog;
@@ -41,6 +41,7 @@ describe('Lesson Component', () => {
 
   const detailsServiceMock = {
     vocabulary: jest.fn().mockReturnValue(vocabularyMock),
+    loaded: jest.fn(),
     initializeState: jest.fn(),
     remove$: {
       next: jest.fn(),
@@ -56,7 +57,7 @@ describe('Lesson Component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        LessonComponent,
+        VocabularyDetailsComponent,
         TranslateModule.forRoot(),
         RouterTestingModule,
       ],
@@ -73,13 +74,13 @@ describe('Lesson Component', () => {
         provideNoopAnimations(),
       ],
     })
-      .overrideComponent(LessonComponent, {
+      .overrideComponent(VocabularyDetailsComponent, {
         remove: { imports: [], providers: [VocabularyDetailsService] },
         add: { imports: [] },
       })
       .compileComponents();
 
-    fixture = TestBed.createComponent(LessonComponent);
+    fixture = TestBed.createComponent(VocabularyDetailsComponent);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('id', 'test');
     authService = TestBed.inject(AuthService);

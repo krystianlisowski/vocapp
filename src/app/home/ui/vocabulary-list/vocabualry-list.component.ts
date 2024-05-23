@@ -57,7 +57,7 @@ import { NgClass } from '@angular/common';
     </ng-template>
 
     <ng-template #phraseCol let-item="item">
-      <span [ngClass]="{ 'text-green-600 font-semibold': item.important }">
+      <span [ngClass]="{ 'text-emerald-600 font-semibold': item.important }">
         {{ item.title }}
       </span>
     </ng-template>

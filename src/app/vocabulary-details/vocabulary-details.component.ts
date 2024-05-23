@@ -195,7 +195,7 @@ import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component
                   <a
                     [href]="item.link"
                     target="_blank"
-                    class="font-medium text-indigo-700 hover:text-indigo-500"
+                    class="font-medium text-emerald-700 hover:text-emerald-500"
                   >
                     {{ item.title }}</a
                   >
@@ -210,7 +210,7 @@ import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component
     </main>
   `,
 })
-export class LessonComponent implements OnInit {
+export class VocabularyDetailsComponent implements OnInit {
   private dialog = inject(MatDialog);
   private destroyRef = inject(DestroyRef);
   private router = inject(Router);
@@ -222,6 +222,12 @@ export class LessonComponent implements OnInit {
     effect(() => {
       if (!this.authService.user()) {
         this.router.navigate(['login']);
+      }
+    });
+
+    effect(() => {
+      if (this.detailsService.loaded() && !this.detailsService.vocabulary()) {
+        this.router.navigate(['']);
       }
     });
   }

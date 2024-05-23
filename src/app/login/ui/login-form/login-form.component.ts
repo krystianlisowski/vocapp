@@ -37,7 +37,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatPrefix,
   ],
   template: `
-    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="flex min-h-full flex-col justify-center px-2 py-12 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2
           translate="login.heading"
@@ -92,7 +92,7 @@ import { TranslateModule } from '@ngx-translate/core';
           }
           <button
             mat-raised-button
-            class="block w-full"
+            class="block w-full mt-4"
             color="primary"
             type="submit"
             translate="login.confirm"
@@ -101,13 +101,13 @@ import { TranslateModule } from '@ngx-translate/core';
           ></button>
         </form>
 
-        <p class="mt-4 text-center text-sm text-zinc-500">
+        <p class="!mt-4 text-center text-sm text-zinc-500">
           <span translate="login.redirectQuestion"></span>
           <a
             translate="login.redirect"
             data-testid="register-link"
             routerLink="/register"
-            class="font-semibold leading-6 text-indigo-700 hover:text-indigo-500 ml-2"
+            class="font-semibold leading-6 text-emerald-700 hover:text-emerald-500 ml-2"
           ></a>
         </p>
       </div>

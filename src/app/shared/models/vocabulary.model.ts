@@ -1,7 +1,7 @@
 import { Timestamp } from '@angular/fire/firestore';
 import { FormControl, FormArray, FormGroup } from '@angular/forms';
 import { TypeOfSpeech } from '../enums/type-of-speech.enum';
-import { VocabularyType } from '../../lesson/data-acess/dictionary.service';
+import { VocabularyType } from '../../vocabulary-details/data-acess/dictionary.service';
 
 export interface Vocabulary {
   id: string;
@@ -45,3 +45,10 @@ export type VocabularyForm = {
   examples: FormArray<FormControl<string>>;
   links: FormArray<FormGroup<LinkForm>>;
 };
+
+export const vocabularyTypeOptions: { label: string; value: VocabularyType }[] =
+  [
+    { label: 'vocabulary.type.noun', value: 'noun' },
+    { label: 'vocabulary.type.verb', value: 'verb' },
+    { label: 'vocabulary.type.adjective', value: 'adjective' },
+  ];

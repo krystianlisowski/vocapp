@@ -1,5 +1,11 @@
-import { Component, computed, effect, inject } from '@angular/core';
 import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
+import {
+  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -7,6 +13,7 @@ import {
   Validators,
 } from '@angular/forms';
 import {
+  MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogClose,
   MatDialogContent,
@@ -14,40 +21,27 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { MatButton } from '@angular/material/button';
-import { MatCheckbox } from '@angular/material/checkbox';
-import {
-  MatFormField,
-  MatLabel,
-  MatSuffix,
-} from '@angular/material/form-field';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 import {
-  Vocabulary,
+  LinkForm,
+  VocabularyArray,
   VocabularyForm,
+  VocabularyLink,
+  vocabularyTypeOptions,
 } from '../../../shared/models/vocabulary.model';
 import { FormArrayControlComponent } from '../../../shared/ui/form-array-control/form-array-control.component';
 import { FormArrayGroupComponent } from '../../../shared/ui/form-array-group/form-array-group.component';
-import {
-  DictionaryService,
-  VocabularyType,
-} from '../../data-acess/dictionary.service';
-import { MatIcon } from '@angular/material/icon';
-import { MatOption, MatSelect } from '@angular/material/select';
-import { map, pairwise, startWith, tap } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatCheckbox } from '@angular/material/checkbox';
 import {
   MatDatepicker,
-  MatDatepickerInput,
   MatDatepickerToggle,
+  MatDatepickerInput,
 } from '@angular/material/datepicker';
+import { MatOption, provideNativeDateAdapter } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
 
-type VocabularyArray = keyof Pick<
-  Vocabulary,
-  'examples' | 'links' | 'definitions'
->;
-type LinkForm = { title: FormControl<string>; link: FormControl<string> };
 @Component({
   standalone: true,
   imports: [
@@ -61,8 +55,6 @@ type LinkForm = { title: FormControl<string>; link: FormControl<string> };
     MatFormField,
     MatLabel,
     MatInput,
-    MatIcon,
-    MatSuffix,
     MatSelect,
     MatOption,
     FormArrayControlComponent,
@@ -78,30 +70,7 @@ type LinkForm = { title: FormControl<string>; link: FormControl<string> };
       translate="addVocabularyDialog.heading"
       data-testid="dialog-title"
     ></h2>
-
     <mat-dialog-content>
-      @if (showDictionaryButton()) {
-      <div class="w-full text-right">
-        <span
-          (click)="
-            dictionaryService.onDictionarySearch(
-              formGroup.controls.title.value,
-              formGroup.controls.type!.value
-            )
-          "
-          class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-        >
-          {{ 'Wyszukaj w słowniku' }}
-        </span>
-
-        @if (dictionaryService.definitionsCount()) {
-        <div>
-          {{ dictionaryService.currentIndex() + 1 }} z
-          {{ dictionaryService.definitionsCount() }}
-        </div>
-        }
-      </div>
-      }
       <form [formGroup]="formGroup" class="py-5" data-testid="form-group">
         <mat-form-field
           appearance="outline"
@@ -119,14 +88,13 @@ type LinkForm = { title: FormControl<string>; link: FormControl<string> };
             class="block w-full"
           >
             <mat-label translate="vocabulary.type.label"></mat-label>
-            <select matNativeControl formControlName="type">
-              <option value="noun" translate="vocabulary.type.noun"></option>
-              <option value="verb" translate="vocabulary.type.verb"></option>
-              <option
-                value="adjective"
-                translate="vocabulary.type.adjective"
-              ></option>
-            </select>
+            <mat-select formControlName="type" name="type">
+              @for (item of vocabularyTypeOptions; track $index) {
+              <mat-option [value]="item.value">
+                {{ item.label | translate }}
+              </mat-option>
+              }
+            </mat-select>
           </mat-form-field>
 
           <mat-form-field
@@ -210,58 +178,48 @@ type LinkForm = { title: FormControl<string>; link: FormControl<string> };
       ></button>
     </mat-dialog-actions>
   `,
-  providers: [provideNativeDateAdapter(), DictionaryService],
+  providers: [provideNativeDateAdapter()],
 })
-export class AddVocabularyDialogComponent {
+export class EditVocabularyDialogComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
-  protected readonly dictionaryService = inject(DictionaryService);
   private readonly dialogRef = inject(
-    MatDialogRef<AddVocabularyDialogComponent>
+    MatDialogRef<EditVocabularyDialogComponent>
   );
-  formGroup = this.fb.nonNullable.group<VocabularyForm>({
-    title: this.fb.nonNullable.control('', [Validators.required]),
-    type: this.fb.nonNullable.control<VocabularyType>('verb', [
-      Validators.required,
-    ]),
-    translation: this.fb.nonNullable.control(''),
-    definitions: this.fb.nonNullable.array<FormControl>([]),
-    lessonDate: this.fb.nonNullable.control('', [Validators.required]),
-    important: this.fb.nonNullable.control(false),
-    examples: this.fb.nonNullable.array<FormControl>([]),
-    links: this.fb.nonNullable.array<FormGroup<LinkForm>>([]),
-  });
+  private data = inject(MAT_DIALOG_DATA);
 
-  onTypeChange = toSignal(
-    this.formGroup.controls.type!.valueChanges.pipe(
-      tap((val) =>
-        this.dictionaryService.onDictionarySearch(
-          this.formGroup.controls.title.value,
-          val
-        )
-      )
-    )
-  );
+  formGroup!: FormGroup<VocabularyForm>;
+  vocabularyTypeOptions = vocabularyTypeOptions;
 
-  showDictionaryButton = toSignal(
-    this.formGroup.controls.title.valueChanges.pipe(
-      startWith(this.formGroup.controls.title.value),
-      pairwise(),
-      map(([prev, curr]) => curr && curr !== prev)
-    )
-  );
+  ngOnInit(): void {
+    const {
+      title,
+      translation,
+      definitions,
+      examples,
+      links,
+      type,
+      important,
+      lessonDate,
+    } = this.data.phrase;
 
-  constructor() {
-    effect(() => {
-      this.formGroup.controls.definitions.clear();
-      this.dictionaryService.definitions()?.forEach((item) => {
-        this.addDefinition(item);
-      });
+    this.formGroup = this.fb.nonNullable.group({
+      title: this.fb.nonNullable.control(title || '', [Validators.required]),
+      type: this.fb.nonNullable.control(type, [Validators.required]),
+      translation: this.fb.nonNullable.control(translation || '', [
+        Validators.required,
+      ]),
+      definitions: this.fb.nonNullable.array<FormControl>(definitions || [], [
+        Validators.minLength(1),
+      ]),
+      lessonDate: this.fb.nonNullable.control(lessonDate.toDate(), [
+        Validators.required,
+      ]),
+      important: this.fb.nonNullable.control(important || false),
+      examples: this.fb.nonNullable.array<FormControl>(examples || []),
+      links: this.fb.nonNullable.array<FormGroup<LinkForm>>([]),
     });
-    effect(() => {
-      if (this.dictionaryService.error()) {
-        this.formGroup.controls.definitions.clear();
-      }
-    });
+
+    links.map((item: VocabularyLink) => this.addLink(item.title, item.link));
   }
 
   submit() {
@@ -274,8 +232,8 @@ export class AddVocabularyDialogComponent {
     this.dialogRef.close(this.formGroup.value);
   }
 
-  addDefinition(value = '') {
-    const control = this.fb.nonNullable.control(value, [Validators.required]);
+  addDefinition() {
+    const control = this.fb.nonNullable.control('', [Validators.required]);
     this.formGroup.controls.definitions.push(control);
   }
 
@@ -284,10 +242,10 @@ export class AddVocabularyDialogComponent {
     this.formGroup.controls.examples.push(control);
   }
 
-  addLink() {
+  addLink(title?: string, link?: string) {
     const linkGroup = this.fb.group({
-      title: this.fb.nonNullable.control(''),
-      link: this.fb.nonNullable.control(''),
+      title: this.fb.nonNullable.control(title || ''),
+      link: this.fb.nonNullable.control(link || ''),
     });
 
     this.formGroup.controls.links.push(linkGroup);

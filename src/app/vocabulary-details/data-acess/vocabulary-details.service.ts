@@ -25,7 +25,6 @@ import {
 import { FirebaseCollection } from '../../shared/enums/firebase-collection.enum';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Vocabulary } from '../../shared/models/vocabulary.model';
-import { AuthService } from '../../shared/data-access/auth.service';
 import { ErrorHandlerService } from '../../shared/utils/error-handler.service';
 
 export interface VocabularyDetailsState {
@@ -48,7 +47,6 @@ export class VocabularyDetailsService {
     FirebaseCollection.VOCABULARY
   );
   private destoyRef = inject(DestroyRef);
-  private authService = inject(AuthService);
 
   // State
   private state = signal<VocabularyDetailsState>({

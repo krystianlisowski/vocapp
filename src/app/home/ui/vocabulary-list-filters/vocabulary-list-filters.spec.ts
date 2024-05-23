@@ -84,7 +84,6 @@ describe('Vocabulary list Filters Component', () => {
   describe('reset button', () => {
     beforeEach(() => {
       component.formGroup.patchValue({ type: 'verb' });
-      component.formGroup.markAsDirty();
       fixture.detectChanges();
     });
 

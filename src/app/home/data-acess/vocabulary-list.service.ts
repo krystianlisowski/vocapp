@@ -33,7 +33,7 @@ import {
   VocabularyAddPayload,
   VocabularyListItem,
 } from '../../shared/models/vocabulary.model';
-import { VocabularyType } from '../../lesson/data-acess/dictionary.service';
+import { VocabularyType } from '../../vocabulary-details/data-acess/dictionary.service';
 
 export interface VocabularyListState {
   vocabulary: VocabularyListItem[];

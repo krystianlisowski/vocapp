@@ -1,19 +1,24 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from '@angular/core';
 import { DatatableManager } from './datatable';
 import { DatatableFormatterPipe } from './datatable-formatter.pipe';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { EmptyListComponent } from '../empty-list/empty-list.component';
 
 @Component({
   selector: 'app-datatable',
   standalone: true,
-  imports: [CommonModule, DatatableFormatterPipe, TranslateModule],
   template: `
     <div
       class="relative h-full w-full rounded-xl bg-white border-zinc-200 border forced-colors:outline"
     >
       <div
-        class="grid h-full w-full justify-items-center overflow-hidden place-items-start p-8 "
+        class="grid h-full w-full justify-items-center overflow-hidden place-items-start p-8"
       >
         <div class="w-full min-w-0">
           <div class="flow-root">
@@ -63,6 +68,10 @@ import { TranslateModule } from '@ngx-translate/core';
                     }
                   </tbody>
                 </table>
+
+                @if (emptyList()) {
+                <app-empty-list class=""></app-empty-list>
+                } @else { }
               </div>
             </div>
           </div>
@@ -71,7 +80,14 @@ import { TranslateModule } from '@ngx-translate/core';
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CommonModule,
+    DatatableFormatterPipe,
+    TranslateModule,
+    EmptyListComponent,
+  ],
 })
 export class DatatableComponent<T extends { [key: string]: any }> {
   datatable = input.required<DatatableManager<T>>();
+  emptyList = computed(() => !this.datatable().rows().length);
 }

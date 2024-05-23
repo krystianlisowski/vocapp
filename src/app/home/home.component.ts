@@ -9,7 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../shared/data-access/auth.service';
 import { DeleteConfirmDialogComponent } from '../shared/ui/delete-confirm-dialog/delete-confirm-dialog.component';
-import { AddVocabularyDialogComponent } from '../lesson/ui/add-vocabulary-dialog/add-vocabulary-dialog.component';
+import { AddVocabularyDialogComponent } from '../vocabulary-details/ui/add-vocabulary-dialog/add-vocabulary-dialog.component';
 import { VocabularyListFiltersComponent } from './ui/vocabulary-list-filters/vocabulary-list-filters.component';
 @Component({
   selector: 'app-home',

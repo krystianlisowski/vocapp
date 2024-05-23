@@ -13,7 +13,7 @@ import { DeleteConfirmDialogComponent } from '../shared/ui/delete-confirm-dialog
 import { of } from 'rxjs';
 import { VocabularyListService } from './data-acess/vocabulary-list.service';
 import { VocabularyListItem } from '../shared/models/vocabulary.model';
-import { AddVocabularyDialogComponent } from '../lesson/ui/add-vocabulary-dialog/add-vocabulary-dialog.component';
+import { AddVocabularyDialogComponent } from '../vocabulary-details/ui/add-vocabulary-dialog/add-vocabulary-dialog.component';
 
 describe('Home Component', () => {
   let component: HomeComponent;

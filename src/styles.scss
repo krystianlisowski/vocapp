@@ -1,9 +1,121 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use "@angular/material" as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+
+$mat-primary: (
+  50: #fafafa,
+  100: #f4f4f5,
+  200: #e5e5e5,
+  300: #d4d4d4,
+  400: #a1a1aa,
+  500: #737373,
+  600: #52525b,
+  700: #3f3f46,
+  800: #27272a,
+  900: #18181b,
+  contrast: (),
+);
+
+$mat-accent: (
+  50: #ecfdf5,
+  100: #d1fae5,
+  200: #a7f3d0,
+  300: #6ee7b7,
+  400: #34d399,
+  500: #10b981,
+  600: #059669,
+  700: #059669,
+  800: #065f46,
+  900: #064e3b,
+  contrast: (),
+);
+
+$mat-warn: (
+  50: #fef2f2,
+  100: #fee2e2,
+  200: #fecaca,
+  300: #fca5a5,
+  400: #f87171,
+  500: #ef4444,
+  600: #dc2626,
+  700: #b91c1c,
+  800: #991b1b,
+  900: #7f1d1d,
+  contrast: (),
+);
+
+$vocapp-primary: mat.define-palette($mat-primary, 900, 800, 400);
+$vocapp-accent: mat.define-palette($mat-accent, 600, 500, 300);
+$vocapp-warn: mat.define-palette($mat-warn, 600, 600, 600);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$vocapp-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $vocapp-primary,
+      accent: $vocapp-accent,
+      warn: $vocapp-warn,
+    ),
+  )
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($vocapp-theme);
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import "../node_modules/@angular/material/prebuilt-themes/indigo-pink.css";
-
 .mdc-notched-outline__notch {
   border-style: none;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-body p,
+.mat-body-2 p,
+.mat-typography .mat-body p,
+.mat-typography .mat-body-2 p,
+.mat-typography p,
+.mat-h1,
+.mat-subtitle-1,
+.mat-typography .mat-h1,
+.mat-typography .mat-subtitle-1,
+.mat-typography h1,
+.mat-h2,
+.mat-subtitle-1,
+.mat-typography .mat-h2,
+.mat-typography .mat-subtitle-1,
+.mat-typography h2,
+.mat-h3,
+.mat-subtitle-1,
+.mat-typography .mat-h3,
+.mat-typography .mat-subtitle-1,
+.mat-typography h3,
+.mat-h4,
+.mat-subtitle-1,
+.mat-typography .mat-h4,
+.mat-typography .mat-subtitle-1,
+.mat-typography h4 {
+  margin: unset;
 }

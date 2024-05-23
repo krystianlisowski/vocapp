@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
 import { authGuard } from './shared/guards/auth.guard';
 
 export const routes: Routes = [
@@ -24,6 +23,8 @@ export const routes: Routes = [
     path: ':id',
     canActivate: [authGuard],
     loadComponent: () =>
-      import('./lesson/lesson.component').then((c) => c.LessonComponent),
+      import('./vocabulary-details/vocabulary-details.component').then(
+        (c) => c.VocabularyDetailsComponent
+      ),
   },
 ];

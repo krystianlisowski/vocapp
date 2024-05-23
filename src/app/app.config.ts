@@ -63,6 +63,6 @@ export const appConfig: ApplicationConfig = {
         defaultLanguage: 'en',
       })
     ),
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { width: '1024px' } },
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { width: '1024px' } }, provideAnimationsAsync(),
   ],
 };

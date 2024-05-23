@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Output,
+  computed,
   inject,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { VocabularyType } from '../../../lesson/data-acess/dictionary.service';
+import { VocabularyType } from '../../../vocabulary-details/data-acess/dictionary.service';
 import {
   MatFormField,
   MatLabel,
@@ -27,6 +27,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
 import { MatButton } from '@angular/material/button';
+import { vocabularyTypeOptions } from '../../../shared/models/vocabulary.model';
 
 @Component({
   selector: 'app-vocabulary-list-filters',
@@ -69,15 +70,11 @@ import { MatButton } from '@angular/material/button';
           >
             <mat-label translate="vocabulary.type.label"></mat-label>
             <mat-select formControlName="type" name="type">
-              <mat-option value="noun">
-                {{ 'vocabulary.type.noun' | translate }}
+              @for (item of vocabularyTypeOptions; track $index) {
+              <mat-option [value]="item.value">
+                {{ item.label | translate }}
               </mat-option>
-              <mat-option value="verb">
-                {{ 'vocabulary.type.verb' | translate }}
-              </mat-option>
-              <mat-option value="adjective">
-                {{ 'vocabulary.type.adjective' | translate }}
-              </mat-option>
+              }
             </mat-select>
           </mat-form-field>
 
@@ -105,7 +102,7 @@ import { MatButton } from '@angular/material/button';
         </div>
       </form>
 
-      @if (formGroup.dirty) {
+      @if (filtersModified()) {
       <span class="absolute bottom-4 right-4" data-testid="reset-button">
         <button
           mat-button
@@ -122,11 +119,6 @@ import { MatButton } from '@angular/material/button';
   providers: [provideNativeDateAdapter()],
 })
 export class VocabularyListFiltersComponent {
-  foods = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' },
-  ];
   #fb = inject(FormBuilder);
   formGroup = this.#fb.group({
     title: this.#fb.control<string | null>(null),
@@ -134,12 +126,21 @@ export class VocabularyListFiltersComponent {
     lessonDate: this.#fb.control<string | null>(null),
     important: this.#fb.control<boolean | null>(null),
   });
+  vocabularyTypeOptions = vocabularyTypeOptions;
 
   #onFormsChanged = toSignal(
     this.formGroup.valueChanges.pipe(
       tap((value) => this.filtersChanged.emit(value))
     )
   );
+
+  filtersModified = computed(() => {
+    if (!this.#onFormsChanged()) {
+      return false;
+    }
+
+    return Object.values(this.#onFormsChanged()!).some((val) => val);
+  });
 
   @Output() filtersChanged = new EventEmitter<Partial<VocabularyListFilters>>();
 }
