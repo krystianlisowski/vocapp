@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../shared/data-access/auth.service';
 import { DeleteConfirmDialogComponent } from '../shared/ui/delete-confirm-dialog/delete-confirm-dialog.component';
 import { AddVocabularyDialogComponent } from '../lesson/ui/add-vocabulary-dialog/add-vocabulary-dialog.component';
+import { VocabularyListFiltersComponent } from './ui/vocabulary-list-filters/vocabulary-list-filters.component';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -35,13 +36,21 @@ import { AddVocabularyDialogComponent } from '../lesson/ui/add-vocabulary-dialog
     </header>
 
     <main>
+      <app-vocabulary-list-filters
+        (filtersChanged)="vocabularyService.filter$.next($event)"
+      ></app-vocabulary-list-filters>
       <app-vocabulary-list
         [vocabulary]="vocabularyService.vocabulary()"
         (vocabularyDeleted)="openDeleteDialog($event)"
       ></app-vocabulary-list>
     </main>
   `,
-  imports: [VocabularyListComponent, MatButton, TranslateModule],
+  imports: [
+    VocabularyListComponent,
+    MatButton,
+    TranslateModule,
+    VocabularyListFiltersComponent,
+  ],
 })
 export class HomeComponent {
   private dialog = inject(MatDialog);

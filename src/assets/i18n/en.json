@@ -3,7 +3,8 @@
     "cancel": "Cancel",
     "save": "Save",
     "delete": "Delete",
-    "emptyList": "No records found"
+    "emptyList": "No records found",
+    "resetFilters": "Reset filters"
   },
   "tooltip": {
     "edit": "Edit action available only for author.",

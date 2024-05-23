@@ -3,7 +3,8 @@
     "cancel": "Anuluj",
     "save": "Zapisz",
     "delete": "Usuń",
-    "emptyList": "Nie znaleziono rekordów"
+    "emptyList": "Nie znaleziono rekordów",
+    "resetFilters": "Wyczyść filtry"
   },
   "tooltip": {
     "edit": "Akcja edycji dostępna tylko dla autora.",
