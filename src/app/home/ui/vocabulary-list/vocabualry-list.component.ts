@@ -21,6 +21,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { VocabularyListItem } from '../../../shared/models/vocabulary.model';
 import { NgClass } from '@angular/common';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-vocabulary-list',
@@ -35,6 +36,7 @@ import { NgClass } from '@angular/common';
     MatProgressSpinner,
     MatTooltip,
     CanWritePipe,
+    ClipboardModule,
   ],
   template: `
     <app-datatable [datatable]="datatable()!"></app-datatable>
@@ -51,7 +53,11 @@ import { NgClass } from '@angular/common';
       </button>
       }
 
-      <a mat-icon-button [routerLink]="[item.id]">
+      <a
+        mat-icon-button
+        [routerLink]="[item.id]"
+        class="text-zinc-900 hover:text-zinc-600"
+      >
         <mat-icon>arrow_forward_ios</mat-icon>
       </a>
     </ng-template>
@@ -60,6 +66,12 @@ import { NgClass } from '@angular/common';
       <span [ngClass]="{ 'text-emerald-600 font-semibold': item.important }">
         {{ item.title }}
       </span>
+      <mat-icon
+        [cdkCopyToClipboard]="item.title"
+        class="cursor-pointer ml-1 text-base text-zinc-900 hover:text-zinc-600"
+        style="vertical-align: bottom;"
+        >content_copy</mat-icon
+      >
     </ng-template>
 
     <ng-template #typeCol let-item="item">
