@@ -110,69 +110,98 @@ import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component
     </header>
 
     <main>
-      @if (detailsService.vocabulary()?.translation) {
-      <div class="my-10" data-testid="translation">
-        <h3
-          class="text-lg font-semibold leading-7 text-gray-900"
-          translate="vocabulary.translation"
-        ></h3>
-        <p class="mt-1 text-base leading-6 text-gray-600">
-          {{ detailsService.vocabulary()?.translation }}
-        </p>
-      </div>
-      } @if (detailsService.vocabulary()?.definitions?.length) {
-      <div class="my-10" data-testid="definitions">
-        <h3
-          class="text-lg font-semibold leading-7 text-gray-900"
-          translate="vocabulary.definitions"
-        ></h3>
-
-        <ul role="list" class="list-disc space-y-2 pl-4 text-sm mt-1">
-          @for (item of detailsService.vocabulary()?.definitions; track $index)
-          {
-          <li class="text-gray-400 text-base">
-            <span class="text-gray-600"> {{ item }} </span>
-          </li>
-          }
-        </ul>
-      </div>
-      } @if (detailsService.vocabulary()?.examples?.length) {
-      <div class="my-10" data-testid="examples">
-        <h3
-          class="text-lg font-semibold leading-7 text-gray-900"
-          translate="vocabulary.examples"
-        ></h3>
-
-        <ul role="list" class="list-disc space-y-2 pl-4 text-sm mt-1">
-          @for (item of detailsService.vocabulary()?.examples; track $index) {
-          <li class="text-gray-400 text-base">
-            <span class="text-gray-600"> {{ item }} </span>
-          </li>
-          }
-        </ul>
-      </div>
-      } @if (detailsService.vocabulary()?.links?.length) {
-      <div class="my-10" data-testid="links">
-        <h3
-          class="text-lg font-semibold leading-7 text-gray-900"
-          translate="vocabulary.links"
-        ></h3>
-
-        <ul role="list" class="list-disc space-y-2 pl-4 text-sm mt-1">
-          @for (item of detailsService.vocabulary()?.links; track $index) {
-          <li class="text-gray-400 text-base">
-            <a
-              [href]="item.link"
-              target="_blank"
-              class="font-medium text-indigo-700 hover:text-indigo-500"
+      <div class="mt-10 border-t border-gray-100">
+        <dl class="divide-y divide-gray-100">
+          @if (detailsService.vocabulary()?.translation) {
+          <div
+            class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+            data-testid="translation"
+          >
+            <dt
+              class="text-base font-medium leading-6 text-gray-900"
+              translate="vocabulary.translation"
+            ></dt>
+            <dd
+              class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
             >
-              {{ item.title }}</a
+              {{ detailsService.vocabulary()?.translation }}
+            </dd>
+          </div>
+          } @if (detailsService.vocabulary()?.definitions?.length) {
+          <div
+            class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+            data-testid="definitions"
+          >
+            <dt
+              class="text-base font-medium leading-6 text-gray-900"
+              translate="vocabulary.definitions"
+            ></dt>
+            <dd
+              class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
             >
-          </li>
+              <ul role="list" class="list-disc space-y-2 pl-4 mt-1">
+                @for (item of detailsService.vocabulary()?.definitions; track
+                $index) {
+                <li class="text-gray-400 text-base">
+                  <span class="text-gray-600"> {{ item }} </span>
+                </li>
+                }
+              </ul>
+            </dd>
+          </div>
+          } @if (detailsService.vocabulary()?.examples?.length) {
+          <div
+            class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+            data-testid="examples"
+          >
+            <dt
+              class="text-base font-medium leading-6 text-gray-900"
+              translate="vocabulary.examples"
+            ></dt>
+            <dd
+              class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+            >
+              <ul role="list" class="list-disc space-y-2 pl-4 mt-1">
+                @for (item of detailsService.vocabulary()?.examples; track
+                $index) {
+                <li class="text-gray-400 text-base">
+                  <span class="text-gray-600"> {{ item }} </span>
+                </li>
+                }
+              </ul>
+            </dd>
+          </div>
+          } @if (detailsService.vocabulary()?.links?.length) {
+          <div
+            class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+            data-testid="links"
+          >
+            <dt
+              class="text-base font-medium leading-6 text-gray-900"
+              translate="vocabulary.links"
+            ></dt>
+            <dd
+              class="mt-1 text-base leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
+            >
+              <ul role="list" class="list-disc space-y-2 pl-4 mt-1">
+                @for (item of detailsService.vocabulary()?.links; track $index)
+                {
+                <li class="text-gray-400 text-base">
+                  <a
+                    [href]="item.link"
+                    target="_blank"
+                    class="font-medium text-indigo-700 hover:text-indigo-500"
+                  >
+                    {{ item.title }}</a
+                  >
+                </li>
+                }
+              </ul>
+            </dd>
+          </div>
           }
-        </ul>
+        </dl>
       </div>
-      }
     </main>
   `,
 })
