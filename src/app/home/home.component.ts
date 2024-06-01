@@ -11,6 +11,8 @@ import { AuthService } from '../shared/data-access/auth.service';
 import { DeleteConfirmDialogComponent } from '../shared/ui/delete-confirm-dialog/delete-confirm-dialog.component';
 import { AddVocabularyDialogComponent } from '../vocabulary-details/ui/add-vocabulary-dialog/add-vocabulary-dialog.component';
 import { VocabularyListFiltersComponent } from './ui/vocabulary-list-filters/vocabulary-list-filters.component';
+import { PaginationComponent } from '../shared/ui/pagination/pagination.component';
+import { PageEvent } from '@angular/material/paginator';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -39,10 +41,17 @@ import { VocabularyListFiltersComponent } from './ui/vocabulary-list-filters/voc
       <app-vocabulary-list-filters
         (filtersChanged)="vocabularyService.filter$.next($event)"
       ></app-vocabulary-list-filters>
+
       <app-vocabulary-list
         [vocabulary]="vocabularyService.vocabulary()"
         (vocabularyDeleted)="openDeleteDialog($event)"
       ></app-vocabulary-list>
+
+      <app-pagination
+        (pageChanged)="onPageChanged($event)"
+        [totalSize]="vocabularyService.totalSize()"
+        [rowsPerPage]="vocabularyService.rowsPerPage()"
+      ></app-pagination>
     </main>
   `,
   imports: [
@@ -50,6 +59,7 @@ import { VocabularyListFiltersComponent } from './ui/vocabulary-list-filters/voc
     MatButton,
     TranslateModule,
     VocabularyListFiltersComponent,
+    PaginationComponent,
   ],
 })
 export class HomeComponent {
@@ -64,6 +74,13 @@ export class HomeComponent {
       if (!this.authService.user()) {
         this.router.navigate(['login']);
       }
+    });
+  }
+
+  onPageChanged(event: PageEvent) {
+    this.vocabularyService.filter$.next({
+      paginationDirection:
+        event.pageIndex! > event.previousPageIndex! ? 'next' : 'prev',
     });
   }
 

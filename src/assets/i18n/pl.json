@@ -72,7 +72,9 @@
       "label": "Część mowy",
       "verb": "Czasownik",
       "noun": "Rzeczownik",
-      "adjective": "Przymiotnik"
+      "adjective": "Przymiotnik",
+      "adverb": "Przysłówek",
+      "idiom": "Idiom"
     }
   },
   "formLabels": {

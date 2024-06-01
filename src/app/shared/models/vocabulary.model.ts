@@ -51,4 +51,6 @@ export const vocabularyTypeOptions: { label: string; value: VocabularyType }[] =
     { label: 'vocabulary.type.noun', value: 'noun' },
     { label: 'vocabulary.type.verb', value: 'verb' },
     { label: 'vocabulary.type.adjective', value: 'adjective' },
+    { label: 'vocabulary.type.adverb', value: 'adverb' },
+    { label: 'vocabulary.type.idiom', value: 'idiom' },
   ];

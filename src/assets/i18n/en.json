@@ -72,7 +72,9 @@
       "label": "Part of speech",
       "verb": "Verb",
       "noun": "Noun",
-      "adjective": "Adjective"
+      "adjective": "Adjective",
+      "adverb": "Adverb",
+      "idiom": "Idiom"
     }
   },
   "formLabels": {

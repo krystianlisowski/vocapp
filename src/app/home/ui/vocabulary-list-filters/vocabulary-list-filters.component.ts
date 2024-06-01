@@ -53,7 +53,7 @@ import { vocabularyTypeOptions } from '../../../shared/models/vocabulary.model';
       class="border border-zinc-200 bg-white  pb-3 pt-8 px-8  mb-10 relative rounded-xl"
     >
       <form [formGroup]="formGroup" data-testid="form-group">
-        <div class="grid grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <mat-form-field
             appearance="outline"
             data-testid="title-control"

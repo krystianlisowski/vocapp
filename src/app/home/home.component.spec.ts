@@ -14,6 +14,7 @@ import { of } from 'rxjs';
 import { VocabularyListService } from './data-acess/vocabulary-list.service';
 import { VocabularyListItem } from '../shared/models/vocabulary.model';
 import { AddVocabularyDialogComponent } from '../vocabulary-details/ui/add-vocabulary-dialog/add-vocabulary-dialog.component';
+import { PageEvent } from '@angular/material/paginator';
 
 describe('Home Component', () => {
   let component: HomeComponent;
@@ -40,6 +41,11 @@ describe('Home Component', () => {
 
   const vocabularyServiceMock = {
     vocabulary: jest.fn().mockReturnValue(listMock),
+    totalSize: jest.fn().mockReturnValue(100),
+    rowsPerPage: jest.fn().mockReturnValue(10),
+    filter$: {
+      next: jest.fn(),
+    },
     remove$: {
       next: jest.fn(),
     },
@@ -122,8 +128,6 @@ describe('Home Component', () => {
 
     it('should open add dialog after button clicked', () => {
       const buttonElement = fixture.debugElement.query(By.css('button'));
-      // jest.spyOn(dialog, 'open');
-      // jest.spyOn(component, 'openAddDialog');
 
       buttonElement.nativeElement.click();
       fixture.detectChanges();
@@ -175,6 +179,81 @@ describe('Home Component', () => {
       it('it should call remove method if dialog was closed with truthy value', () => {
         expect(dialogRefMock.afterClosed).toHaveBeenCalled();
         expect(vocabularyService.remove$.next).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('app-vocabulary-list-filters', () => {
+    let vocabularyListFiltersComponent: DebugElement;
+    const filtersMock = {
+      title: 'test',
+    };
+
+    beforeEach(() => {
+      vocabularyListFiltersComponent = fixture.debugElement.query(
+        By.css('app-vocabulary-list-filters')
+      );
+    });
+
+    describe('output: filtersChanged ', () => {
+      beforeEach(() => {
+        jest.spyOn(component.vocabularyService.filter$, 'next');
+        vocabularyListFiltersComponent.triggerEventHandler(
+          'filtersChanged',
+          filtersMock
+        );
+        fixture.detectChanges();
+      });
+
+      it('it should call filter subject from service', () => {
+        expect(vocabularyService.filter$.next).toHaveBeenCalledWith(
+          filtersMock
+        );
+      });
+    });
+  });
+
+  describe('app-pagination', () => {
+    let paginationComponent: DebugElement;
+    const eventMock: PageEvent = {
+      pageIndex: 1,
+      pageSize: 10,
+      previousPageIndex: 0,
+      length: 100,
+    };
+
+    beforeEach(() => {
+      paginationComponent = fixture.debugElement.query(
+        By.css('app-pagination')
+      );
+    });
+
+    describe('input: totalSize', () => {
+      it('should use totalSize from service as an input', () => {
+        expect(paginationComponent.componentInstance.totalSize()).toEqual(
+          vocabularyServiceMock.totalSize()
+        );
+      });
+
+      it('should use rowsPerPage from service as an input', () => {
+        expect(paginationComponent.componentInstance.rowsPerPage()).toEqual(
+          vocabularyServiceMock.rowsPerPage()
+        );
+      });
+    });
+
+    describe('output: pageChanged', () => {
+      beforeEach(() => {
+        jest.spyOn(component, 'onPageChanged');
+        jest.spyOn(vocabularyServiceMock.filter$, 'next');
+        paginationComponent.triggerEventHandler('pageChanged', eventMock);
+        fixture.detectChanges();
+      });
+
+      it('should call filter subject with next page param', () => {
+        expect(vocabularyServiceMock.filter$.next).toHaveBeenCalledWith({
+          paginationDirection: 'next',
+        });
       });
     });
   });

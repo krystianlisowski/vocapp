@@ -22,7 +22,7 @@ export interface LessonState {
   currentDefinitions: string[] | undefined;
 }
 
-export type VocabularyType = 'noun' | 'verb' | 'adjective';
+export type VocabularyType = 'noun' | 'verb' | 'adjective' | 'adverb' | 'idiom';
 
 interface DictionaryResponse {
   word: string;
