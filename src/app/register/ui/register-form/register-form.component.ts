@@ -105,7 +105,7 @@ import { TranslateModule } from '@ngx-translate/core';
           ></mat-error>
           } @else if(registerStatus() === 'creating'){
           <div
-            class="d-flex align-items-center justify-content-center"
+            class="flex align-items-center justify-content-center"
             data-testid="pending-block"
           >
             <mat-spinner diameter="50"></mat-spinner>
