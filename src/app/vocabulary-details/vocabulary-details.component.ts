@@ -19,12 +19,13 @@ import { DeleteConfirmDialogComponent } from '../shared/ui/delete-confirm-dialog
 import { Vocabulary } from '../shared/models/vocabulary.model';
 import { EditVocabularyDialogComponent } from './ui/edit-vocabulary-dialog/edit-vocabulary-dialog.component';
 import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component';
+import { CanWritePipe } from '../shared/pipes/can-write.pipe';
 
 @Component({
   selector: 'app-lesson',
   standalone: true,
-  imports: [TranslateModule, MatButton, FirebaseToDatePipe, EmptyListComponent],
   template: `
+    @if (detailsService.loaded()) {
     <header class="mt-10">
       <div class="lg:flex lg:justify-between">
         <div class="min-w-0 flex-1">
@@ -67,7 +68,8 @@ import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component
           </div>
         </div>
 
-        @if(authService.user()?.emailVerified) {
+        @if(authService.user()?.emailVerified && (detailsService.vocabulary()! |
+        canWrite) ) {
         <div class="flex mt-4 lg:mt-0">
           <span class="sm:ml-3">
             <button
@@ -208,7 +210,17 @@ import { EmptyListComponent } from '../shared/ui/empty-list/empty-list.component
         </dl>
       </div>
     </main>
+    } @else {
+    <span>loading</span>
+    }
   `,
+  imports: [
+    TranslateModule,
+    MatButton,
+    FirebaseToDatePipe,
+    EmptyListComponent,
+    CanWritePipe,
+  ],
 })
 export class VocabularyDetailsComponent implements OnInit {
   private dialog = inject(MatDialog);

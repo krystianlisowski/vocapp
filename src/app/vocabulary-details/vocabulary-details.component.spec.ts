@@ -14,6 +14,7 @@ import { Vocabulary } from '../shared/models/vocabulary.model';
 import { EditVocabularyDialogComponent } from './ui/edit-vocabulary-dialog/edit-vocabulary-dialog.component';
 import { of } from 'rxjs';
 import { VocabularyDetailsService } from './data-acess/vocabulary-details.service';
+import { CanWritePipe, MockCanWritePipe } from '../shared/pipes/can-write.pipe';
 
 describe('Vocabulary Details Component', () => {
   let component: VocabularyDetailsComponent;
@@ -32,7 +33,7 @@ describe('Vocabulary Details Component', () => {
     translation: 'string',
     examples: ['string'],
     links: [{ title: 'string', link: 'string' }],
-    authorUid: 'string',
+    authorUid: 'uid',
   };
 
   const authServiceMock = {
@@ -41,7 +42,7 @@ describe('Vocabulary Details Component', () => {
 
   const detailsServiceMock = {
     vocabulary: jest.fn().mockReturnValue(vocabularyMock),
-    loaded: jest.fn(),
+    loaded: jest.fn().mockReturnValue(true),
     initializeState: jest.fn(),
     remove$: {
       next: jest.fn(),
@@ -75,8 +76,11 @@ describe('Vocabulary Details Component', () => {
       ],
     })
       .overrideComponent(VocabularyDetailsComponent, {
-        remove: { imports: [], providers: [VocabularyDetailsService] },
-        add: { imports: [] },
+        remove: {
+          imports: [CanWritePipe],
+          providers: [VocabularyDetailsService],
+        },
+        add: { imports: [MockCanWritePipe] },
       })
       .compileComponents();
 
