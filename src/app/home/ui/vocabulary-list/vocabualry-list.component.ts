@@ -105,6 +105,11 @@ export class VocabularyListComponent implements OnInit {
           template: this.nameCol,
         },
         {
+          key: 'translation',
+          header: 'vocabulary.translation',
+          formatter: (item) => item.translation || '-',
+        },
+        {
           key: 'type',
           header: 'vocabulary.typeOfSpeech',
           template: this.typeCol,

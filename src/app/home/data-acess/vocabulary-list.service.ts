@@ -122,6 +122,7 @@ export class VocabularyListService {
       this.add$.pipe(
         exhaustMap((payload) =>
           this.addVocabulary(payload).pipe(
+            tap(() => this.filter$.next({})),
             catchError((err) => this.errorHandler.handleError(err))
           )
         )
@@ -129,6 +130,7 @@ export class VocabularyListService {
       this.remove$.pipe(
         exhaustMap((payload) =>
           this.removeVocabulary(payload).pipe(
+            tap(() => this.filter$.next({})),
             catchError((err) => this.errorHandler.handleError(err))
           )
         )

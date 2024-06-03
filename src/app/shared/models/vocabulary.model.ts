@@ -9,7 +9,7 @@ export interface Vocabulary {
   title: string;
   definitions: string[];
   lessonDate: Timestamp;
-  translation: string;
+  translation?: string;
   type: VocabularyType;
   important: boolean;
   examples?: string[];
@@ -18,7 +18,13 @@ export interface Vocabulary {
 
 export type VocabularyListItem = Pick<
   Vocabulary,
-  'id' | 'title' | 'type' | 'lessonDate' | 'authorUid' | 'important'
+  | 'id'
+  | 'title'
+  | 'type'
+  | 'translation'
+  | 'lessonDate'
+  | 'authorUid'
+  | 'important'
 >;
 export interface VocabularyLink {
   title: string;
