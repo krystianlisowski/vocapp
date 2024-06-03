@@ -3,7 +3,13 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
 import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
+import {
+  connectAuthEmulator,
+  getAuth,
+  indexedDBLocalPersistence,
+  initializeAuth,
+  provideAuth,
+} from '@angular/fire/auth';
 import {
   Firestore,
   connectFirestoreEmulator,
@@ -17,6 +23,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { Capacitor } from '@capacitor/core';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -36,13 +43,19 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       provideFirebaseApp(() => initializeApp(environment.firebase)),
       provideAuth(() => {
-        const auth = getAuth();
-        if (environment.useEmulators) {
-          connectAuthEmulator(auth, 'http://localhost:9099', {
-            disableWarnings: true,
+        if (Capacitor.isNativePlatform()) {
+          return initializeAuth(getApp(), {
+            persistence: indexedDBLocalPersistence,
           });
+        } else {
+          const auth = getAuth();
+          if (environment.useEmulators) {
+            connectAuthEmulator(auth, 'http://localhost:9099', {
+              disableWarnings: true,
+            });
+          }
+          return auth;
         }
-        return auth;
       }),
       provideFirestore(() => {
         let firestore: Firestore;
@@ -63,6 +76,7 @@ export const appConfig: ApplicationConfig = {
         defaultLanguage: 'en',
       })
     ),
-    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { width: '1024px' } }, provideAnimationsAsync(),
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { width: '1024px' } },
+    provideAnimationsAsync(),
   ],
 };

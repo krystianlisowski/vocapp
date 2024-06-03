@@ -7,7 +7,7 @@ import { HeaderComponent } from './shared/ui/header/header.component';
   template: `
     <app-header></app-header>
 
-    <div class="container">
+    <div class="container max-sm:mt-32 max-sm:mb-12">
       <router-outlet></router-outlet>
     </div>
   `,

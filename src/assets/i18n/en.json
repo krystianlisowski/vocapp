@@ -17,7 +17,8 @@
   "addVocabularyDialog": {
     "heading": "Add new phrase",
     "addExample": "Add example",
-    "addLink": "Add link"
+    "addLink": "Add link",
+    "dictionarySearch": "Search in dictionary"
   },
   "deleteConfirmDialog": {
     "heading": "Confirm delete",

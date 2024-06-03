@@ -17,7 +17,8 @@
   "addVocabularyDialog": {
     "heading": "Dodaj nowy zwrot",
     "addExample": "Dodaj przykład",
-    "addLink": "Dodaj link"
+    "addLink": "Dodaj link",
+    "dictionarySearch": "Wyszukaj w słowniku"
   },
   "deleteConfirmDialog": {
     "heading": "Potwierdź usunięcie",

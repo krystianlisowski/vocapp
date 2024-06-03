@@ -90,9 +90,9 @@ type LinkForm = { title: FormControl<string>; link: FormControl<string> };
               formGroup.controls.type!.value
             )
           "
-          class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+          class="relative cursor-pointer rounded-md bg-white font-semibold text-emerald-700 hover:text-emerald-500 focus-within:outline-none focus-within:ring-2"
         >
-          {{ 'Wyszukaj w słowniku' }}
+          {{ 'addVocabularyDialog.dictionarySearch' | translate }}
         </span>
 
         @if (dictionaryService.definitionsCount()) {

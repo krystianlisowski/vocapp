@@ -25,12 +25,14 @@ import { AuthService } from '../../data-access/auth.service';
     MatButton,
   ],
   template: `
-    <nav class="bg-zinc-900">
+    <nav
+      class="bg-zinc-900 max-sm:fixed max-sm:top-0 max-sm:left-0 max-sm:right-0 z-10 shadow-md"
+    >
       <div class="container">
-        <div class="relative flex h-16 items-center justify-between">
-          <div
-            class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start"
-          >
+        <div
+          class="relative flex h-24 items-end pb-4 sm:pb-0 sm:h-16 sm:items-center justify-between"
+        >
+          <div class="flex flex-1 items-center  sm:items-stretch justify-start">
             <div class="flex flex-shrink-0 items-center">
               <a
                 data-testid="logo"
@@ -43,7 +45,7 @@ import { AuthService } from '../../data-access/auth.service';
             </div>
           </div>
           <div
-            class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+            class="absolute inset-y-2 right-0 flex items-end sm:items-center  sm:static sm:inset-auto sm:ml-6 sm:pr-0"
           >
             @if (authService.user()) {
             <button
@@ -97,7 +99,9 @@ import { AuthService } from '../../data-access/auth.service';
             style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)"
           ></div>
         </div>
-        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <div
+          class="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2"
+        >
           <p class="text-sm leading-6 text-zinc-900">
             <span translate="header.alert"></span>
           </p>
