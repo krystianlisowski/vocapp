@@ -1,6 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import {
   BehaviorSubject,
+  EMPTY,
   Observable,
   Subject,
   catchError,
@@ -40,6 +41,7 @@ import {
   VocabularyListItem,
 } from '../../shared/models/vocabulary.model';
 import { VocabularyType } from '../../vocabulary-details/data-acess/dictionary.service';
+import { FirebaseError } from '@angular/fire/app';
 
 export interface VocabularyListState {
   vocabulary: VocabularyListItem[];
@@ -115,7 +117,12 @@ export class VocabularyListService {
                 loaded: true,
               }));
             }),
-            catchError((err) => this.errorHandler.handleError(err))
+            catchError((err: FirebaseError) => {
+              if (err.code === 'permission-denied') {
+                return EMPTY;
+              }
+              return this.errorHandler.handleError(err.message);
+            })
           );
         })
       ),
@@ -123,7 +130,9 @@ export class VocabularyListService {
         exhaustMap((payload) =>
           this.addVocabulary(payload).pipe(
             tap(() => this.filter$.next({})),
-            catchError((err) => this.errorHandler.handleError(err))
+            catchError((err: FirebaseError) =>
+              this.errorHandler.handleError(err.message)
+            )
           )
         )
       ),
@@ -131,7 +140,9 @@ export class VocabularyListService {
         exhaustMap((payload) =>
           this.removeVocabulary(payload).pipe(
             tap(() => this.filter$.next({})),
-            catchError((err) => this.errorHandler.handleError(err))
+            catchError((err: FirebaseError) =>
+              this.errorHandler.handleError(err.message)
+            )
           )
         )
       ),

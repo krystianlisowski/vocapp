@@ -1,27 +1,17 @@
 # Vocapp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.3.
+## How to run locally
 
-## Development server
+1. Clone this repository using a command in terminal: `git clone https://github.com/krystianlisowski/vocapp.git`
+2. Navigate to the project `cd vocapp`
+3. Install npm pacakges using `npm install`
+4. Run `npm run start` for a dev server with a Firebase emulators for Authentication and Database.
+5. Navigate to `http://localhost:4200/`.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+If you are running this application locally, Firebase emulators runs with empty database - in that case you need to create an account via `/register` page.
+At this point your email is not verified (create, edit and delete actions are not available) - verification link should be available in your console - click on it.
+Now, after application reload you can add new vocabulary, edit or delete exsisting vocabulary (only if you are an author).
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Run `npm run test` to execute the unit tests via [Jest](https://jestjs.io/).
